@@ -1,4 +1,5 @@
 recursive-include rolca_core/migrations *.py
 recursive-include rolca_core/templates *.html
 recursive-include rolca_core/static *
+recursive-include test_project *.py
 include LICENCE

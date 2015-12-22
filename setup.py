@@ -64,4 +64,5 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: WSGI',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
+    test_suite="test_project.runtests.runtests",
 )
