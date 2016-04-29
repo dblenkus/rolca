@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
-
-VERSION = '0.1'
+from .__about__ import *

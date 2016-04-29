@@ -1,14 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import os
 import shutil
 import sys
 
 from setuptools import setup
+from codecs import open  # Use codecs' open for a consistent encoding
 
 
-version = __import__('rolca_core').VERSION
+about = __import__('rolca_core.__about__')
 
+
+# Automate publishing to pypi
 if sys.argv[-1] == 'publish':
     if os.system("pip freeze | grep wheel"):
         print("wheel not installed.\nUse `pip install wheel`.\nExiting.")
@@ -19,24 +23,39 @@ if sys.argv[-1] == 'publish':
     os.system("python setup.py sdist bdist_wheel")
     os.system("twine upload dist/*")
     print("You probably want to also tag the version now:")
-    print("  git tag -a {0} -m 'version {0}'".format(version))
+    print("  git tag -a {0} -m 'version {0}'".format(about.__version__))
     print("  git push --tags")
     shutil.rmtree('dist')
     shutil.rmtree('build')
     shutil.rmtree('rolca_core.egg-info')
     sys.exit()
 
+
+# Get the long description from the README file
+base_dir = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(base_dir, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
+
+
 setup(
-    name='rolca-core',
-    version=version,
-    url='https://github.com/dblenkus/rolca-core',
-    author='Domen Blenkuš',
-    author_email='domen@blenkus.com',
-    description='Open source platform for organising photography salons.',
-    long_description=open('README.rst', 'r').read(),
-    license='Apache License (2.0)',
+    name=about.__title__,
+
+    version=about.__version__,
+
+    description=about.__summary__,
+    long_description=long_description,
+
+    url=about.__url__,
+
+    author=about.__author__,
+    author_email=about.__email__,
+
+    license=about.__license__,
+
     packages=['rolca_core'],
+
     include_package_data=True,  # use MANIFEST.in
+
     install_requires=[
         'Django>=1.9,<1.10a1',
         'djangorestframework>=3.0',
@@ -44,9 +63,16 @@ setup(
         'psycopg2>=2.5.0',
     ],
     extras_require={
-        'docs':  ['sphinx'],
-        'test': ['check-manifest', 'mock', 'readme'],
+        'docs': [
+            'sphinx'
+        ],
+        'test': [
+            'check-manifest',
+            'mock',
+            'readme'
+        ],
     },
+
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Environment :: Web Environment',
@@ -64,5 +90,6 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: WSGI',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
+
     test_suite="test_project.runtests.runtests",
 )
