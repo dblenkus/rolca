@@ -1,4 +1,4 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 import StringIO
 
@@ -21,7 +21,8 @@ class Salon(models.Model):
 
     """
     #: user who created salon
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='salons_owned')
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='salons_owned')
 
     #: date salon was created
     created = models.DateTimeField(auto_now_add=True)

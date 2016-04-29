@@ -1,4 +1,4 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 from datetime import date, timedelta
 import mock
@@ -10,7 +10,8 @@ from django.test import TestCase
 
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.test import APITestCase, APIRequestFactory, force_authenticate
+from rest_framework.test import (
+    APITestCase, APIRequestFactory, force_authenticate)
 
 from .models import File, Participent, Photo, Salon, Theme
 from .views import PhotoViewSet, SalonViewSet
@@ -61,9 +62,18 @@ class DatabaseTestCase(unittest.TestCase):
 class DjangoDatabaseTestCase(TestCase):
     def setUp(self):
         user_model = get_user_model()
-        self.user1 = user_model.objects.create_user('user1', 'user1@example.com', 'pwd1')
-        self.user2 = user_model.objects.create_user('user2', 'user2@example.com', 'pwd2')
-        self.judge = user_model.objects.create_user('judge', 'user3@example.com', 'pwd3')
+        self.user1 = user_model.objects.create_user(
+            username='user1',
+            email='user1@example.com',
+            password='pwd1')
+        self.user2 = user_model.objects.create_user(
+            username='user2',
+            email='user2@example.com',
+            password='pwd2')
+        self.judge = user_model.objects.create_user(
+            username='judge',
+            email='user3@example.com',
+            password='pwd3')
 
         today = date.today()
         self.salon = Salon.objects.create(
@@ -75,7 +85,8 @@ class DjangoDatabaseTestCase(TestCase):
             results_date=today + timedelta(days=2))
         self.salon.judges.add(self.judge)
 
-        theme = Theme.objects.create(title='Test theme', salon=self.salon, n_photos=2)
+        theme = Theme.objects.create(
+            title='Test theme', salon=self.salon, n_photos=2)
 
         participent1 = Participent.objects.create(uploader=self.user1)
         participent2 = Participent.objects.create(uploader=self.user2)
@@ -85,11 +96,20 @@ class DjangoDatabaseTestCase(TestCase):
         file3 = File.objects.create(user=self.user2)
 
         Photo.objects.create(
-            title="Photo 1", participent=participent1, theme=theme, photo=file1)
+            title="Photo 1",
+            participent=participent1,
+            theme=theme,
+            photo=file1)
         Photo.objects.create(
-            title="Photo 2", participent=participent2, theme=theme, photo=file2)
+            title="Photo 2",
+            participent=participent2,
+            theme=theme,
+            photo=file2)
         Photo.objects.create(
-            title="Photo 3", participent=participent2, theme=theme, photo=file3)
+            title="Photo 3",
+            participent=participent2,
+            theme=theme,
+            photo=file3)
 
     def test_photo_queryset(self):
         viewset_mock = mock.Mock(spec=PhotoViewSet)
@@ -122,7 +142,8 @@ class SalonApiTestCase(APITestCase):
             'patch': 'partial_update',
             'delete': 'destroy',
         })
-        cls.detail_url = lambda pk: reverse('rolca-api:salon-detail', kwargs={'pk': pk})
+        cls.detail_url = lambda pk: reverse('rolca-api:salon-detail',
+                                            kwargs={'pk': pk})
 
     @mock.patch('uploader.views.SalonViewSet.create')
     def test_create_perms(self, salon_create_mock):
@@ -135,7 +156,8 @@ class SalonApiTestCase(APITestCase):
         self.assertEqual(salon_create_mock.call_count, 0)
 
         # normal user
-        user = mock.MagicMock(spec=get_user_model(), is_superuser=False, is_staff=False)
+        user = mock.MagicMock(
+            spec=get_user_model(), is_superuser=False, is_staff=False)
         force_authenticate(request, user)
         resp = self.salon_list_view(request)
         self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)
@@ -161,7 +183,8 @@ class SalonApiTestCase(APITestCase):
         salon_list_mock.reset_mock()
 
         # normal user
-        user = mock.MagicMock(spec=get_user_model(), is_superuser=False, is_staff=False)
+        user = mock.MagicMock(
+            spec=get_user_model(), is_superuser=False, is_staff=False)
         force_authenticate(request, user)
         resp = self.salon_list_view(request)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -180,7 +203,8 @@ class SalonApiTestCase(APITestCase):
         salon_retrieve_mock.reset_mock()
 
         # normal user
-        user = mock.MagicMock(spec=get_user_model(), is_superuser=False, is_staff=False)
+        user = mock.MagicMock(
+            spec=get_user_model(), is_superuser=False, is_staff=False)
         force_authenticate(request, user)
         resp = self.salon_detail_view(request)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -198,7 +222,8 @@ class SalonApiTestCase(APITestCase):
         self.assertEqual(salon_update_mock.call_count, 0)
 
         # normal user
-        user = mock.MagicMock(spec=get_user_model(), is_superuser=False, is_staff=False)
+        user = mock.MagicMock(
+            spec=get_user_model(), is_superuser=False, is_staff=False)
         force_authenticate(request, user)
         resp = self.salon_detail_view(request, pk=1)
         self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)
@@ -223,7 +248,8 @@ class SalonApiTestCase(APITestCase):
         self.assertEqual(salon_update_mock.call_count, 0)
 
         # normal user
-        user = mock.MagicMock(spec=get_user_model(), is_superuser=False, is_staff=False)
+        user = mock.MagicMock(
+            spec=get_user_model(), is_superuser=False, is_staff=False)
         force_authenticate(request, user)
         resp = self.salon_detail_view(request, pk=1)
         self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)
@@ -248,7 +274,8 @@ class SalonApiTestCase(APITestCase):
         self.assertEqual(salon_update_mock.call_count, 0)
 
         # normal user
-        user = mock.MagicMock(spec=get_user_model(), is_superuser=False, is_staff=False)
+        user = mock.MagicMock(
+            spec=get_user_model(), is_superuser=False, is_staff=False)
         force_authenticate(request, user)
         resp = self.salon_detail_view(request, pk=1)
         self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)

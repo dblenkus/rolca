@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 from datetime import date
 import json
@@ -11,7 +11,8 @@ from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import (
-    HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed)
+    HttpResponse, HttpResponseBadRequest, HttpResponseForbidden,
+    HttpResponseNotAllowed)
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
@@ -94,9 +95,14 @@ def upload_app(request):
                 file_.save()
                 user = request.user
                 participent = Participent.objects.create(
-                    first_name=user.first_name, last_name=user.last_name, uploader=user)
+                    first_name=user.first_name,
+                    last_name=user.last_name,
+                    uploader=user)
                 Photo.objects.create(
-                    title=title, participent=participent, theme=theme, photo=file_)
+                    title=title,
+                    participent=participent,
+                    theme=theme,
+                    photo=file_)
 
             logout(request)
             return redirect('upload_confirm')
@@ -115,7 +121,8 @@ def list_select(request):
     salons = Salon.objects.all()
 
     response = {'salons': salons}
-    return render(request, os.path.join('uploader', 'list_select.html'), response)
+    return render(request, os.path.join('uploader', 'list_select.html'),
+                  response)
 
 
 def list_details(request, salon_id):
@@ -132,7 +139,8 @@ def list_details(request, salon_id):
                 'count': count})
 
     response['salon'] = salon
-    return render(request, os.path.join('uploader', 'list_details.html'), response)
+    return render(request, os.path.join('uploader', 'list_details.html'),
+                  response)
 
 
 @csrf_exempt
@@ -159,7 +167,8 @@ def upload(request):
         return HttpResponseBadRequest("File can't excede size of {}KB".format(
             settings.MAX_UPLOAD_SIZE / 1024))
 
-    if max(file_.file.width, file_.file.height) > settings.MAX_IMAGE_RESOLUTION:
+    max_image_resolution = settings.MAX_IMAGE_RESOLUTION
+    if max(file_.file.width, file_.file.height) > max_image_resolution:
         logger.warning("Too big file.")
         return HttpResponseBadRequest("File can't excede size of {}px".format(
             settings.MAX_IMAGE_RESOLUTION))
