@@ -21,7 +21,7 @@ from rest_framework import viewsets
 from .models import File, Photo, Salon, Theme, Participent
 from .permissions import AdminOrReadOnly
 from .serializers import PhotoSerializer, SalonSerializer
-from login.models import Profile
+# from login.models import Profile
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -130,13 +130,13 @@ def list_details(request, salon_id):
     themes = Theme.objects.filter(salon=salon)
 
     response = {'users': []}
-    for user in Profile.objects.all():  # pylint: disable=no-member
-        count = Photo.objects.filter(theme__in=themes, user=user).count()
-        if count > 0:
-            response['users'].append({
-                'name': user.get_short_name,
-                'school': user.school,
-                'count': count})
+    # for user in Profile.objects.all():  # pylint: disable=no-member
+    #     count = Photo.objects.filter(theme__in=themes, user=user).count()
+    #     if count > 0:
+    #         response['users'].append({
+    #             'name': user.get_short_name,
+    #             'school': user.school,
+    #             'count': count})
 
     response['salon'] = salon
     return render(request, os.path.join('uploader', 'list_details.html'),
