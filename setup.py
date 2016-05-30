@@ -64,7 +64,8 @@ setup(
     ],
     extras_require={
         'docs': [
-            'sphinx'
+            'sphinx>=1.3.2',
+            'sphinx_rtd_theme',
         ],
         'test': [
             'check-manifest',
