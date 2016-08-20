@@ -2,8 +2,6 @@
 Django settings for running tests for rolca-core package.
 
 """
-from __future__ import absolute_import, unicode_literals
-
 import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))

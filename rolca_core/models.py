@@ -1,17 +1,13 @@
-from __future__ import absolute_import, unicode_literals
-
-import StringIO
+import io
 
 from django.db import models
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.conf import settings
-from django.utils.encoding import python_2_unicode_compatible
 
 from datetime import date
 from PIL import Image
 
 
-@python_2_unicode_compatible
 class Salon(models.Model):
     """Model for storing salons.
 
@@ -60,7 +56,6 @@ class Salon(models.Model):
     is_active.boolean = True
 
 
-@python_2_unicode_compatible
 class Theme(models.Model):
     """Model for storing themes.
 
@@ -88,7 +83,6 @@ class Theme(models.Model):
         return self.title
 
 
-@python_2_unicode_compatible
 class File(models.Model):
     """Model for storing uploaded images.
 
@@ -118,7 +112,7 @@ class File(models.Model):
         if not self.pk and self.file:
             fn = Image.open(self.file)
             fn.thumbnail((100, 100), Image.ANTIALIAS)
-            thumb_io = StringIO.StringIO()
+            thumb_io = io.StringIO()
             fn.save(thumb_io, "JPEG", quality=100, optimize=True,
                     progressive=True)
             thumb_file = InMemoryUploadedFile(thumb_io, None, self.file.name,
@@ -141,7 +135,6 @@ class File(models.Model):
         return self.file.name
 
 
-@python_2_unicode_compatible
 class Participent(models.Model):
     """ Model for storing participents.
 
@@ -170,7 +163,6 @@ class Participent(models.Model):
         return "{} {}".format(self.first_name, self.last_name)
 
 
-@python_2_unicode_compatible
 class Photo(models.Model):
     """Model for storing uploaded photos.
 
