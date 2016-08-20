@@ -57,7 +57,7 @@ setup(
     include_package_data=True,  # use MANIFEST.in
 
     install_requires=[
-        'Django>=1.9,<1.10a1',
+        'Django>=1.10,<1.11a1',
         'djangorestframework>=3.0',
         'Pillow>=3.0.0',
         'psycopg2>=2.5.0',
