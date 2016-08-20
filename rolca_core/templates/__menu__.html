@@ -1,0 +1,7 @@
+{% load i18n %}
+
+{% if user.id %}
+    <a href="{% url 'logout' %}" class="btn btn-default menu-btn">{% trans "Log out" %}</a>
+{% else %}
+    <a href="{% url 'login' %}" class="btn btn-default menu-btn">{% trans "Log in" %}</a>
+{% endif %}
