@@ -1,8 +1,12 @@
+"""Rolca_core models."""
+import hashlib
 import io
+import os
 
 from django.db import models
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from datetime import date
 from PIL import Image
@@ -83,6 +87,23 @@ class Theme(models.Model):
         return self.title
 
 
+def _generate_filename(instance, filename, prefix):
+    """Generate unique filename with given prefix."""
+    md5 = hashlib.md5()
+    for chunk in instance.file.chunks():
+        md5.update(chunk)
+    extension = os.path.splitext(filename)[1]
+    return os.path.join(prefix, md5.hexdigest() + extension)
+
+
+def generate_file_filename(*args):
+    return _generate_filename(*args, 'photos')
+
+
+def generate_thumb_filename(*args):
+    return _generate_filename(*args, 'thumbs')
+
+
 class File(models.Model):
     """Model for storing uploaded images.
 
@@ -100,64 +121,69 @@ class File(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     #: uploaded file
-    file = models.ImageField(upload_to='photos')
+    file = models.ImageField(upload_to=generate_file_filename)
 
     #: thumbnail of uploaded file
-    thumbnail = models.ImageField(upload_to='thumbs')
+    thumbnail = models.ImageField(upload_to=generate_thumb_filename)
 
     #: user, who uploaded file
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     def save(self, *args, **kwargs):
-        if not self.pk and self.file:
-            fn = Image.open(self.file)
-            fn.thumbnail((100, 100), Image.ANTIALIAS)
-            thumb_io = io.StringIO()
-            fn.save(thumb_io, "JPEG", quality=100, optimize=True,
-                    progressive=True)
-            thumb_file = InMemoryUploadedFile(thumb_io, None, self.file.name,
-                                              'image/jpeg', thumb_io.len, None)
-            self.thumbnail = thumb_file
+        """Add photo thumbnail and save object."""
+        if not self.pk:  # on create
+            image = Image.open(self.file)
+            image.thumbnail((100, 100), Image.ANTIALIAS)
+
+            thumb = io.BytesIO()
+            image.save(thumb, format="jpeg", quality=100, optimize=True, progressive=True)
+            self.thumbnail = InMemoryUploadedFile(thumb, None, self.file.name, 'image/jpeg',
+                                                  thumb.tell(), None)
 
         super(File, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        # delete attached files
+        """Delete attached images and actual object."""
         self.file.delete(save=False)  # pylint: disable=no-member
         self.thumbnail.delete(save=False)  # pylint: disable=no-member
 
         super(File, self).delete(*args, **kwargs)
 
-    def longer_edge(self):
+    def get_long_edge(self):
+        """Return longer edge of the image."""
         return max(self.file.width, self.file.height)  # pylint: disable=no-member
 
     def __str__(self):
-        return self.file.name
+        photo = self.photo_set.first()  # pylint: disable=no-member
+        photo_title = photo.title if photo else '?'
+        photo_id = title = photo.pk if photo else '?'
+        return "id: {}, filename: {}, photo id: {}, photo title: {}".format(
+            self.pk, self.file.name, photo_id, photo_title)
 
 
-class Participent(models.Model):
+class Author(models.Model):
     """ Model for storing participents.
 
 
     """
 
-    #: date participent was created
+    #: date ``Author`` was created
     created = models.DateTimeField(auto_now_add=True)
 
-    #: date participent was last modified
+    #: date ``Author`` was last modified
     modified = models.DateTimeField(auto_now=True)
 
-    #: user, wko uploaded participent's photos
+    #: user, wko uploaded ``Author``'s photos
     uploader = models.ForeignKey(settings.AUTH_USER_MODEL)
 
-    #: participent's first name
+    #: ``Author``'s first name
     first_name = models.CharField(max_length=30)
 
-    #: participent's last name
+    #: ``Author``'s last name
     last_name = models.CharField(max_length=30)
 
     #: mentor
-    mentor = models.CharField(max_length=30)
+    mentor = models.CharField(max_length=30, null=True, blank=True)
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
@@ -177,7 +203,9 @@ class Photo(models.Model):
 
     title = models.CharField(max_length=100)
 
-    participent = models.ForeignKey('Participent')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    author = models.ForeignKey('Author')
 
     theme = models.ForeignKey(Theme)
 

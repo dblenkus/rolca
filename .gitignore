@@ -20,9 +20,6 @@ _build
 # Tox files
 .tox/
 
-# Results of django-jenkins
-reports/
-
 # Ignore files created by setup.py.
 build/
 dist/
@@ -34,8 +31,7 @@ distribute*.tar.gz
 # Sphinx documentation
 docs/_build/
 
-/static/
-/media/
-/reports/
+/test_project/static/
+/test_project/media/
 
 .*

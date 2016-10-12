@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.test import (
     APITestCase, APIRequestFactory, force_authenticate)
 
-from .models import File, Participent, Photo, Salon, Theme
+from .models import File, Author, Photo, Salon, Theme
 from .views import PhotoViewSet, SalonViewSet
 
 
@@ -49,7 +49,7 @@ class DatabaseTestCase(unittest.TestCase):
         pass
 
     def test_participant_str(self):
-        participent = Participent(first_name="Janez", last_name="Novak")
+        participent = Author(first_name="Janez", last_name="Novak")
         self.assertEqual(str(participent), "Janez Novak")
 
     def test_photo_str(self):
@@ -86,8 +86,8 @@ class DjangoDatabaseTestCase(TestCase):
         theme = Theme.objects.create(
             title='Test theme', salon=self.salon, n_photos=2)
 
-        participent1 = Participent.objects.create(uploader=self.user1)
-        participent2 = Participent.objects.create(uploader=self.user2)
+        participent1 = Author.objects.create(uploader=self.user1)
+        participent2 = Author.objects.create(uploader=self.user2)
 
         file1 = File.objects.create(user=self.user1)
         file2 = File.objects.create(user=self.user2)
@@ -133,14 +133,14 @@ class SalonApiTestCase(APITestCase):
             'get': 'list',
             'post': 'create',
         })
-        cls.list_url = reverse('rolca-api:salon-list')
+        cls.list_url = reverse('rolca-core-api:salon-list')
         cls.salon_detail_view = SalonViewSet.as_view({
             'get': 'retrieve',
             'put': 'update',
             'patch': 'partial_update',
             'delete': 'destroy',
         })
-        cls.detail_url = lambda pk: reverse('rolca-api:salon-detail',
+        cls.detail_url = lambda pk: reverse('rolca-core-api:salon-detail',
                                             kwargs={'pk': pk})
 
     @mock.patch('uploader.views.SalonViewSet.create')

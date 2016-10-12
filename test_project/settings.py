@@ -57,4 +57,10 @@ DATABASES = {
     }
 }
 
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
+
+ROLCA_MAX_SIZE = 1048576
+ROLCA_MAX_LONG_EDGE = 2400
+ROLCA_ACCEPTED_FORMATS = ['JPEG']

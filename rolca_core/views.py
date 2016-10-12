@@ -4,6 +4,7 @@ import json
 import logging
 import os
 
+from django.views.generic.edit import FormView
 from django.db.models import Q
 from django.conf import settings
 from django.contrib.auth import logout
@@ -12,11 +13,14 @@ from django.http import (
     HttpResponse, HttpResponseBadRequest, HttpResponseForbidden,
     HttpResponseNotAllowed)
 from django.shortcuts import get_object_or_404, render, redirect
+from django.core.urlresolvers import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView
 
 from rest_framework import viewsets
 
-from .models import File, Photo, Salon, Theme, Participent
+from .forms import ThemeFormSet
+from .models import File, Photo, Salon, Theme, Author
 from .permissions import AdminOrReadOnly
 from .serializers import PhotoSerializer, SalonSerializer
 # from login.models import Profile
@@ -41,78 +45,30 @@ class SalonViewSet(viewsets.ModelViewSet):
     permission_classes = (AdminOrReadOnly,)
 
 
-@login_required
-def upload_app(request):
-    # pylint: disable=too-many-branches
-    msgs = []
-    errors = []
-    files = []
+class UploadView(FormView):
+    template_name = 'uploader/upload.html'
+    form_class = ThemeFormSet
+    success_url = reverse_lazy('upload_confirm')
 
-    if request.method == 'POST':
-        print(request.POST)
-        print(request.FILES)
+    def form_valid(self, form_set):
+        author = None
+        for form in form_set:
+            # validation is skipped for empty forms in formset, so we
+            # have to check that there are actual data to save
+            if form.cleaned_data:
+                if not author:
+                    author = Author.objects.create(
+                        uploader=self.request.user,
+                        first_name=self.request.user.first_name,
+                        last_name=self.request.user.last_name,
+                    )
+                    # XXX: This must be determined in proper way
+                    theme = Theme.objects.last()
+                form.save(self.request.user, author, theme)
+        return super(UploadView, self).form_valid(form_set)
 
-        for i in [1, 2, 3]:
-            if 'photo{}'.format(i) in request.FILES:
-                photo = request.FILES['photo{}'.format(i)]
-                title = request.POST['title{}'.format(i)]
-
-                if not title:
-                    errors.append('title{}'.format(i))
-                    msg = "Prosim vpišite naslov vseh fotografij!"
-                    if msg not in msgs:
-                        msgs.append(msg)
-
-                file_ = File()
-                file_.file = photo
-                file_.user = request.user
-
-                if (file_.file.size > settings.MAX_UPLOAD_SIZE or
-                        file_.longer_edge() > settings.MAX_IMAGE_RESOLUTION):
-                    errors.append('photo{}'.format(i))
-                    msg = "Datoteka je prevelika!"
-                    if msg not in msgs:
-                        msgs.append(msg)
-
-                files.append([file_, title])
-
-        if len(files) == 0:
-            msgs.append('Naložite vsaj eno fotografijo!')
-            errors.append('photo1')
-
-        if 'salonSelection' in request.POST:
-            salon = Salon.objects.get(pk=request.POST['salonSelection'])
-        else:
-            msgs.append('Prosim izberite salon!')
-            errors.append('salonSelection')
-
-        if len(errors) == 0:
-            theme = Theme.objects.filter(salon=salon)[0]
-
-            for file_, title in files:
-                file_.save()
-                user = request.user
-                participent = Participent.objects.create(
-                    first_name=user.first_name,
-                    last_name=user.last_name,
-                    uploader=user)
-                Photo.objects.create(
-                    title=title,
-                    participent=participent,
-                    theme=theme,
-                    photo=file_)
-
-            logout(request)
-            return redirect('upload_confirm')
-
-    today = date.today()
-    salons = Salon.objects.filter(start_date__lte=today, end_date__gte=today)
-
-    response = {'salons': salons, 'msg': '<br>'.join(msgs)}
-    for key in ['title1', 'title2', 'title3', 'salonSelection']:
-        response[key] = request.POST[key] if key in request.POST else ''
-
-    return render(request, os.path.join('uploader', 'upload.html'), response)
+upload_view = login_required(UploadView.as_view())
+confirm_view = TemplateView.as_view(template_name='uploader/upload_confirm.html')
 
 
 def list_select(request):
