@@ -24,7 +24,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.staticfiles',
 
-    'rolca_core',
+    'rolca.core',
 )
 
 ROOT_URLCONF = 'test_project.urls'

@@ -5,11 +5,11 @@ import os
 import shutil
 import sys
 
-from setuptools import setup
+from setuptools import find_packages, setup
 from codecs import open  # Use codecs' open for a consistent encoding
 
 
-about = __import__('rolca_core.__about__')
+about = __import__('rolca.__about__')
 
 
 # Automate publishing to pypi
@@ -27,7 +27,7 @@ if sys.argv[-1] == 'publish':
     print("  git push --tags")
     shutil.rmtree('dist')
     shutil.rmtree('build')
-    shutil.rmtree('rolca_core.egg-info')
+    shutil.rmtree('rolca.egg-info')
     sys.exit()
 
 
@@ -52,7 +52,7 @@ setup(
 
     license=about.__license__,
 
-    packages=['rolca_core'],
+    packages=find_packages(exclude=['tests', 'tests.*', '*.tests', '*.tests.*']),
 
     include_package_data=True,  # use MANIFEST.in
 

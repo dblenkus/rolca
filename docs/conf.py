@@ -11,7 +11,7 @@ django.setup()
 
 # Get package metadata from 'rolca_core/__about__.py' file
 about = {}
-with open(os.path.join(base_dir, 'rolca_core', '__about__.py')) as f:
+with open(os.path.join(base_dir, 'rolca', '__about__.py')) as f:
     exec(f.read(), about)
 
 # -- General configuration ------------------------------------------------
