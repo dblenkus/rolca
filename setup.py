@@ -34,13 +34,13 @@ setup(
     # exclude tests from built/installed package
     packages=find_packages(exclude=['test_project', 'tests.*', '*.tests', '*.tests.*']),
     package_data={
-        'rolca.core': [
-            'static/rolca_core/*',
-            'static/rolca_core/css/*',
-            'static/uploader/*',
-            'static/uploader/css/*',
+        'rolca.frontend': [
+            'static/frontend/css/*.css',
+            'static/materialize/css/*.css',
+            'static/materialize/fonts/roboto/*',
+            'static/materialize/js/*.js',
             'templates/*.html',
-            'templates/uploader/*.html',
+            'templates/frontend/*.html',
         ]
     },
 
