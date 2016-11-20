@@ -1,64 +1,52 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import shutil
-import sys
-
-from setuptools import find_packages, setup
 from codecs import open  # Use codecs' open for a consistent encoding
+from os import path
+from setuptools import find_packages, setup
 
-
-about = __import__('rolca.__about__')
-
-
-# Automate publishing to pypi
-if sys.argv[-1] == 'publish':
-    if os.system("pip freeze | grep wheel"):
-        print("wheel not installed.\nUse `pip install wheel`.\nExiting.")
-        sys.exit()
-    if os.system("pip freeze | grep twine"):
-        print("twine not installed.\nUse `pip install twine`.\nExiting.")
-        sys.exit()
-    os.system("python setup.py sdist bdist_wheel")
-    os.system("twine upload dist/*")
-    print("You probably want to also tag the version now:")
-    print("  git tag -a {0} -m 'version {0}'".format(about.__version__))
-    print("  git push --tags")
-    shutil.rmtree('dist')
-    shutil.rmtree('build')
-    shutil.rmtree('rolca.egg-info')
-    sys.exit()
-
+base_dir = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-base_dir = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(base_dir, 'README.rst'), encoding='utf-8') as f:
+with open(path.join(base_dir, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+# Get package metadata from 'rolca.__about__.py' file
+about = {}
+with open(path.join(base_dir, 'rolca', '__about__.py'), encoding='utf-8') as f:
+    exec(f.read(), about)
 
 setup(
-    name=about.__title__,
+    name=about['__title__'],
 
-    version=about.__version__,
+    version=about['__version__'],
 
-    description=about.__summary__,
+    description=about['__summary__'],
     long_description=long_description,
 
-    url=about.__url__,
+    url=about['__url__'],
 
-    author=about.__author__,
-    author_email=about.__email__,
+    author=about['__author__'],
+    author_email=about['__email__'],
 
-    license=about.__license__,
+    license=about['__license__'],
 
-    packages=find_packages(exclude=['tests', 'tests.*', '*.tests', '*.tests.*']),
-
-    include_package_data=True,  # use MANIFEST.in
+    # exclude tests from built/installed package
+    packages=find_packages(exclude=['test_project', 'tests.*', '*.tests', '*.tests.*']),
+    package_data={
+        'rolca.core': [
+            'static/rolca_core/*',
+            'static/rolca_core/css/*',
+            'static/uploader/*',
+            'static/uploader/css/*',
+            'templates/*.html',
+            'templates/uploader/*.html',
+        ]
+    },
 
     install_requires=[
         'Django>=1.10,<1.11a1',
-        'djangorestframework>=3.0',
+        'djangorestframework>=3.4.0',
         'Pillow>=3.0.0',
         'psycopg2>=2.5.0',
     ],
@@ -67,10 +55,18 @@ setup(
             'sphinx>=1.3.2',
             'sphinx_rtd_theme',
         ],
+        'package': [
+            'twine',
+            'wheel',
+        ],
         'test': [
             'check-manifest',
-            'mock',
-            'readme'
+            'coverage>=4.2',
+            'mock>=1.3.0',
+            'pycodestyle>=2.1.0',
+            'pydocstyle>=1.0.0',
+            'pylint>=1.6.4',
+            'readme_renderer'
         ],
     },
 
@@ -90,5 +86,4 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 
-    test_suite="test_project.runtests.runtests",
 )

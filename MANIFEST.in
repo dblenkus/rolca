@@ -1,5 +1,11 @@
-recursive-include rolca_core/migrations *.py
-recursive-include rolca_core/templates *.html
-recursive-include rolca_core/static *
-recursive-include test_project *.py
-include LICENCE
+# include meta data
+include LICENSE
+include README.rst
+# include documentation and files needed by documentation
+recursive-include docs *.py *.rst
+# include tests and files needed by tests
+include .pylintrc tox.ini
+recursive-include test_project *.py *.html
+recursive-include rolca/core/tests *.py
+# exclude docker-compose configuration
+exclude docker-compose.yml
