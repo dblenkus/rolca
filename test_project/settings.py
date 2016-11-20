@@ -52,7 +52,6 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('ROLCA_POSTGRESQL_NAME', 'rolca'),
         'USER': os.environ.get('ROLCA_POSTGRESQL_USER', 'rolca'),
-        'PASSWORD': os.environ.get('ROLCA_POSTGRESQL_PASSWORD', 'rolca'),
         'HOST': os.environ.get('ROLCA_POSTGRESQL_HOST', 'localhost'),
         'PORT': int(os.environ.get('ROLCA_POSTGRESQL_PORT', 5432)),
     }

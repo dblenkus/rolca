@@ -1,0 +1,35 @@
+sudo: false   # use container-based infrastructure
+
+addons:
+  postgresql: "9.4"
+
+services:
+  - postgresql
+
+language: python
+
+env:
+  global:
+    - ROLCA_POSTGRESQL_USER=postgres
+
+# NOTE: Explicit Python versions make Travis job description more informative
+matrix:
+  include:
+    - env: TOX_ENV=py34
+      python: "3.4"
+    - env: TOX_ENV=py35
+      python: "3.5"
+    - env: TOX_ENV=docs
+      python: "3.5"
+    - env: TOX_ENV=linters
+      python: "3.5"
+    - env: TOX_ENV=packaging
+      python: "3.5"
+
+install: pip install tox
+
+script: tox -e $TOX_ENV
+
+after_success:
+ - pip install codecov
+ - codecov -e TOX_ENV -t 1ec94a55-4990-4f90-bb7c-f9926fda8911
