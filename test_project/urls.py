@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^accounts/login/$', auth_views.login, name='login'),
     url(r'^accounts/logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
 
-    url(r'^', include('rolca.core.urls')),
+    url(r'^', include('rolca.frontend.urls')),
 ]

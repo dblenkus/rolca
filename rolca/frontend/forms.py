@@ -4,7 +4,7 @@ import logging
 from django import forms
 from django.db import IntegrityError, transaction
 
-from .models import File, Photo
+from rolca.core.models import File, Photo
 from .validators import validate_format, validate_size, validate_long_edge
 
 

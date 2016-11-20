@@ -7,5 +7,6 @@ recursive-include docs *.py *.rst
 include .pylintrc tox.ini
 recursive-include test_project *.py *.html
 recursive-include rolca/core/tests *.py
+recursive-include rolca/frontend/tests *.py
 # exclude docker-compose configuration
 exclude docker-compose.yml
