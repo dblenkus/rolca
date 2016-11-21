@@ -19,6 +19,7 @@ class PhotoForm(forms.Form):
                              validators=[validate_format, validate_size, validate_long_edge])
 
     def save(self, user, author, theme):
+        """Save photo and create coresponding File object."""
         try:
             with transaction.atomic():
                 photo_file = File.objects.create(user=user, file=self.cleaned_data['photo'])
@@ -35,4 +36,4 @@ class PhotoForm(forms.Form):
             raise
 
 
-ThemeFormSet = forms.formset_factory(PhotoForm, extra=3, max_num=3)
+ThemeFormSet = forms.formset_factory(PhotoForm, extra=3, max_num=3)  # pylint: disable=invalid-name

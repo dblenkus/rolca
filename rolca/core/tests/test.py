@@ -1,6 +1,8 @@
+# pylint: disable=missing-docstring
+
 from datetime import date, timedelta
-import mock
 import unittest
+import mock
 
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
@@ -11,8 +13,8 @@ from rest_framework.response import Response
 from rest_framework.test import (
     APITestCase, APIRequestFactory, force_authenticate)
 
-from .models import File, Author, Photo, Salon, Theme
-from .views import PhotoViewSet, SalonViewSet
+from ..models import File, Author, Photo, Salon, Theme
+from ..views import PhotoViewSet, SalonViewSet
 
 
 class DatabaseTestCase(unittest.TestCase):
@@ -126,22 +128,22 @@ class DjangoDatabaseTestCase(TestCase):
 
 
 class SalonApiTestCase(APITestCase):
-    def setUp(cls):
-        cls.factory = APIRequestFactory()
+    def setUp(self):
+        self.factory = APIRequestFactory()
 
-        cls.salon_list_view = SalonViewSet.as_view({
+        self.salon_list_view = SalonViewSet.as_view({
             'get': 'list',
             'post': 'create',
         })
-        cls.list_url = reverse('rolca-core-api:salon-list')
-        cls.salon_detail_view = SalonViewSet.as_view({
+        self.list_url = reverse('rolca-core-api:salon-list')
+        self.salon_detail_view = SalonViewSet.as_view({
             'get': 'retrieve',
             'put': 'update',
             'patch': 'partial_update',
             'delete': 'destroy',
         })
-        cls.detail_url = lambda pk: reverse('rolca-core-api:salon-detail',
-                                            kwargs={'pk': pk})
+        self.detail_url = lambda pk: reverse('rolca-core-api:salon-detail',
+                                             kwargs={'pk': pk})
 
     @mock.patch('uploader.views.SalonViewSet.create')
     def test_create_perms(self, salon_create_mock):

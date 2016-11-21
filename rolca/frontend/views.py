@@ -1,5 +1,4 @@
 """Rolca frontend views."""
-
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import TemplateView
@@ -10,11 +9,14 @@ from .forms import ThemeFormSet
 
 
 class UploadView(FormView):
+    """View for uploading photos."""
+
     template_name = 'frontend/upload.html'
     form_class = ThemeFormSet
     success_url = reverse_lazy('upload_confirm')
 
     def form_valid(self, form_set):
+        """Create Author object and call save on all non-empty forms."""
         author = None
         for form in form_set:
             # validation is skipped for empty forms in formset, so we
@@ -32,8 +34,9 @@ class UploadView(FormView):
         return super(UploadView, self).form_valid(form_set)
 
 
-upload_view = login_required(UploadView.as_view())
-confirm_view = TemplateView.as_view(template_name='frontend/upload_confirm.html')
+upload_view = login_required(UploadView.as_view())  # pylint: disable=invalid-name
+confirm_view = TemplateView.as_view(  # pylint: disable=invalid-name
+    template_name='frontend/upload_confirm.html')
 
 
 # def list_select(request):

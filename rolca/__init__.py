@@ -1,1 +1,2 @@
-from .__about__ import *
+"""Rolca."""
+from .__about__ import *  # pylint: disable=wildcard-import

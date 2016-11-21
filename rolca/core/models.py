@@ -1,15 +1,14 @@
 """Rolca_core models."""
+from datetime import date
 import hashlib
 import io
 import os
 
+from PIL import Image
+
 from django.db import models
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
-from datetime import date
-from PIL import Image
 
 
 class Salon(models.Model):
@@ -18,8 +17,8 @@ class Salon(models.Model):
     Salon object is the main object of single salon. It  can contain
     multiple themes, all important dates for salone (start, end, jury
     and results date) and list of judges.
-
     """
+
     #: user who created salon
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='salons_owned')
@@ -61,11 +60,7 @@ class Salon(models.Model):
 
 
 class Theme(models.Model):
-    """Model for storing themes.
-
-    Theme object
-
-    """
+    """Model for storing themes."""
 
     #: date theme was created
     created = models.DateTimeField(auto_now_add=True)
@@ -97,10 +92,12 @@ def _generate_filename(instance, filename, prefix):
 
 
 def generate_file_filename(*args):
+    """Generate filename for uploaded photo."""
     return _generate_filename(*args, prefix='photos')
 
 
 def generate_thumb_filename(*args):
+    """Generate filename for thumbnails of uploaded photos."""
     return _generate_filename(*args, prefix='thumbs')
 
 
@@ -154,18 +151,16 @@ class File(models.Model):
         return max(self.file.width, self.file.height)  # pylint: disable=no-member
 
     def __str__(self):
+        """String representation of File object."""
         photo = self.photo_set.first()  # pylint: disable=no-member
         photo_title = photo.title if photo else '?'
-        photo_id = title = photo.pk if photo else '?'
+        photo_id = photo.pk if photo else '?'
         return "id: {}, filename: {}, photo id: {}, photo title: {}".format(
             self.pk, self.file.name, photo_id, photo_title)
 
 
 class Author(models.Model):
-    """ Model for storing participents.
-
-
-    """
+    """Model for storing participents."""
 
     #: date ``Author`` was created
     created = models.DateTimeField(auto_now_add=True)
@@ -186,15 +181,13 @@ class Author(models.Model):
     mentor = models.CharField(max_length=30, null=True, blank=True)
 
     def __str__(self):
+        """String representation of Author object."""
         return "{} {}".format(self.first_name, self.last_name)
 
 
 class Photo(models.Model):
-    """Model for storing uploaded photos.
+    """Model for storing uploaded photos."""
 
-
-
-    """
     #: date photo was created
     created = models.DateTimeField(auto_now_add=True)
 
@@ -212,4 +205,5 @@ class Photo(models.Model):
     photo = models.ForeignKey(File)
 
     def __str__(self):
+        """String representation of Photo object."""
         return self.title

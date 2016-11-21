@@ -1,18 +1,25 @@
+"""Admin pages."""
 from django.contrib import admin
 
 from .models import Salon, Theme, File, Photo
 
 
 class ThemeInline(admin.TabularInline):
+    """Inline Theme tabular used in `SalonAdmin`."""
+
     model = Theme
     extra = 1
 
 
 class JudgeInline(admin.TabularInline):
+    """Inline Judge tabular used in `SalonAdmin`."""
+
     model = Salon.judges.through  # pylint: disable=no-member
 
 
 class SalonAdmin(admin.ModelAdmin):
+    """Salon configuration."""
+
     fieldsets = [
         (None, {'fields': ('title',)}),
         ('Dates', {'fields': (('start_date', 'end_date'),
