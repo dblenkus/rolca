@@ -97,11 +97,11 @@ def _generate_filename(instance, filename, prefix):
 
 
 def generate_file_filename(*args):
-    return _generate_filename(*args, 'photos')
+    return _generate_filename(*args, prefix='photos')
 
 
 def generate_thumb_filename(*args):
-    return _generate_filename(*args, 'thumbs')
+    return _generate_filename(*args, prefix='thumbs')
 
 
 class File(models.Model):
