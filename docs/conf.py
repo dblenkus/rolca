@@ -1,12 +1,24 @@
 # -*- coding: utf-8 -*-
 import django
+from django.conf import settings
+
 import os
 
 base_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..")
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'test_project.settings')
-
 # Manual setup is required for standalone Django usage
+# NOTE: Since documentation is built using the built/installed package when
+# using Tox, it can't use the 'test.settings' Django settings module.
+settings.configure(
+    INSTALLED_APPS=(
+        'django.contrib.auth',
+        'django.contrib.contenttypes',
+        'django.contrib.sessions',
+        'django.contrib.staticfiles',
+        'rolca.core',
+        'rolca.frontend',
+    ),
+)
 django.setup()
 
 # Get package metadata from 'rolca_core/__about__.py' file
