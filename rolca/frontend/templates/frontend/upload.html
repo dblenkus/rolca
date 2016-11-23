@@ -7,11 +7,31 @@
 <div class="row">
 
 <form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <table>
-        {{ form }}
-    </table>
-    <button type="submit" name="_submit" class="btn-large waves-effect waves-light {{ materialize_color }}">Submit</button>
+  {% csrf_token %}
+  <table>
+    {{ form.management_form }}
+
+    {% for f in form %}
+
+      {% if f.non_field_errors %}
+        <blockquote>
+          {% for non_field_error in f.non_field_errors %}
+            {{ non_field_error }}
+          {% endfor %}
+        </blockquote>
+      {% endif %}
+
+      {% for field in f.hidden_fields %}
+        {{ field }}
+      {% endfor %}
+
+      {% for field in f.visible_fields %}
+        {{ field }}
+      {% endfor %}
+
+    {% endfor %}
+  </table>
+  <button type="submit" name="_submit" class="btn-large waves-effect waves-light {{ materialize_color }}">Submit</button>
 </form>
 
 </div>

@@ -1,7 +1,7 @@
-"""Rolca core serializers."""
+"""Rolca core API serializers."""
 from rest_framework import serializers
 
-from .models import File, Photo, Salon, Theme
+from ..models import File, Photo, Salon, Theme
 
 
 class FileSerializer(serializers.ModelSerializer):

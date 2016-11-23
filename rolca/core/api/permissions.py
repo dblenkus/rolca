@@ -1,4 +1,4 @@
-"""Rolca permissions."""
+"""Rolca core API permissions."""
 from rest_framework import permissions
 
 

@@ -1,52 +1,18 @@
-# -*- coding: utf-8 -*-
 """Rolca core views."""
-from datetime import date
 import json
 import logging
 import os
 
-from django.db.models import Q
 from django.conf import settings
 from django.http import (
     HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed)
 from django.views.decorators.csrf import csrf_exempt
 
-from rest_framework import viewsets
 
-from .models import File, Photo, Salon
-from .permissions import AdminOrReadOnly
-from .serializers import PhotoSerializer, SalonSerializer
-# from login.models import Profile
+from .models import File
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
-
-
-class PhotoViewSet(viewsets.ModelViewSet):
-    """API view Photo objects."""
-
-    serializer_class = PhotoSerializer
-
-    def get_queryset(self):
-        """Return queryset for photos that can be shown to user.
-
-        Return:
-        * all photos for already finished salons
-        * photos of tha salons where user is in a jury
-        * user's photos
-        """
-        return Photo.objects.filter(
-            Q(participent__uploader=self.request.user) |
-            Q(theme__salon__results_date__lte=date.today()) |
-            Q(theme__salon__judges=self.request.user))
-
-
-class SalonViewSet(viewsets.ModelViewSet):
-    """API view Salon objects."""
-
-    queryset = Salon.objects.all()
-    serializer_class = SalonSerializer
-    permission_classes = (AdminOrReadOnly,)
 
 
 @csrf_exempt
