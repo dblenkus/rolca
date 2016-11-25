@@ -1,5 +1,6 @@
 """Rolca_core forms."""
 import logging
+import os
 
 from django import forms
 from django.db import IntegrityError, transaction
@@ -23,6 +24,10 @@ class PhotoForm(forms.Form):
         try:
             with transaction.atomic():
                 photo_file = File.objects.create(user=user, file=self.cleaned_data['photo'])
+
+                image_path = photo_file.file.path
+                thumbnail_path = photo_file.thumbnail.path
+
                 Photo.objects.create(
                     photo=photo_file,
                     user=user,
@@ -30,9 +35,18 @@ class PhotoForm(forms.Form):
                     title=self.cleaned_data['title'],
                     author=author,
                 )
+
                 logging.info('Saved file')
+
         except IntegrityError:
             logging.error('Failed to save file')
+
+            try:
+                os.remove(image_path)
+                os.remove(thumbnail_path)
+            except OSError:
+                pass
+
             raise
 
 

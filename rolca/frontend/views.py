@@ -15,6 +15,19 @@ class UploadView(FormView):
     form_class = ThemeFormSet
     success_url = reverse_lazy('upload_confirm')
 
+    def create_author(self):
+        """Create Author object for uploaded photos."""
+        return Author.objects.create(
+            uploader=self.request.user,
+            first_name=self.request.user.first_name,
+            last_name=self.request.user.last_name,
+        )
+
+    def get_theme(self):
+        """Get Theme object for uploaded photos."""
+        # XXX: This must be determined in proper way
+        return Theme.objects.last()
+
     def form_valid(self, form_set):
         """Create Author object and call save on all non-empty forms."""
         author = None
@@ -23,14 +36,12 @@ class UploadView(FormView):
             # have to check that there are actual data to save
             if form.cleaned_data:
                 if not author:
-                    author = Author.objects.create(
-                        uploader=self.request.user,
-                        first_name=self.request.user.first_name,
-                        last_name=self.request.user.last_name,
-                    )
-                    # XXX: This must be determined in proper way
-                    theme = Theme.objects.last()
+                    author = self.create_author()
+
+                theme = self.get_theme()
+
                 form.save(self.request.user, author, theme)
+
         return super(UploadView, self).form_valid(form_set)
 
 
