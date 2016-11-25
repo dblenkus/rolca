@@ -32,7 +32,7 @@ setup(
     license=about['__license__'],
 
     # exclude tests from built/installed package
-    packages=find_packages(exclude=['test_project', 'tests.*', '*.tests', '*.tests.*']),
+    packages=find_packages(exclude=['tests', 'tests.*', '*.tests', '*.tests.*']),
     package_data={
         'rolca.frontend': [
             'static/frontend/css/*.css',

@@ -31,7 +31,7 @@ distribute*.tar.gz
 # Sphinx documentation
 docs/_build/
 
-/test_project/static/
-/test_project/media/
+/tests/static/
+/tests/media/
 
 .*

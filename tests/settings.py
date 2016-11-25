@@ -28,7 +28,7 @@ INSTALLED_APPS = (
     'rolca.frontend',
 )
 
-ROOT_URLCONF = 'test_project.urls'
+ROOT_URLCONF = 'tests.urls'
 
 LOGIN_REDIRECT_URL = '/'
 
