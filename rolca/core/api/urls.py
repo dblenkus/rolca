@@ -1,8 +1,8 @@
 """.. Ignore pydocstyle D400.
 
-===================
-Rolca core api urls
-===================
+=============
+Core API URLs
+=============
 
 The ``routList`` is ment to be included in ``urlpatterns`` with the
 following code:

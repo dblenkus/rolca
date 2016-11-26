@@ -1,5 +1,14 @@
 .. _index:
 
-==========
-Rolca-core
-==========
+=====
+Rolca
+=====
+
+Contents
+========
+
+.. toctree::
+   :maxdepth: 3
+
+   reference
+   contributing

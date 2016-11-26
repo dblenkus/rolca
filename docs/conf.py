@@ -78,6 +78,6 @@ htmlhelp_basename = 'rolcadocs'
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     'python': ('http://docs.python.org/', None),
-    'django': ('http://docs.djangoproject.com/en/dev/',
-               'http://docs.djangoproject.com/en/dev/_objects/'),
+    'django': ('http://docs.djangoproject.com/en/1.10/',
+               'http://docs.djangoproject.com/en/1.10/_objects/'),
 }

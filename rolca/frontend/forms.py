@@ -1,4 +1,13 @@
-"""Rolca_core forms."""
+""".. Ignore pydocstyle D400.
+
+==============
+Frontend forms
+==============
+
+.. autoclass:: rolca.frontend.forms.PhotoForm
+    :members:
+
+"""
 import logging
 import os
 

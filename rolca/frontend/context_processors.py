@@ -1,4 +1,12 @@
-"""Rolca frontend context processors."""
+""".. Ignore pydocstyle D400.
+
+===========================
+Frontend context processors
+===========================
+
+.. autofunction:: rolca.frontend.context_processors.ui_configuration
+
+"""
 
 from django.conf import settings
 

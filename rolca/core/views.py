@@ -1,4 +1,12 @@
-"""Rolca core views."""
+""".. Ignore pydocstyle D400.
+
+==========
+Core views
+==========
+
+.. autofunction:: rolca.core.views.upload
+
+"""
 import json
 import logging
 import os

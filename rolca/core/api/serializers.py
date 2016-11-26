@@ -1,4 +1,22 @@
-"""Rolca core API serializers."""
+""".. Ignore pydocstyle D400.
+
+====================
+Core API serializers
+====================
+
+.. autoclass:: rolca.core.api.serializers.FileSerializer
+    :members:
+
+.. autoclass:: rolca.core.api.serializers.PhotoSerializer
+    :members:
+
+.. autoclass:: rolca.core.api.serializers.ThemeSerializer
+    :members:
+
+.. autoclass:: rolca.core.api.serializers.SalonSerializer
+    :members:
+
+"""
 from rest_framework import serializers
 
 from ..models import File, Photo, Salon, Theme

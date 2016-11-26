@@ -1,4 +1,13 @@
-"""Rolca core API permissions."""
+""".. Ignore pydocstyle D400.
+
+====================
+Core API permissions
+====================
+
+.. autoclass:: rolca.core.api.permissions.AdminOrReadOnly
+    :members:
+
+"""
 from rest_framework import permissions
 
 

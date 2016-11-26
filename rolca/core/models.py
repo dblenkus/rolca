@@ -1,4 +1,25 @@
-"""Rolca_core models."""
+""".. Ignore pydocstyle D400.
+
+===========
+Core models
+===========
+
+.. autoclass:: rolca.core.models.Salon
+    :members:
+
+.. autoclass:: rolca.core.models.Theme
+    :members:
+
+.. autoclass:: rolca.core.models.Author
+    :members:
+
+.. autoclass:: rolca.core.models.Photo
+    :members:
+
+.. autoclass:: rolca.core.models.File
+    :members:
+
+"""
 from datetime import date
 import hashlib
 import io
@@ -20,8 +41,7 @@ class Salon(models.Model):
     """
 
     #: user who created salon
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='salons_owned')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='salons_owned')
 
     #: date salon was created
     created = models.DateTimeField(auto_now_add=True)
@@ -45,8 +65,7 @@ class Salon(models.Model):
     results_date = models.DateField()
 
     #: list of judges
-    judges = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name='salons_judged')
+    judges = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='salons_judged')
 
     def __str__(self):
         """Return salon's title."""

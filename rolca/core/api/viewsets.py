@@ -1,4 +1,16 @@
-"""Rolca core API viewsets."""
+""".. Ignore pydocstyle D400.
+
+=================
+Core API viewsets
+=================
+
+.. autoclass:: rolca.core.api.viewsets.PhotoViewSet
+    :members:
+
+.. autoclass:: rolca.core.api.viewsets.SalonViewSet
+    :members:
+
+"""
 from datetime import date
 import logging
 

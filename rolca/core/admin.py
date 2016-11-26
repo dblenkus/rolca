@@ -1,4 +1,19 @@
-"""Admin pages."""
+""".. Ignore pydocstyle D400.
+
+==========
+Core Admin
+==========
+
+.. autoclass:: rolca.core.admin.ThemeInline
+    :members:
+
+.. autoclass:: rolca.core.admin.JudgeInline
+    :members:
+
+.. autoclass:: rolca.core.admin.SalonAdmin
+    :members:
+
+"""
 from django.contrib import admin
 
 from .models import Salon, Theme, File, Photo

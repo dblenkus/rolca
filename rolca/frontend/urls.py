@@ -1,4 +1,10 @@
-"""Rolca frontend urls."""
+""".. Ignore pydocstyle D400.
+
+=============
+Frontend URLs
+=============
+
+"""
 from django.conf.urls import url
 
 from . import views
