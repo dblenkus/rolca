@@ -28,8 +28,8 @@ class ContestAdmin(admin.ModelAdmin):
     """Contest configuration."""
 
     fieldsets = [
-        (None, {'fields': ('title',)}),
-        ('Dates', {'fields': (('start_date', 'end_date', 'publish_date'))}),
+        (None, {'fields': ('title', 'description')}),
+        ('Dates', {'fields': ('start_date', 'end_date', 'publish_date')}),
     ]
 
     inlines = [ThemeInline]

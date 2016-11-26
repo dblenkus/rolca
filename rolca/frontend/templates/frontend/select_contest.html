@@ -1,0 +1,25 @@
+{% extends '__base__.html' %}
+
+{% block content %}
+
+  <h1>Select the contest</h1>
+
+  <div class="row">
+
+    {% for contest in object_list %}
+      <div class="col s12 m6">
+        <div class="card {{ materialize_color }} darken-2">
+          <div class="card-content white-text">
+            <span class="card-title">{{ contest.title }}</span>
+            <p>{{ contest.description|default_if_none:"" }}</p>
+          </div>
+          <div class="card-action">
+            <div class="right-align"><a class=" href="{% url 'rolca-frontend:upload' contest_id=contest.id %}">Next</a></div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+  </div>
+
+{% endblock content %}

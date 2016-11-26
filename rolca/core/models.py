@@ -61,6 +61,9 @@ class Contest(BaseModel):
     #: title of the contest
     title = models.CharField(max_length=100)
 
+    #: description of the contest
+    description = models.TextField(null=True, blank=True)
+
     #: date when contest starts
     start_date = models.DateTimeField()
 

@@ -7,22 +7,36 @@ Frontend views
 .. autoclass:: rolca.frontend.views.UploadView
     :members:
 
+.. autoclass:: rolca.frontend.views.SelectContestView
+    :members:
+
 """
+from datetime import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
+from django.views.generic.list import ListView
 
-from rolca.core.models import Theme, Author
+from rolca.core.models import Author, Contest, Theme
 from .forms import ThemeFormSet
 
 
 class UploadView(FormView):
     """View for uploading photos."""
 
+    contest_id = None
+
     template_name = 'frontend/upload.html'
     form_class = ThemeFormSet
-    success_url = reverse_lazy('upload_confirm')
+    success_url = reverse_lazy('rolca-frontend:upload_confirm')
+
+    def dispatch(self, request, *args, **kwargs):
+        """Self contest id and dispatch request."""
+        self.contest_id = kwargs.pop('contest_id')
+        return super(UploadView, self).dispatch(request, *args, **kwargs)
 
     def create_author(self):
         """Create Author object for uploaded photos."""
@@ -34,8 +48,7 @@ class UploadView(FormView):
 
     def get_theme(self):
         """Get Theme object for uploaded photos."""
-        # XXX: This must be determined in proper way
-        return Theme.objects.last()
+        return Theme.objects.filter(contest_id=self.contest_id).first()
 
     def form_valid(self, form_set):
         """Create Author object and call save on all non-empty forms."""
@@ -59,12 +72,25 @@ confirm_view = TemplateView.as_view(  # pylint: disable=invalid-name
     template_name='frontend/upload_confirm.html')
 
 
-# def list_select(request):
-#     contests = Contest.objects.all()
+class SelectContestView(ListView):
+    """View for selecting the Salon."""
 
-#     response = {'contests': contests}
-#     return render(request, os.path.join('frontend', 'list_select.html'),
-#                   response)
+    now = datetime.now()
+
+    queryset = Contest.objects.filter(start_date__lte=now, end_date__gte=now)
+    template_name = 'frontend/select_contest.html'
+
+    def get(self, request, *args, **kwargs):
+        """Redirect to upload if only one contest is active."""
+        queryset = self.get_queryset()
+        if queryset.count() == 1:
+            contest_pk = queryset.first().pk
+            return redirect('rolca-frontend:upload', contest_id=contest_pk)
+
+        return super(SelectContestView, self).get(request, *args, **kwargs)
+
+
+select_contest_view = SelectContestView.as_view()  # pylint: disable=invalid-name
 
 
 # def list_details(request, contest_id):
