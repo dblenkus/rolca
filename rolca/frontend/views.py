@@ -27,7 +27,7 @@ class UploadView(FormView):
     def create_author(self):
         """Create Author object for uploaded photos."""
         return Author.objects.create(
-            uploader=self.request.user,
+            user=self.request.user,
             first_name=self.request.user.first_name,
             last_name=self.request.user.last_name,
         )
@@ -60,16 +60,16 @@ confirm_view = TemplateView.as_view(  # pylint: disable=invalid-name
 
 
 # def list_select(request):
-#     salons = Salon.objects.all()
+#     contests = Contest.objects.all()
 
-#     response = {'salons': salons}
+#     response = {'contests': contests}
 #     return render(request, os.path.join('frontend', 'list_select.html'),
 #                   response)
 
 
-# def list_details(request, salon_id):
-#     salon = get_object_or_404(Salon, pk=salon_id)
-#     themes = Theme.objects.filter(salon=salon)
+# def list_details(request, contest_id):
+#     contest = get_object_or_404(Contest, pk=contest_id)
+#     themes = Theme.objects.filter(contest=contest)
 
 #     response = {'users': []}
 #     for user in Profile.objects.all():  # pylint: disable=no-member
@@ -80,6 +80,6 @@ confirm_view = TemplateView.as_view(  # pylint: disable=invalid-name
 #                 'school': user.school,
 #                 'count': count})
 
-#     response['salon'] = salon
+#     response['contest'] = contest
 #     return render(request, os.path.join('frontend', 'list_details.html'),
 #                   response)

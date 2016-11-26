@@ -7,49 +7,44 @@ Core Admin
 .. autoclass:: rolca.core.admin.ThemeInline
     :members:
 
-.. autoclass:: rolca.core.admin.JudgeInline
-    :members:
-
-.. autoclass:: rolca.core.admin.SalonAdmin
+.. autoclass:: rolca.core.admin.ContestAdmin
     :members:
 
 """
 from django.contrib import admin
 
-from .models import Salon, Theme, File, Photo
+from .models import Contest, Theme, File, Photo
 
 
 class ThemeInline(admin.TabularInline):
-    """Inline Theme tabular used in `SalonAdmin`."""
+    """Inline Theme tabular used in `ContestAdmin`."""
 
     model = Theme
+    fields = ('title', 'n_photos')
     extra = 1
 
 
-class JudgeInline(admin.TabularInline):
-    """Inline Judge tabular used in `SalonAdmin`."""
-
-    model = Salon.judges.through  # pylint: disable=no-member
-
-
-class SalonAdmin(admin.ModelAdmin):
-    """Salon configuration."""
+class ContestAdmin(admin.ModelAdmin):
+    """Contest configuration."""
 
     fieldsets = [
         (None, {'fields': ('title',)}),
-        ('Dates', {'fields': (('start_date', 'end_date'),
-                              ('jury_date', 'results_date'))}),
+        ('Dates', {'fields': (('start_date', 'end_date', 'publish_date'))}),
     ]
 
-    inlines = [ThemeInline, JudgeInline]
+    inlines = [ThemeInline]
 
     list_display = ('title', 'start_date', 'end_date', 'is_active')
-    list_filter = ['start_date', 'end_date', 'results_date']
+    list_filter = ['start_date', 'end_date', 'publish_date']
     search_fields = ['title']
 
+    def save_model(self, request, obj, form, change):
+        """Add current user to the model and save it."""
+        if getattr(obj, 'user', None) is None:
+            obj.user = request.user
+        obj.save()
 
-# admin.site.unregister(Groups)
 
-admin.site.register(Salon, SalonAdmin)
+admin.site.register(Contest, ContestAdmin)
 admin.site.register(Photo)
 admin.site.register(File)

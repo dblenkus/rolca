@@ -1,34 +1,34 @@
 # pylint: disable=missing-docstring
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 import unittest
 
-from rolca.core.models import Author, Photo, Salon, Theme
+from rolca.core.models import Author, Photo, Contest, Theme
 
 
 class DatabaseTestCase(unittest.TestCase):
-    def test_salon_str(self):
-        salon = Salon(title="Test salon")
-        self.assertEqual(str(salon), "Test salon")
+    def test_contest_str(self):
+        contest = Contest(title="Test contest")
+        self.assertEqual(str(contest), "Test contest")
 
-    def test_salon_active(self):
-        salon = Salon()
-        today = date.today()
+    def test_contest_active(self):
+        contest = Contest()
+        now = datetime.now()
         day = timedelta(days=1)
 
-        # active salon
-        salon.start_date = today - day
-        salon.end_date = today + day
-        self.assertTrue(salon.is_active())
+        # active contest
+        contest.start_date = now - day
+        contest.end_date = now + day
+        self.assertTrue(contest.is_active())
 
-        # past salon
-        salon.start_date = today - 2 * day
-        salon.end_date = today - day
-        self.assertFalse(salon.is_active())
+        # past contest
+        contest.start_date = now - 2 * day
+        contest.end_date = now - day
+        self.assertFalse(contest.is_active())
 
-        # future salon
-        salon.start_date = today + day
-        salon.end_date = today + 2 * day
-        self.assertFalse(salon.is_active())
+        # future contest
+        contest.start_date = now + day
+        contest.end_date = now + 2 * day
+        self.assertFalse(contest.is_active())
 
     def test_theme_str(self):
         theme = Theme(title="Test theme")

@@ -7,7 +7,7 @@ Core API viewsets
 .. autoclass:: rolca.core.api.viewsets.PhotoViewSet
     :members:
 
-.. autoclass:: rolca.core.api.viewsets.SalonViewSet
+.. autoclass:: rolca.core.api.viewsets.ContestViewSet
     :members:
 
 """
@@ -18,9 +18,9 @@ from django.db.models import Q
 
 from rest_framework import viewsets
 
-from ..models import Photo, Salon
+from ..models import Photo, Contest
 from .permissions import AdminOrReadOnly
-from .serializers import PhotoSerializer, SalonSerializer
+from .serializers import PhotoSerializer, ContestSerializer
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -36,19 +36,17 @@ class PhotoViewSet(viewsets.ModelViewSet):
         """Return queryset for photos that can be shown to user.
 
         Return:
-        * all photos for already finished salons
-        * photos of tha salons where user is in a jury
+        * all photos for already finished contests
         * user's photos
         """
         return Photo.objects.filter(
-            Q(author__uploader=self.request.user) |
-            Q(theme__salon__results_date__lte=date.today()) |
-            Q(theme__salon__judges=self.request.user))
+            Q(author__user=self.request.user) |
+            Q(theme__contest__publish_date__lte=date.today()))
 
 
-class SalonViewSet(viewsets.ModelViewSet):
-    """API view Salon objects."""
+class ContestViewSet(viewsets.ModelViewSet):
+    """API view Contest objects."""
 
-    queryset = Salon.objects.all()
-    serializer_class = SalonSerializer
+    queryset = Contest.objects.all()
+    serializer_class = ContestSerializer
     permission_classes = (AdminOrReadOnly,)

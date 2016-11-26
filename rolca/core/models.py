@@ -4,7 +4,7 @@
 Core models
 ===========
 
-.. autoclass:: rolca.core.models.Salon
+.. autoclass:: rolca.core.models.Contest
     :members:
 
 .. autoclass:: rolca.core.models.Theme
@@ -20,7 +20,7 @@ Core models
     :members:
 
 """
-from datetime import date
+from datetime import datetime
 import hashlib
 import io
 import os
@@ -32,69 +32,80 @@ from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
-class Salon(models.Model):
-    """Model for storing salons.
+class BaseModel(models.Model):
+    """Base model for all other models."""
 
-    Salon object is the main object of single salon. It  can contain
-    multiple themes, all important dates for salone (start, end, jury
-    and results date) and list of judges.
-    """
+    class Meta:
+        """BaseModel Meta options."""
 
-    #: user who created salon
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='salons_owned')
+        abstract = True
 
-    #: date salon was created
+    #: user who created the object
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    #: date when the object was created
     created = models.DateTimeField(auto_now_add=True)
 
-    #: date salon was last modified
+    #: date when the object was last modified
     modified = models.DateTimeField(auto_now=True)
 
-    #: title of the salon
+
+class Contest(BaseModel):
+    """Model for storing contests.
+
+    Contest object is the main object of single contest. It  can contain
+    multiple themes and all important dates for contest (start, end and
+    results date).
+    """
+
+    #: title of the contest
     title = models.CharField(max_length=100)
 
-    #: date when salon starts
-    start_date = models.DateField()
+    #: date when contest starts
+    start_date = models.DateTimeField()
 
-    #: date when salon ends
-    end_date = models.DateField()
-
-    #: date when judging will take place
-    jury_date = models.DateField()
+    #: date when contest ends
+    end_date = models.DateTimeField()
 
     #: date when results will be published
-    results_date = models.DateField()
+    publish_date = models.DateTimeField(blank=True)
 
-    #: list of judges
-    judges = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='salons_judged')
+    def save(self, *args, **kwargs):
+        """Save Contest instance."""
+        if not self.publish_date:
+            self.publish_date = self.end_date
+
+        super(Contest, self).save(*args, **kwargs)
 
     def __str__(self):
-        """Return salon's title."""
+        """Return Contest's title."""
         return self.title
 
     def is_active(self):
-        """Check if salon is active."""
-        return self.start_date <= date.today() <= self.end_date
+        """Check if contest is active."""
+        return self.start_date <= datetime.now() <= self.end_date
     is_active.admin_order_field = 'end_date'
     is_active.boolean = True
 
 
-class Theme(models.Model):
+class Theme(BaseModel):
     """Model for storing themes."""
-
-    #: date theme was created
-    created = models.DateTimeField(auto_now_add=True)
-
-    #: date theme was last modified
-    modified = models.DateTimeField(auto_now=True)
 
     #: title of the theme
     title = models.CharField(max_length=100)
 
-    #: salon that theme belongs to
-    salon = models.ForeignKey(Salon, related_name='themes')
+    #: contest that theme belongs to
+    contest = models.ForeignKey(Contest, related_name='themes')
 
     #: number of photos that can be submited to theme
     n_photos = models.IntegerField('Number of photos')
+
+    def save(self, *args, **kwargs):
+        """Save Theme instance."""
+        if getattr(self, 'user', None) is None:
+            self.user = self.contest.user  # pylint: disable=no-member
+
+        super(Theme, self).save(*args, **kwargs)
 
     def __str__(self):
         """Return theme's title."""
@@ -120,7 +131,7 @@ def generate_thumb_filename(*args):
     return _generate_filename(*args, prefix='thumbs')
 
 
-class File(models.Model):
+class File(BaseModel):
     """Model for storing uploaded images.
 
     Uploaded images can be stored prior to creating Photo instance. This
@@ -130,20 +141,11 @@ class File(models.Model):
 
     """
 
-    #: date file was created
-    created = models.DateTimeField(auto_now_add=True)
-
-    #: date file was last modified
-    modified = models.DateTimeField(auto_now=True)
-
     #: uploaded file
     file = models.ImageField(upload_to=generate_file_filename)
 
     #: thumbnail of uploaded file
     thumbnail = models.ImageField(upload_to=generate_thumb_filename)
-
-    #: user, who uploaded file
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     def save(self, *args, **kwargs):
         """Add photo thumbnail and save object."""
@@ -178,17 +180,8 @@ class File(models.Model):
             self.pk, self.file.name, photo_id, photo_title)
 
 
-class Author(models.Model):
+class Author(BaseModel):
     """Model for storing participents."""
-
-    #: date ``Author`` was created
-    created = models.DateTimeField(auto_now_add=True)
-
-    #: date ``Author`` was last modified
-    modified = models.DateTimeField(auto_now=True)
-
-    #: user, wko uploaded ``Author``'s photos
-    uploader = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     #: ``Author``'s first name
     first_name = models.CharField(max_length=30)
@@ -197,31 +190,23 @@ class Author(models.Model):
     last_name = models.CharField(max_length=30)
 
     #: mentor
-    mentor = models.CharField(max_length=30, null=True, blank=True)
+    mentor = models.CharField(max_length=60, null=True, blank=True)
 
     def __str__(self):
         """String representation of Author object."""
         return "{} {}".format(self.first_name, self.last_name)
 
 
-class Photo(models.Model):
+class Photo(BaseModel):
     """Model for storing uploaded photos."""
 
-    #: date photo was created
-    created = models.DateTimeField(auto_now_add=True)
-
-    #: date photo was last modified
-    modified = models.DateTimeField(auto_now=True)
-
     title = models.CharField(max_length=100)
-
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     author = models.ForeignKey('Author')
 
     theme = models.ForeignKey(Theme)
 
-    photo = models.ForeignKey(File)
+    photo = models.OneToOneField(File)
 
     def __str__(self):
         """String representation of Photo object."""

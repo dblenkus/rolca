@@ -27,10 +27,10 @@ For advanced configuration code can be accordingly changed to meet the
 needs.
 
 """
-from .viewsets import PhotoViewSet, SalonViewSet
+from .viewsets import PhotoViewSet, ContestViewSet
 
 
 routeList = (  # pylint: disable=invalid-name
     (r'photo', PhotoViewSet),
-    (r'salon', SalonViewSet),
+    (r'contest', ContestViewSet),
 )

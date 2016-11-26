@@ -13,13 +13,13 @@ Core API serializers
 .. autoclass:: rolca.core.api.serializers.ThemeSerializer
     :members:
 
-.. autoclass:: rolca.core.api.serializers.SalonSerializer
+.. autoclass:: rolca.core.api.serializers.ContestSerializer
     :members:
 
 """
 from rest_framework import serializers
 
-from ..models import File, Photo, Salon, Theme
+from ..models import File, Photo, Contest, Theme
 
 
 class FileSerializer(serializers.ModelSerializer):
@@ -54,13 +54,13 @@ class ThemeSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'n_photos')
 
 
-class SalonSerializer(serializers.ModelSerializer):
-    """Serializer for Salon objects."""
+class ContestSerializer(serializers.ModelSerializer):
+    """Serializer for Contest objects."""
 
     themes = ThemeSerializer(many=True, read_only=True)
 
     class Meta:
         """Serializer configuration."""
 
-        model = Salon
+        model = Contest
         fields = ('id', 'title', 'start_date', 'end_date', 'themes')

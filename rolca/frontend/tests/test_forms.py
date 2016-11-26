@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from django.contrib.auth import get_user_model
 from django.test import override_settings, TestCase
 
-from rolca.core.models import Author, File, Photo, Salon, Theme
+from rolca.core.models import Author, File, Photo, Contest, Theme
 from rolca.frontend.forms import PhotoForm
 from rolca.frontend.tests.utils import get_image_field
 
@@ -23,10 +23,10 @@ class PhotoFormTest(TestCase):
 
     def test_pass(self):
         today = date.today()
-        salon = Salon.objects.create(owner=self.user, title='Test salon', start_date=today,
-                                     end_date=today, jury_date=today, results_date=today)
-        theme = Theme.objects.create(title='Test theme', salon=salon, n_photos=2)
-        author = Author.objects.create(uploader=self.user)
+        contest = Contest.objects.create(
+            user=self.user, title='Test contest', start_date=today, end_date=today)
+        theme = Theme.objects.create(title='Test theme', contest=contest, n_photos=2)
+        author = Author.objects.create(user=self.user)
 
         form = PhotoForm(data={'title': 'My image'}, files={'photo': get_image_field()})
         form.is_valid()  # generate cleaned_data attribute

@@ -14,7 +14,7 @@ urlpatterns = [  # pylint: disable=invalid-name
     url(r'^confirm$', views.confirm_view, name="upload_confirm"),
 
     # url(r'^seznam$', 'uploader.views.list_select', name="list_select"),
-    # url(r'^seznam/(?P<salon_id>\d+)$', 'uploader.views.list_details',
+    # url(r'^seznam/(?P<contest_id>\d+)$', 'uploader.views.list_details',
     #     name="list_datails"),
 
 ]

@@ -27,7 +27,7 @@ class UploadViewTest(unittest.TestCase):
         author = Author.objects.first()
         self.assertEqual(author.first_name, 'Janez')
         self.assertEqual(author.last_name, 'Novak')
-        self.assertEqual(author.uploader, user)
+        self.assertEqual(author.user, user)
 
     def test_one_author(self):
         """Only one Author is created for all forms."""

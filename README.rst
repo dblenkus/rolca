@@ -12,4 +12,4 @@ rolca-core
     :target: https://codecov.io/gh/dblenkus/rolca-core
     :alt: Coverage Status
 
-Open source platform for organising photography salons.
+Open source platform for organising photography contests.
