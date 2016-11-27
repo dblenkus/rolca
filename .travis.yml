@@ -8,6 +8,10 @@ services:
 
 language: python
 
+branches:
+  only:
+    - master
+
 env:
   global:
     - ROLCA_POSTGRESQL_USER=postgres
