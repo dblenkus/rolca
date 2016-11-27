@@ -1,15 +1,19 @@
-==========
-rolca-core
-==========
+=====
+Rolca
+=====
 
-|build| |coverage|
+|build| |coverage| |docs|
 
-.. |build| image:: https://travis-ci.com/dblenkus/rolca-core.svg?token=ppdaME6xApmXhNMB5xnc&branch=master
-    :target: https://travis-ci.com/dblenkus/rolca-core
+.. |build| image:: https://travis-ci.org/dblenkus/rolca.svg
+    :target: https://travis-ci.org/dblenkus/rolca
     :alt: Build Status
 
-.. |coverage| image:: https://codecov.io/gh/dblenkus/rolca-core/branch/master/graph/badge.svg?token=R9ggx6KUB1
-    :target: https://codecov.io/gh/dblenkus/rolca-core
+.. |coverage| image:: https://codecov.io/gh/dblenkus/rolca/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/dblenkus/rolca
     :alt: Coverage Status
+
+.. |docs| image:: https://readthedocs.org/projects/rolca/badge/?version=latest
+    :target: http://rolca.readthedocs.io/
+    :alt: Documentation Status
 
 Open source platform for organising photography contests.

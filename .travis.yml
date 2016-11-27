@@ -32,4 +32,4 @@ script: tox -e $TOX_ENV
 
 after_success:
  - pip install codecov
- - codecov -e TOX_ENV -t 1ec94a55-4990-4f90-bb7c-f9926fda8911
+ - codecov -e TOX_ENV
