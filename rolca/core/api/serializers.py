@@ -19,7 +19,7 @@ Core API serializers
 """
 from rest_framework import serializers
 
-from ..models import File, Photo, Contest, Theme
+from rolca.core.models import Contest, File, Photo, Theme
 
 
 class FileSerializer(serializers.ModelSerializer):

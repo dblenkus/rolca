@@ -1,5 +1,6 @@
 # pylint: disable=missing-docstring
 from datetime import date, timedelta
+
 from mock import MagicMock, Mock, patch
 
 from django.contrib.auth import get_user_model
@@ -9,8 +10,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
 
-from rolca.core.api.viewsets import PhotoViewSet, ContestViewSet
-from rolca.core.models import Author, File, Photo, Contest, Theme
+from rolca.core.api.viewsets import ContestViewSet, PhotoViewSet
+from rolca.core.models import Author, Contest, File, Photo, Theme
 
 
 class ContestApiTest(APITestCase):

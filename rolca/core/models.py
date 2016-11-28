@@ -20,16 +20,16 @@ Core models
     :members:
 
 """
-from datetime import datetime
 import hashlib
 import io
 import os
+from datetime import datetime
 
 from PIL import Image
 
-from django.db import models
 from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.db import models
 
 
 class BaseModel(models.Model):

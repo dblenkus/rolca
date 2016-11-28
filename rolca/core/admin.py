@@ -13,7 +13,7 @@ Core Admin
 """
 from django.contrib import admin
 
-from .models import Contest, Theme, File, Photo
+from rolca.core.models import Contest, File, Photo, Theme
 
 
 class ThemeInline(admin.TabularInline):

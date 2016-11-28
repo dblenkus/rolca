@@ -11,17 +11,16 @@ Core API viewsets
     :members:
 
 """
-from datetime import date
 import logging
+from datetime import date
 
 from django.db.models import Q
 
 from rest_framework import viewsets
 
-from ..models import Photo, Contest
-from .permissions import AdminOrReadOnly
-from .serializers import PhotoSerializer, ContestSerializer
-
+from rolca.core.api.permissions import AdminOrReadOnly
+from rolca.core.api.serializers import ContestSerializer, PhotoSerializer
+from rolca.core.models import Contest, Photo
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

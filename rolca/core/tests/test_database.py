@@ -1,8 +1,8 @@
 # pylint: disable=missing-docstring
-from datetime import datetime, timedelta
 import unittest
+from datetime import datetime, timedelta
 
-from rolca.core.models import Author, Photo, Contest, Theme
+from rolca.core.models import Author, Contest, Photo, Theme
 
 
 class DatabaseTestCase(unittest.TestCase):

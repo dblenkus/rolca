@@ -13,11 +13,12 @@ import os
 
 from django.conf import settings
 from django.http import (
-    HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed)
+    HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed,
+)
 from django.views.decorators.csrf import csrf_exempt
 
 
-from .models import File
+from rolca.core.models import File
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name

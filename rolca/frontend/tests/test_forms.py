@@ -2,11 +2,11 @@
 from datetime import date
 from mock import patch
 
-from django.db import IntegrityError
 from django.contrib.auth import get_user_model
-from django.test import override_settings, TestCase
+from django.db import IntegrityError
+from django.test import TestCase, override_settings
 
-from rolca.core.models import Author, File, Photo, Contest, Theme
+from rolca.core.models import Author, Contest, File, Photo, Theme
 from rolca.frontend.forms import PhotoForm
 from rolca.frontend.tests.utils import get_image_field
 

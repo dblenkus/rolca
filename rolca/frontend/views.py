@@ -21,7 +21,7 @@ from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
 from rolca.core.models import Author, Contest, Theme
-from .forms import ThemeFormSet
+from rolca.frontend.forms import ThemeFormSet
 
 
 class UploadView(FormView):

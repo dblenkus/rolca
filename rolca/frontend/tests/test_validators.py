@@ -6,7 +6,8 @@ from django.test import override_settings
 
 from rolca.frontend.tests.utils import get_image_field
 from rolca.frontend.validators import (
-    _humanize_size, validate_format, validate_long_edge, validate_size)
+    _humanize_size, validate_format, validate_long_edge, validate_size,
+)
 
 
 class ValidatorsTest(unittest.TestCase):

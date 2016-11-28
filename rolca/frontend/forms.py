@@ -15,8 +15,7 @@ from django import forms
 from django.db import IntegrityError, transaction
 
 from rolca.core.models import File, Photo
-from .validators import validate_format, validate_size, validate_long_edge
-
+from rolca.frontend.validators import validate_format, validate_long_edge, validate_size
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

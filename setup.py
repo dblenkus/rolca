@@ -61,6 +61,7 @@ setup(
         'test': [
             'check-manifest',
             'coverage>=4.2',
+            'isort',
             'mock>=1.3.0',
             'pycodestyle>=2.1.0',
             'pydocstyle>=1.0.0',

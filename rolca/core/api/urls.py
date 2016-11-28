@@ -27,8 +27,7 @@ For advanced configuration code can be accordingly changed to meet the
 needs.
 
 """
-from .viewsets import PhotoViewSet, ContestViewSet
-
+from rolca.core.api.viewsets import ContestViewSet, PhotoViewSet
 
 routeList = (  # pylint: disable=invalid-name
     (r'photo', PhotoViewSet),
