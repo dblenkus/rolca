@@ -23,9 +23,11 @@ logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 class PhotoForm(forms.Form):
     """Form for handling Photo uploads."""
 
+    photo = forms.ImageField(
+        required=True,
+        validators=[validate_format, validate_size, validate_long_edge]
+    )
     title = forms.CharField(required=True)
-    photo = forms.ImageField(required=True,
-                             validators=[validate_format, validate_size, validate_long_edge])
 
     def save(self, user, author, theme):
         """Save photo and create coresponding File object."""

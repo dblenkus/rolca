@@ -40,6 +40,8 @@ setup(
             'static/materialize/js/*.js',
             'templates/*.html',
             'templates/frontend/*.html',
+            'templates/frontend/fields/*.html',
+            'templates/frontend/fields/includes/*.html',
         ]
     },
 

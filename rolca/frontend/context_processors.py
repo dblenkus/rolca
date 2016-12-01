@@ -8,12 +8,12 @@ Frontend context processors
 
 """
 
-from django.conf import settings
+from rolca.frontend import settings as rolca_settings
 
 
 def ui_configuration(request):
     """Set parameters for configuring UI."""
     return {
-        'materialize_color': getattr(settings, 'ROLCA_FRONTEND_COLOR', 'orange'),
-        'frontend_title': getattr(settings, 'ROLCA_FRONTEND_TITLE', 'Rolca'),
+        'materialize_color': rolca_settings.frontend_color,
+        'frontend_title': rolca_settings.frontend_title,
     }
