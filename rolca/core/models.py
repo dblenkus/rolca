@@ -23,13 +23,13 @@ Core models
 import hashlib
 import io
 import os
-from datetime import datetime
 
 from PIL import Image
 
 from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
+from django.utils import timezone
 
 
 class BaseModel(models.Model):
@@ -86,7 +86,7 @@ class Contest(BaseModel):
 
     def is_active(self):
         """Check if contest is active."""
-        return self.start_date <= datetime.now() <= self.end_date
+        return self.start_date <= timezone.now() <= self.end_date
     is_active.admin_order_field = 'end_date'
     is_active.boolean = True
 
