@@ -14,7 +14,7 @@
             <p>{{ contest.description|default_if_none:"" }}</p>
           </div>
           <div class="card-action">
-            <div class="right-align"><a class=" href="{% url 'rolca-frontend:upload' contest_id=contest.id %}">Next</a></div>
+            <div class="right-align"><a href="{% url 'rolca-frontend:upload' contest_id=contest.id %}">Next</a></div>
           </div>
         </div>
       </div>
