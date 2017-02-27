@@ -73,6 +73,9 @@ class Contest(BaseModel):
     #: date when results will be published
     publish_date = models.DateTimeField(blank=True)
 
+    #: indicate if user must be logged-in to participate in contest
+    login_required = models.BooleanField(default=False)
+
     def save(self, *args, **kwargs):
         """Save Contest instance."""
         if not self.publish_date:

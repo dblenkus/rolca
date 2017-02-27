@@ -13,7 +13,6 @@ Frontend views
 """
 from datetime import datetime
 
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
@@ -21,6 +20,7 @@ from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
 from rolca.core.models import Author, Contest, Theme
+from rolca.frontend.decorators import check_contest_login_required
 from rolca.frontend.forms import ThemeFormSet
 
 
@@ -67,7 +67,7 @@ class UploadView(FormView):
         return super(UploadView, self).form_valid(form_set)
 
 
-upload_view = login_required(UploadView.as_view())  # pylint: disable=invalid-name
+upload_view = check_contest_login_required(UploadView.as_view())  # pylint: disable=invalid-name
 confirm_view = TemplateView.as_view(  # pylint: disable=invalid-name
     template_name='frontend/upload_confirm.html')
 

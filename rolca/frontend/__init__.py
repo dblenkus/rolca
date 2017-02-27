@@ -7,6 +7,7 @@ Rolca frontend
 .. automodule:: rolca.frontend.views
 .. automodule:: rolca.frontend.forms
 .. automodule:: rolca.frontend.validators
+.. automodule:: rolca.frontend.decorators
 .. automodule:: rolca.frontend.urls
 .. automodule:: rolca.frontend.context_processors
 
