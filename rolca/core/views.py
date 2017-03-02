@@ -7,21 +7,54 @@ Core views
 .. autofunction:: rolca.core.views.upload
 
 """
+import io
 import json
 import logging
 import os
+import zipfile
 
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.http import (
     HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed,
 )
+from django.shortcuts import get_object_or_404
+from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 
 
-from rolca.core.models import File
+from rolca.core.models import Contest, File, Photo
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+
+
+@login_required
+def download_contest(request, contest_id):
+    """Download all photos of the contest as zip file."""
+    contest = get_object_or_404(Contest, pk=contest_id)
+
+    buffer = io.BytesIO()
+    zip_archive = zipfile.ZipFile(buffer, mode='w')
+
+    for photo in Photo.objects.filter(theme__contest=contest):
+        file_path = photo.photo.file.path
+        zip_path = os.path.join(
+            slugify(contest.title),
+            slugify(photo.theme.title),
+            slugify('{}-{}.jpg'.format(photo.author, photo.title))
+        )
+        zip_archive.write(file_path, zip_path)
+
+    zip_archive.close()
+
+    response = HttpResponse(buffer.getvalue(), content_type='application/x-zip-compressed')
+
+    slugified_title = slugify(contest.title)
+    response['Content-Disposition'] = 'attachment; filename="{}.zip"'.format(slugified_title)
+    response['Content-Length'] = buffer.tell()
+
+    return response
 
 
 @csrf_exempt

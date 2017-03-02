@@ -26,5 +26,6 @@ urlpatterns = [  # pylint: disable=invalid-name
 
     url(r'^api/', include(router.urls, namespace='rolca-core-api')),
 
+    url(r'^core/', include('rolca.core.urls', namespace='rolca-core')),
     url(r'^', include('rolca.frontend.urls', namespace='rolca-frontend')),
 ]

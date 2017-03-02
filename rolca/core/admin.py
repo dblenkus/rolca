@@ -12,6 +12,8 @@ Core Admin
 
 """
 from django.contrib import admin
+from django.core.urlresolvers import reverse
+from django.utils.html import format_html
 
 from rolca.core.models import Contest, File, Photo, Theme
 
@@ -30,11 +32,13 @@ class ContestAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ('title', 'description')}),
         ('Dates', {'fields': ('start_date', 'end_date', 'publish_date')}),
+        ('Download', {'fields': ('download_action',)}),
     ]
+    readonly_fields = ('download_action',)
 
     inlines = [ThemeInline]
 
-    list_display = ('title', 'start_date', 'end_date', 'is_active')
+    list_display = ('title', 'start_date', 'end_date', 'is_active', 'download_action')
     list_filter = ['start_date', 'end_date', 'publish_date']
     search_fields = ['title']
 
@@ -43,6 +47,14 @@ class ContestAdmin(admin.ModelAdmin):
         if getattr(obj, 'user', None) is None:
             obj.user = request.user
         obj.save()
+
+    def download_action(self, obj):
+        """Generate 'Download' button."""
+        return format_html(
+            '<a class="button" href="{}">Download</a>',
+            reverse('rolca-core:download-contest', args=[obj.pk]))
+    download_action.short_description = 'Download'
+    download_action.allow_tags = True
 
 
 admin.site.register(Contest, ContestAdmin)
