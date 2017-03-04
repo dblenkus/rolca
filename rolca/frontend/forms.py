@@ -14,20 +14,29 @@ import os
 from django import forms
 from django.db import IntegrityError, transaction
 
-from rolca.core.models import File, Photo
+from rolca.core.models import Author, File, Photo
 from rolca.frontend.validators import validate_format, validate_long_edge, validate_size
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+
+
+class AuthorForm(forms.ModelForm):
+    """Forl for ``Author`` model."""
+
+    class Meta:
+        """Meta class for ``AuthorForm``."""
+
+        model = Author
+        fields = ['first_name', 'last_name', 'email']
 
 
 class PhotoForm(forms.Form):
     """Form for handling Photo uploads."""
 
     photo = forms.ImageField(
-        required=True,
         validators=[validate_format, validate_size, validate_long_edge]
     )
-    title = forms.CharField(required=True)
+    title = forms.CharField(required=False)
 
     def save(self, user, author, theme):
         """Save photo and create coresponding File object."""
@@ -58,6 +67,3 @@ class PhotoForm(forms.Form):
                 pass
 
             raise
-
-
-ThemeFormSet = forms.formset_factory(PhotoForm, extra=3, max_num=3)  # pylint: disable=invalid-name

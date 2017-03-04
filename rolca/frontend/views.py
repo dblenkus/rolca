@@ -4,8 +4,7 @@
 Frontend views
 ==============
 
-.. autoclass:: rolca.frontend.views.UploadView
-    :members:
+.. autofunction:: rolca.frontend.views.upload_view
 
 .. autoclass:: rolca.frontend.views.SelectContestView
     :members:
@@ -13,61 +12,87 @@ Frontend views
 """
 from datetime import datetime
 
-from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import redirect
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.db import transaction
+from django.forms import formset_factory
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import TemplateView
-from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
-from rolca.core.models import Author, Contest, Theme
+from rolca.core.models import Contest, Theme
 from rolca.frontend.decorators import check_contest_login_required
-from rolca.frontend.forms import ThemeFormSet
+from rolca.frontend.forms import AuthorForm, PhotoForm
 
 
-class UploadView(FormView):
+@check_contest_login_required
+def upload_view(request, *args, **kwargs):
     """View for uploading photos."""
+    contest = get_object_or_404(Contest, pk=kwargs.pop('contest_id'))
 
-    contest_id = None
+    initial_author = {}
+    if request.user.is_authenticated():
+        initial_author['first_name'] = request.user.first_name
+        initial_author['last_name'] = request.user.last_name
+        initial_author['email'] = request.user.email
 
-    template_name = 'frontend/upload.html'
-    form_class = ThemeFormSet
-    success_url = reverse_lazy('rolca-frontend:upload_confirm')
+    author_form = AuthorForm(request.POST or None, prefix='author', initial=initial_author)
+    if not request.user.is_authenticated():
+        author_form.fields['email'].required = True
 
-    def dispatch(self, request, *args, **kwargs):
-        """Self contest id and dispatch request."""
-        self.contest_id = kwargs.pop('contest_id')
-        return super(UploadView, self).dispatch(request, *args, **kwargs)
+    theme_formsets = []
+    for theme in Theme.objects.filter(contest=contest).order_by('pk'):
+        form_set = formset_factory(PhotoForm, extra=theme.n_photos, max_num=theme.n_photos)
+        theme_formsets.append({
+            'theme': theme,
+            'formset': form_set(request.POST or None, request.FILES or None, prefix=theme.pk),
+        })
 
-    def create_author(self):
-        """Create Author object for uploaded photos."""
-        return Author.objects.create(
-            user=self.request.user,
-            first_name=self.request.user.first_name,
-            last_name=self.request.user.last_name,
-        )
+    if request.method == 'POST':
+        try:
+            with transaction.atomic():
+                user = request.user if request.user.is_authenticated() else None
 
-    def get_theme(self):
-        """Get Theme object for uploaded photos."""
-        return Theme.objects.filter(contest_id=self.contest_id).first()
+                if not author_form.is_valid():
+                    raise ValidationError('Author form is not valid')
+                author = author_form.save(commit=False)
+                author.user = user
+                author.save()
 
-    def form_valid(self, form_set):
-        """Create Author object and call save on all non-empty forms."""
-        author = None
-        for form in form_set:
-            # validation is skipped for empty forms in formset, so we
-            # have to check that there are actual data to save
-            if form.cleaned_data:
-                if not author:
-                    author = self.create_author()
+                photo_count = 0
+                for formset_obj in theme_formsets:
+                    formset = formset_obj['formset']
+                    theme = formset_obj['theme']
 
-                theme = self.get_theme()
+                    for form in formset:
+                        if not form.is_valid():
+                            raise ValidationError('Photo form is not valid')
+                        # validation returns True for empty forms in formset, so
+                        # we have to check that there are actual data to save
+                        if form.cleaned_data:
+                            form.save(user, author, theme)
+                            photo_count += 1
 
-                form.save(self.request.user, author, theme)
+                if photo_count == 0:
+                    messages.error(request, "Upload at least one photo.")
+                    raise ValidationError("No photo uploaded")
 
-        return super(UploadView, self).form_valid(form_set)
+            return redirect('rolca-frontend:upload_confirm')
+
+        except ValidationError:
+            pass
+
+    context = {
+        'contest_title': contest.title,
+        'author_form': author_form,
+        'theme_formsets': theme_formsets,
+        'show_titles': len(theme_formsets) > 1,
+
+    }
+
+    return render(request, 'frontend/upload.html', context)
 
 
-upload_view = check_contest_login_required(UploadView.as_view())  # pylint: disable=invalid-name
 confirm_view = TemplateView.as_view(  # pylint: disable=invalid-name
     template_name='frontend/upload_confirm.html')
 

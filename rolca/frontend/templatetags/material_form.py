@@ -23,7 +23,7 @@ def render(bound_field):
     """Render form field in material design."""
     input_type = bound_field.field.widget.input_type
 
-    if input_type in ['text', 'password']:
+    if input_type in ['text', 'password', 'email']:
         template_name = 'text_field.html'
     elif input_type == 'file':
         template_name = 'file_field.html'

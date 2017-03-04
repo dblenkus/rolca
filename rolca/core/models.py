@@ -41,7 +41,7 @@ class BaseModel(models.Model):
         abstract = True
 
     #: user who created the object
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
 
     #: date when the object was created
     created = models.DateTimeField(auto_now_add=True)
@@ -57,6 +57,9 @@ class Contest(BaseModel):
     multiple themes and all important dates for contest (start, end and
     results date).
     """
+
+    #: user who created the ``Contest``
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     #: title of the contest
     title = models.CharField(max_length=100)
@@ -96,6 +99,9 @@ class Contest(BaseModel):
 
 class Theme(BaseModel):
     """Model for storing themes."""
+
+    #: user who created the ``Theme``
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     #: title of the theme
     title = models.CharField(max_length=100)
@@ -195,6 +201,9 @@ class Author(BaseModel):
     #: ``Author``'s last name
     last_name = models.CharField(max_length=30)
 
+    #: ``Author``'s email
+    email = models.EmailField(null=True, blank=True)
+
     #: mentor
     mentor = models.CharField(max_length=60, null=True, blank=True)
 
@@ -206,7 +215,7 @@ class Author(BaseModel):
 class Photo(BaseModel):
     """Model for storing uploaded photos."""
 
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, null=True, blank=True)
 
     author = models.ForeignKey('Author')
 
