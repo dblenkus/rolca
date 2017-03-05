@@ -39,10 +39,13 @@ def download_contest(request, contest_id):
 
     for photo in Photo.objects.filter(theme__contest=contest):
         file_path = photo.photo.file.path
+        zip_file_name = '{}.jpg'.format(
+            slugify('{}-{}'.format(photo.author, photo.title) if photo.title else photo.author)
+        )
         zip_path = os.path.join(
             slugify(contest.title),
             slugify(photo.theme.title),
-            slugify('{}-{}.jpg'.format(photo.author, photo.title))
+            zip_file_name
         )
         zip_archive.write(file_path, zip_path)
 
