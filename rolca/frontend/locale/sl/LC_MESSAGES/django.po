@@ -51,6 +51,10 @@ msgstr "Izberite natečaj"
 msgid "Next"
 msgstr "Naprej"
 
+#: rolca/frontend/templates/frontend/select_contest.html:25
+msgid "Sorry, there is no active contest at the moment."
+msgstr "Oprostite, trenutno ni nobenega aktivnega natečaja."
+
 #: rolca/frontend/templates/frontend/upload.html:4
 msgid "Rolca - Upload"
 msgstr "Rolca - Nalaganje"
