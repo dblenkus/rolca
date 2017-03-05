@@ -21,11 +21,11 @@ msgstr ""
 
 #: rolca/core/models.py:65
 msgid "contest"
-msgstr ""
+msgstr "natečaj"
 
 #: rolca/core/models.py:66
 msgid "contests"
-msgstr ""
+msgstr "natečaji"
 
 #: rolca/core/models.py:72 rolca/core/models.py:121 rolca/core/models.py:250
 msgid "Title"
