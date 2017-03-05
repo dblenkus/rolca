@@ -1,5 +1,7 @@
 {% extends '__base__.html' %}
 
+{% load i18n %}
+
 {% block content %}
 
   <h1>Select the contest</h1>
@@ -14,7 +16,7 @@
             <p>{{ contest.description|default_if_none:"" }}</p>
           </div>
           <div class="card-action">
-            <div class="right-align"><a href="{% url 'rolca-frontend:upload' contest_id=contest.id %}">Next</a></div>
+            <div class="right-align"><a href="{% url 'rolca-frontend:upload' contest_id=contest.id %}">{% trans "Next" %}</a></div>
           </div>
         </div>
       </div>

@@ -4,6 +4,8 @@ Django settings for running tests for rolca-core package.
 """
 import os
 
+from django.utils.translation import ugettext_lazy as _
+
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 SECRET_KEY = 'secret'
@@ -12,6 +14,7 @@ DEBUG = True
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -42,6 +45,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -50,6 +54,17 @@ TEMPLATES = [
         },
     },
 ]
+
+LANGUAGES = (
+    ('en', _('English')),
+    ('sl', _('Slovene')),
+)
+
+LANGUAGE_CODE = 'en'
+
+LOCALE_PATHS = (
+    os.path.join(PROJECT_ROOT, 'locale'),
+)
 
 DATABASES = {
     'default': {

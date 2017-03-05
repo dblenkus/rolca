@@ -1,0 +1,67 @@
+# Slovenian translations for ``rolca.core`` package.
+# Copyright (C) 2017 Domen Blenkuš
+# This file is distributed under the same license as the ``rolca.core`` package.
+# Domen Blenkuš <domen@blenkus.com>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.0.8\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-05 12:51-0600\n"
+"PO-Revision-Date: 2017-03-05 12:51-0600\n"
+"Last-Translator: Domen Blenkuš <domen@blenkus.com>\n"
+"Language-Team: Slovene <domen@blenkus.com>\n"
+"Language: sl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
+"%100==4 ? 2 : 3);\n"
+
+#: rolca/core/models.py:66 rolca/core/models.py:108 rolca/core/models.py:219
+msgid "Title"
+msgstr "Naslov"
+
+#: rolca/core/models.py:69
+msgid "Description"
+msgstr "Opis"
+
+#: rolca/core/models.py:72
+msgid "Start date"
+msgstr "Datum začetka"
+
+#: rolca/core/models.py:75
+msgid "End date"
+msgstr "Datum konca"
+
+#: rolca/core/models.py:78
+msgid "Publish date"
+msgstr "Datum objave"
+
+#: rolca/core/models.py:81
+msgid "Login required"
+msgstr "Zahtevana prijava"
+
+#: rolca/core/models.py:114
+msgid "Number of photos"
+msgstr "Število fotografij"
+
+#: rolca/core/models.py:200
+msgid "First name"
+msgstr "Ime"
+
+#: rolca/core/models.py:203
+msgid "Last name"
+msgstr "Priimek"
+
+#: rolca/core/models.py:206
+msgid "Email"
+msgstr "Email"
+
+#: rolca/core/models.py:209
+msgid "Mentor"
+msgstr "Mentor"
+
+#~ msgid "English"
+#~ msgstr "Angleščina"

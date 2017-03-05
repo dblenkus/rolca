@@ -30,6 +30,7 @@ from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 
 
 class BaseModel(models.Model):
@@ -62,22 +63,22 @@ class Contest(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     #: title of the contest
-    title = models.CharField(max_length=100)
+    title = models.CharField(_('Title'), max_length=100)
 
     #: description of the contest
-    description = models.TextField(null=True, blank=True)
+    description = models.TextField(_('Description'), null=True, blank=True)
 
     #: date when contest starts
-    start_date = models.DateTimeField()
+    start_date = models.DateTimeField(_('Start date'))
 
     #: date when contest ends
-    end_date = models.DateTimeField()
+    end_date = models.DateTimeField(_('End date'),)
 
     #: date when results will be published
-    publish_date = models.DateTimeField(blank=True)
+    publish_date = models.DateTimeField(_('Publish date'), blank=True)
 
     #: indicate if user must be logged-in to participate in contest
-    login_required = models.BooleanField(default=False)
+    login_required = models.BooleanField(_('Login required'), default=False)
 
     def save(self, *args, **kwargs):
         """Save Contest instance."""
@@ -104,13 +105,13 @@ class Theme(BaseModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     #: title of the theme
-    title = models.CharField(max_length=100)
+    title = models.CharField(_('Title'), max_length=100)
 
     #: contest that theme belongs to
     contest = models.ForeignKey(Contest, related_name='themes')
 
     #: number of photos that can be submited to theme
-    n_photos = models.IntegerField('Number of photos')
+    n_photos = models.IntegerField(_('Number of photos'))
 
     def save(self, *args, **kwargs):
         """Save Theme instance."""
@@ -196,16 +197,16 @@ class Author(BaseModel):
     """Model for storing participents."""
 
     #: ``Author``'s first name
-    first_name = models.CharField(max_length=30)
+    first_name = models.CharField(_('First name'), max_length=30)
 
     #: ``Author``'s last name
-    last_name = models.CharField(max_length=30)
+    last_name = models.CharField(_('Last name'), max_length=30)
 
     #: ``Author``'s email
-    email = models.EmailField(null=True, blank=True)
+    email = models.EmailField(_('Email'), null=True, blank=True)
 
     #: mentor
-    mentor = models.CharField(max_length=60, null=True, blank=True)
+    mentor = models.CharField(_('Mentor'), max_length=60, null=True, blank=True)
 
     def __str__(self):
         """String representation of Author object."""
@@ -215,7 +216,7 @@ class Author(BaseModel):
 class Photo(BaseModel):
     """Model for storing uploaded photos."""
 
-    title = models.CharField(max_length=100, null=True, blank=True)
+    title = models.CharField(_('Title'), max_length=100, null=True, blank=True)
 
     author = models.ForeignKey('Author')
 

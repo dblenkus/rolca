@@ -13,6 +13,7 @@ import os
 
 from django import forms
 from django.db import IntegrityError, transaction
+from django.utils.translation import ugettext_lazy as _
 
 from rolca.core.models import Author, File, Photo
 from rolca.frontend.validators import validate_format, validate_long_edge, validate_size
@@ -34,9 +35,10 @@ class PhotoForm(forms.Form):
     """Form for handling Photo uploads."""
 
     photo = forms.ImageField(
+        label=_('Photo'),
         validators=[validate_format, validate_size, validate_long_edge]
     )
-    title = forms.CharField(required=False)
+    title = forms.CharField(label=_('Title'), required=False)
 
     def save(self, user, author, theme):
         """Save photo and create coresponding File object."""

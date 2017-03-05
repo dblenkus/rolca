@@ -25,6 +25,7 @@ from PIL import Image
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
+from django.utils.translation import ugettext as _
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -70,8 +71,8 @@ def validate_format(value):
 
     image = Image.open(value)
     if image.format not in accepted_formats:
-        raise ValidationError('Only following image types are supported: '
-                              '{}'.format(', '.join(accepted_formats)))
+        raise ValidationError(_('Only following image types are supported: '
+                                '{}').format(', '.join(accepted_formats)))
 
 
 def validate_size(value):
@@ -102,8 +103,8 @@ def validate_size(value):
         raise ImproperlyConfigured(msg)
 
     if value.size > max_size:
-        raise ValidationError('Uploaded file must be smaller than '
-                              '{}.'.format(_humanize_size(max_size)))
+        raise ValidationError(_('Uploaded file must be smaller than '
+                                '{}.').format(_humanize_size(max_size)))
 
 
 def validate_long_edge(value):
@@ -134,5 +135,5 @@ def validate_long_edge(value):
 
     image = Image.open(value)
     if max(image.size) > max_long_edge:
-        raise ValidationError('Long edge of the image cannot excede '
-                              '{}px.'.format(max_long_edge))
+        raise ValidationError(_('Long edge of the image cannot excede '
+                                '{}px.').format(max_long_edge))

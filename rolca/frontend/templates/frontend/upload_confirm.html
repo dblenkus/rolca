@@ -1,9 +1,11 @@
 {% extends '__base__.html' %}
 
+{% load i18n %}
+
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <h1 class="text-center">Hvala za sodelovanje!</h1>
+        <h1 class="text-center">{% trans "Thanks for taking part in the contest!" %}</h1>
     </div>
 </div>
 {% endblock content %}
