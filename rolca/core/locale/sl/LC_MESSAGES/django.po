@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-05 12:51-0600\n"
+"POT-Creation-Date: 2017-03-05 17:41-0600\n"
 "PO-Revision-Date: 2017-03-05 12:51-0600\n"
 "Last-Translator: Domen Blenkuš <domen@blenkus.com>\n"
 "Language-Team: Slovene <domen@blenkus.com>\n"
@@ -19,49 +19,93 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
 "%100==4 ? 2 : 3);\n"
 
-#: rolca/core/models.py:66 rolca/core/models.py:108 rolca/core/models.py:219
+#: rolca/core/models.py:65
+msgid "contest"
+msgstr ""
+
+#: rolca/core/models.py:66
+msgid "contests"
+msgstr ""
+
+#: rolca/core/models.py:72 rolca/core/models.py:121 rolca/core/models.py:250
 msgid "Title"
 msgstr "Naslov"
 
-#: rolca/core/models.py:69
+#: rolca/core/models.py:75
 msgid "Description"
 msgstr "Opis"
 
-#: rolca/core/models.py:72
+#: rolca/core/models.py:78
 msgid "Start date"
 msgstr "Datum začetka"
 
-#: rolca/core/models.py:75
+#: rolca/core/models.py:81
 msgid "End date"
 msgstr "Datum konca"
 
-#: rolca/core/models.py:78
+#: rolca/core/models.py:84
 msgid "Publish date"
 msgstr "Datum objave"
 
-#: rolca/core/models.py:81
+#: rolca/core/models.py:87
 msgid "Login required"
 msgstr "Zahtevana prijava"
 
+#: rolca/core/models.py:105
+msgid "active"
+msgstr "aktiven"
+
 #: rolca/core/models.py:114
+msgid "theme"
+msgstr "tema"
+
+#: rolca/core/models.py:115
+msgid "themes"
+msgstr "teme"
+
+#: rolca/core/models.py:127
 msgid "Number of photos"
 msgstr "Število fotografij"
 
-#: rolca/core/models.py:200
+#: rolca/core/models.py:173
+msgid "file"
+msgstr "datoteka"
+
+#: rolca/core/models.py:174
+msgid "files"
+msgstr "datoteke"
+
+#: rolca/core/models.py:221
+msgid "author"
+msgstr "avtor"
+
+#: rolca/core/models.py:222
+msgid "authors"
+msgstr "avtorji"
+
+#: rolca/core/models.py:225
 msgid "First name"
 msgstr "Ime"
 
-#: rolca/core/models.py:203
+#: rolca/core/models.py:228
 msgid "Last name"
 msgstr "Priimek"
 
-#: rolca/core/models.py:206
+#: rolca/core/models.py:231
 msgid "Email"
 msgstr "Email"
 
-#: rolca/core/models.py:209
+#: rolca/core/models.py:234
 msgid "Mentor"
 msgstr "Mentor"
+
+#: rolca/core/models.py:247
+msgid "photo"
+msgstr "fotografija"
+
+#: rolca/core/models.py:248
+msgid "photos"
+msgstr "fotografije"
 
 #~ msgid "English"
 #~ msgstr "Angleščina"

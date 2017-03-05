@@ -59,6 +59,12 @@ class Contest(BaseModel):
     results date).
     """
 
+    class Meta:
+        """Contest Meta options."""
+
+        verbose_name = _('contest')
+        verbose_name_plural = _('contests')
+
     #: user who created the ``Contest``
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
@@ -96,10 +102,17 @@ class Contest(BaseModel):
         return self.start_date <= timezone.now() <= self.end_date
     is_active.admin_order_field = 'end_date'
     is_active.boolean = True
+    is_active.short_description = _('active')
 
 
 class Theme(BaseModel):
     """Model for storing themes."""
+
+    class Meta:
+        """Theme Meta options."""
+
+        verbose_name = _('theme')
+        verbose_name_plural = _('themes')
 
     #: user who created the ``Theme``
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
@@ -154,6 +167,12 @@ class File(BaseModel):
 
     """
 
+    class Meta:
+        """File Meta options."""
+
+        verbose_name = _('file')
+        verbose_name_plural = _('files')
+
     #: uploaded file
     file = models.ImageField(upload_to=generate_file_filename)
 
@@ -196,6 +215,12 @@ class File(BaseModel):
 class Author(BaseModel):
     """Model for storing participents."""
 
+    class Meta:
+        """Author Meta options."""
+
+        verbose_name = _('author')
+        verbose_name_plural = _('authors')
+
     #: ``Author``'s first name
     first_name = models.CharField(_('First name'), max_length=30)
 
@@ -215,6 +240,12 @@ class Author(BaseModel):
 
 class Photo(BaseModel):
     """Model for storing uploaded photos."""
+
+    class Meta:
+        """Photo Meta options."""
+
+        verbose_name = _('photo')
+        verbose_name_plural = _('photos')
 
     title = models.CharField(_('Title'), max_length=100, null=True, blank=True)
 

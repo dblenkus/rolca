@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-05 12:51-0600\n"
+"POT-Creation-Date: 2017-03-05 17:41-0600\n"
 "PO-Revision-Date: 2017-03-05 12:51-0600\n"
 "Last-Translator: Domen Blenkuš <domen@blenkus.com>\n"
 "Language-Team: Slovene <domen@blenkus.com>\n"
@@ -19,13 +19,13 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
 "%100==4 ? 2 : 3);\n"
 
-#: rolca/frontend/forms.py:41
-msgid "Title"
-msgstr "Naslov"
-
 #: rolca/frontend/forms.py:38
 msgid "Photo"
 msgstr "Fotografija"
+
+#: rolca/frontend/forms.py:41
+msgid "Title"
+msgstr "Naslov"
 
 #: rolca/frontend/templates/__footer__.html:4
 msgid "Made by"
@@ -43,7 +43,11 @@ msgstr "Prijava"
 msgid "Select"
 msgstr "Izberi"
 
-#: rolca/frontend/templates/frontend/select_contest.html:17
+#: rolca/frontend/templates/frontend/select_contest.html:7
+msgid "Select the contest"
+msgstr "Izberite natečaj"
+
+#: rolca/frontend/templates/frontend/select_contest.html:19
 msgid "Next"
 msgstr "Naprej"
 
@@ -55,7 +59,7 @@ msgstr "Rolca - Nalaganje"
 msgid "Submit"
 msgstr "Pošlji"
 
-#: rolca/frontend/templates/frontend/upload_confirm.html:6
+#: rolca/frontend/templates/frontend/upload_confirm.html:8
 msgid "Thanks for taking part in the contest!"
 msgstr "Hvala za sodelovanje!"
 
