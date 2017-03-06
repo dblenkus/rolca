@@ -23,7 +23,7 @@ from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 
 
-from rolca.core.models import Contest, File, Photo
+from rolca.core.models import Contest, File, Photo, Theme
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -37,17 +37,22 @@ def download_contest(request, contest_id):
     buffer = io.BytesIO()
     zip_archive = zipfile.ZipFile(buffer, mode='w')
 
-    for photo in Photo.objects.filter(theme__contest=contest):
-        file_path = photo.photo.file.path
-        zip_file_name = '{}.jpg'.format(
-            slugify('{}-{}'.format(photo.author, photo.title) if photo.title else photo.author)
+    for theme in Theme.objects.filter(contest=contest):
+        # Create empty directory
+        zip_info = zipfile.ZipInfo(
+            os.path.join(slugify(contest.title), slugify(theme.title)) + "/"
         )
-        zip_path = os.path.join(
-            slugify(contest.title),
-            slugify(photo.theme.title),
-            zip_file_name
-        )
-        zip_archive.write(file_path, zip_path)
+        zip_archive.writestr(zip_info, '')
+
+        no_title_count = 0
+        for photo in Photo.objects.filter(theme=theme):
+            if not photo.title:
+                no_title_count += 1
+            zip_file_name = '{}.jpg'.format(
+                slugify('{}-{}'.format(photo.author, photo.title or no_title_count))
+            )
+            zip_path = os.path.join(slugify(contest.title), slugify(theme.title), zip_file_name)
+            zip_archive.write(photo.photo.file.path, zip_path)
 
     zip_archive.close()
 
