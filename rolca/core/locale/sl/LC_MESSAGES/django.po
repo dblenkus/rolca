@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-05 17:41-0600\n"
+"POT-Creation-Date: 2017-03-05 18:22-0600\n"
 "PO-Revision-Date: 2017-03-05 12:51-0600\n"
 "Last-Translator: Domen Blenkuš <domen@blenkus.com>\n"
 "Language-Team: Slovene <domen@blenkus.com>\n"
@@ -27,7 +27,7 @@ msgstr "natečaj"
 msgid "contests"
 msgstr "natečaji"
 
-#: rolca/core/models.py:72 rolca/core/models.py:121 rolca/core/models.py:250
+#: rolca/core/models.py:72 rolca/core/models.py:126 rolca/core/models.py:255
 msgid "Title"
 msgstr "Naslov"
 
@@ -55,55 +55,59 @@ msgstr "Zahtevana prijava"
 msgid "active"
 msgstr "aktiven"
 
-#: rolca/core/models.py:114
+#: rolca/core/models.py:110
+msgid "number of photos"
+msgstr "število fotografij"
+
+#: rolca/core/models.py:119
 msgid "theme"
 msgstr "tema"
 
-#: rolca/core/models.py:115
+#: rolca/core/models.py:120
 msgid "themes"
 msgstr "teme"
 
-#: rolca/core/models.py:127
+#: rolca/core/models.py:132
 msgid "Number of photos"
 msgstr "Število fotografij"
 
-#: rolca/core/models.py:173
+#: rolca/core/models.py:178
 msgid "file"
 msgstr "datoteka"
 
-#: rolca/core/models.py:174
+#: rolca/core/models.py:179
 msgid "files"
 msgstr "datoteke"
 
-#: rolca/core/models.py:221
+#: rolca/core/models.py:226
 msgid "author"
 msgstr "avtor"
 
-#: rolca/core/models.py:222
+#: rolca/core/models.py:227
 msgid "authors"
 msgstr "avtorji"
 
-#: rolca/core/models.py:225
+#: rolca/core/models.py:230
 msgid "First name"
 msgstr "Ime"
 
-#: rolca/core/models.py:228
+#: rolca/core/models.py:233
 msgid "Last name"
 msgstr "Priimek"
 
-#: rolca/core/models.py:231
+#: rolca/core/models.py:236
 msgid "Email"
 msgstr "Email"
 
-#: rolca/core/models.py:234
+#: rolca/core/models.py:239
 msgid "Mentor"
 msgstr "Mentor"
 
-#: rolca/core/models.py:247
+#: rolca/core/models.py:252
 msgid "photo"
 msgstr "fotografija"
 
-#: rolca/core/models.py:248
+#: rolca/core/models.py:253
 msgid "photos"
 msgstr "fotografije"
 

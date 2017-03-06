@@ -104,6 +104,11 @@ class Contest(BaseModel):
     is_active.boolean = True
     is_active.short_description = _('active')
 
+    def number_of_photos(self):
+        """Return number of photos submitted to the current contest."""
+        return Photo.objects.filter(theme__contest=self).count()
+    number_of_photos.short_description = _('number of photos')
+
 
 class Theme(BaseModel):
     """Model for storing themes."""

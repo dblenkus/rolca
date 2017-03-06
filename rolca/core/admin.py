@@ -38,7 +38,9 @@ class ContestAdmin(admin.ModelAdmin):
 
     inlines = [ThemeInline]
 
-    list_display = ('title', 'start_date', 'end_date', 'is_active', 'download_action')
+    list_display = (
+        'title', 'start_date', 'end_date', 'is_active', 'number_of_photos', 'download_action'
+    )
     list_filter = ['start_date', 'end_date', 'publish_date']
     search_fields = ['title']
 
