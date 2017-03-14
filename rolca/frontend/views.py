@@ -100,10 +100,12 @@ confirm_view = TemplateView.as_view(  # pylint: disable=invalid-name
 class SelectContestView(ListView):
     """View for selecting the Salon."""
 
-    now = datetime.now()
-
-    queryset = Contest.objects.filter(start_date__lte=now, end_date__gte=now)
     template_name = 'frontend/select_contest.html'
+
+    def get_queryset(self):
+        """Filter queryset based on start and end date."""
+        now = datetime.now()
+        return Contest.objects.filter(start_date__lte=now, end_date__gte=now)
 
     def get(self, request, *args, **kwargs):
         """Redirect to upload if only one contest is active."""
