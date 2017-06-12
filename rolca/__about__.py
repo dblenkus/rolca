@@ -10,7 +10,7 @@ __url__ = 'https://github.com/dblenkus/rolca'
 
 # Semantic versioning is used. For more information see:
 # https://packaging.python.org/en/latest/distributing/#semantic-versioning-preferred
-__version__ = '0.0.8'
+__version__ = '0.0.9'
 
 __author__ = 'Domen Blenkuš'
 __email__ = 'domen@blenkus.com'
