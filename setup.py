@@ -12,7 +12,7 @@ with open(path.join(base_dir, 'README.rst'), encoding='utf-8') as f:
 
 # Get package metadata from 'rolca.__about__.py' file
 about = {}
-with open(path.join(base_dir, 'rolca', '__about__.py'), encoding='utf-8') as f:
+with open(path.join(base_dir, 'rolca', '__about__.py')) as f:
     exec(f.read(), about)
 
 setup(
