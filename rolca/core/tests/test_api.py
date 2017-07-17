@@ -34,7 +34,7 @@ class ContestApiTest(APITestCase):
 
     @patch('rolca.core.api.viewsets.ContestViewSet.create')
     def test_create_permissions(self, contest_create_mock):
-        contest_create_mock.return_value = MagicMock(spec=Response)
+        contest_create_mock.return_value = Response()
         request = self.factory.post('', {}, format='json')
 
         # public user
@@ -55,7 +55,7 @@ class ContestApiTest(APITestCase):
 
     @patch('rolca.core.api.viewsets.ContestViewSet.list')
     def test_get_list_permissions(self, contest_list_mock):
-        contest_list_mock.return_value = MagicMock(spec=Response)
+        contest_list_mock.return_value = Response()
         request = self.factory.get('', format='json')
 
         # public user
@@ -72,7 +72,7 @@ class ContestApiTest(APITestCase):
 
     @patch('rolca.core.api.viewsets.ContestViewSet.retrieve')
     def test_get_detail_permissions(self, contest_retrieve_mock):
-        contest_retrieve_mock.return_value = MagicMock(spec=Response)
+        contest_retrieve_mock.return_value = Response()
         request = self.factory.get('', format='json')
 
         # public user
@@ -88,7 +88,7 @@ class ContestApiTest(APITestCase):
 
     @patch('rolca.core.api.viewsets.ContestViewSet.update')
     def test_put_permissions(self, contest_update_mock):
-        contest_update_mock.return_value = MagicMock(spec=Response)
+        contest_update_mock.return_value = Response()
         request = self.factory.put('', {}, format='json')
 
         # public user
@@ -109,7 +109,7 @@ class ContestApiTest(APITestCase):
 
     @patch('rolca.core.api.viewsets.ContestViewSet.partial_update')
     def test_patch_permissions(self, contest_update_mock):
-        contest_update_mock.return_value = MagicMock(spec=Response)
+        contest_update_mock.return_value = Response()
         request = self.factory.patch('', {}, format='json')
 
         # public user
@@ -130,7 +130,7 @@ class ContestApiTest(APITestCase):
 
     @patch('rolca.core.api.viewsets.ContestViewSet.destroy')
     def test_delete_permissions(self, contest_destroy_mock):
-        contest_destroy_mock.return_value = MagicMock(spec=Response)
+        contest_destroy_mock.return_value = Response()
         request = self.factory.delete('', {}, format='json')
 
         # public user
