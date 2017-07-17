@@ -66,12 +66,14 @@ setup(
         ],
         'test': [
             'check-manifest',
-            'coverage>=4.2',
+            'docutils',
             'isort',
             'mock>=1.3.0',
             'pycodestyle>=2.1.0',
             'pydocstyle>=1.0.0',
             'pylint>=1.6.4',
+            'pytest-cov>=2.5.0',
+            'pytest-django>=3.1.0'
             'readme_renderer'
         ],
     },
