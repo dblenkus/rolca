@@ -86,7 +86,7 @@ class Contest(BaseModel):
     #: indicate if user must be logged-in to participate in contest
     login_required = models.BooleanField(_('Login required'), default=False)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         """Save Contest instance."""
         if not self.publish_date:
             self.publish_date = self.end_date
@@ -131,7 +131,7 @@ class Theme(BaseModel):
     #: number of photos that can be submited to theme
     n_photos = models.IntegerField(_('Number of photos'))
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         """Save Theme instance."""
         if getattr(self, 'user', None) is None:
             self.user = self.contest.user  # pylint: disable=no-member
@@ -152,14 +152,14 @@ def _generate_filename(instance, filename, prefix):
     return os.path.join(prefix, md5.hexdigest() + extension)
 
 
-def generate_file_filename(*args):
+def generate_file_filename(instance, filename):
     """Generate filename for uploaded photo."""
-    return _generate_filename(*args, prefix='photos')
+    return _generate_filename(instance, filename, 'photos')
 
 
-def generate_thumb_filename(*args):
+def generate_thumb_filename(instance, filename):
     """Generate filename for thumbnails of uploaded photos."""
-    return _generate_filename(*args, prefix='thumbs')
+    return _generate_filename(instance, filename, 'thumbs')
 
 
 class File(BaseModel):
@@ -184,7 +184,7 @@ class File(BaseModel):
     #: thumbnail of uploaded file
     thumbnail = models.ImageField(upload_to=generate_thumb_filename)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         """Add photo thumbnail and save object."""
         if not self.pk:  # on create
             image = Image.open(self.file)
@@ -197,7 +197,7 @@ class File(BaseModel):
 
         super(File, self).save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):
+    def delete(self, *args, **kwargs):  # pylint: disable=arguments-differ
         """Delete attached images and actual object."""
         self.file.delete(save=False)  # pylint: disable=no-member
         self.thumbnail.delete(save=False)  # pylint: disable=no-member
@@ -209,7 +209,7 @@ class File(BaseModel):
         return max(self.file.width, self.file.height)  # pylint: disable=no-member
 
     def __str__(self):
-        """String representation of File object."""
+        """Return string representation of File object."""
         photo = self.photo_set.first()  # pylint: disable=no-member
         photo_title = photo.title if photo else '?'
         photo_id = photo.pk if photo else '?'
@@ -239,7 +239,7 @@ class Author(BaseModel):
     mentor = models.CharField(_('Mentor'), max_length=60, null=True, blank=True)
 
     def __str__(self):
-        """String representation of Author object."""
+        """Return string representation of Author object."""
         return "{} {}".format(self.first_name, self.last_name)
 
 
@@ -261,5 +261,5 @@ class Photo(BaseModel):
     photo = models.OneToOneField(File)
 
     def __str__(self):
-        """String representation of Photo object."""
+        """Return string representation of Photo object."""
         return self.title

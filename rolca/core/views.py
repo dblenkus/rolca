@@ -22,9 +22,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 
-
 from rolca.core.models import Contest, File, Photo, Theme
-
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 

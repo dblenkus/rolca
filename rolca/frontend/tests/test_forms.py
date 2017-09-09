@@ -1,5 +1,6 @@
 # pylint: disable=missing-docstring
 from datetime import date
+
 from mock import patch
 
 from django.contrib.auth import get_user_model

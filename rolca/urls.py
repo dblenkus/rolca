@@ -5,7 +5,6 @@ from rest_framework import routers
 
 from rolca.core.api import urls as core_api_urls
 
-
 route_lists = [  # pylint: disable=invalid-name
     core_api_urls.routeList
 ]

@@ -27,7 +27,6 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.utils.translation import ugettext as _
 
-
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
