@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
-from codecs import open  # Use codecs' open for a consistent encoding
 from os import path
 from setuptools import find_packages, setup
 
 base_dir = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(base_dir, 'README.rst'), encoding='utf-8') as f:
+with open(path.join(base_dir, 'README.rst')) as f:
     long_description = f.read()
 
 # Get package metadata from 'rolca.__about__.py' file
