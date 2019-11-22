@@ -16,7 +16,10 @@ import zipfile
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import (
-    HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotAllowed,
+    HttpResponse,
+    HttpResponseBadRequest,
+    HttpResponseForbidden,
+    HttpResponseNotAllowed,
 )
 from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
@@ -49,15 +52,21 @@ def download_contest(request, contest_id):
             zip_file_name = '{}.jpg'.format(
                 slugify('{}-{}'.format(photo.author, photo.title or no_title_count))
             )
-            zip_path = os.path.join(slugify(contest.title), slugify(theme.title), zip_file_name)
+            zip_path = os.path.join(
+                slugify(contest.title), slugify(theme.title), zip_file_name
+            )
             zip_archive.write(photo.photo.file.path, zip_path)
 
     zip_archive.close()
 
-    response = HttpResponse(buffer.getvalue(), content_type='application/x-zip-compressed')
+    response = HttpResponse(
+        buffer.getvalue(), content_type='application/x-zip-compressed'
+    )
 
     slugified_title = slugify(contest.title)
-    response['Content-Disposition'] = 'attachment; filename="{}.zip"'.format(slugified_title)
+    response['Content-Disposition'] = 'attachment; filename="{}.zip"'.format(
+        slugified_title
+    )
     response['Content-Length'] = buffer.tell()
 
     return response
@@ -85,23 +94,29 @@ def upload(request):
 
     if file_.file.size > settings.MAX_UPLOAD_SIZE:
         logger.warning("Too big file.")
-        return HttpResponseBadRequest("File can't excede size of {}KB".format(
-            settings.MAX_UPLOAD_SIZE / 1024))
+        return HttpResponseBadRequest(
+            "File can't excede size of {}KB".format(settings.MAX_UPLOAD_SIZE / 1024)
+        )
 
     max_image_resolution = settings.MAX_IMAGE_RESOLUTION
     if max(file_.file.width, file_.file.height) > max_image_resolution:
         logger.warning("Too big file.")
-        return HttpResponseBadRequest("File can't excede size of {}px".format(
-            settings.MAX_IMAGE_RESOLUTION))
+        return HttpResponseBadRequest(
+            "File can't excede size of {}px".format(settings.MAX_IMAGE_RESOLUTION)
+        )
 
     file_.save()
 
     result = []
-    result.append({"name": os.path.basename(file_.file.name),
-                   "size": file_.file.size,
-                   "url": file_.file.url,
-                   "thumbnail": file_.thumbnail.url,
-                   "delete_url": '',
-                   "delete_type": "POST"})
+    result.append(
+        {
+            "name": os.path.basename(file_.file.name),
+            "size": file_.file.size,
+            "url": file_.file.url,
+            "thumbnail": file_.thumbnail.url,
+            "delete_url": '',
+            "delete_type": "POST",
+        }
+    )
     response_data = json.dumps(result)
     return HttpResponse(response_data, content_type='application/json')

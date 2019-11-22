@@ -40,8 +40,9 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
         """
         return Photo.objects.filter(
-            Q(author__user=self.request.user) |
-            Q(theme__contest__publish_date__lte=date.today()))
+            Q(author__user=self.request.user)
+            | Q(theme__contest__publish_date__lte=date.today())
+        )
 
 
 class ContestViewSet(viewsets.ModelViewSet):

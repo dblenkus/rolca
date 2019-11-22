@@ -39,7 +39,12 @@ class ContestAdmin(admin.ModelAdmin):
     inlines = [ThemeInline]
 
     list_display = (
-        'title', 'start_date', 'end_date', 'is_active', 'number_of_photos', 'download_action'
+        'title',
+        'start_date',
+        'end_date',
+        'is_active',
+        'number_of_photos',
+        'download_action',
     )
     list_filter = ['start_date', 'end_date', 'publish_date']
     search_fields = ['title']
@@ -54,7 +59,9 @@ class ContestAdmin(admin.ModelAdmin):
         """Generate 'Download' button."""
         return format_html(
             '<a class="button" href="{}">Download</a>',
-            reverse('rolca-core:download-contest', args=[obj.pk]))
+            reverse('rolca-core:download-contest', args=[obj.pk]),
+        )
+
     download_action.short_description = 'Download'
     download_action.allow_tags = True
 

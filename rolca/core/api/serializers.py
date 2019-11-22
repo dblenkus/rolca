@@ -29,7 +29,10 @@ class FileSerializer(serializers.ModelSerializer):
         """Serializer configuration."""
 
         model = File
-        fields = ('id', 'file',)
+        fields = (
+            'id',
+            'file',
+        )
 
 
 class PhotoSerializer(serializers.ModelSerializer):

@@ -99,6 +99,7 @@ class Contest(BaseModel):
     def is_active(self):
         """Check if contest is active."""
         return self.start_date <= timezone.now() <= self.end_date
+
     is_active.admin_order_field = 'end_date'
     is_active.boolean = True
     is_active.short_description = _('active')
@@ -106,6 +107,7 @@ class Contest(BaseModel):
     def number_of_photos(self):
         """Return number of photos submitted to the current contest."""
         return Photo.objects.filter(theme__contest=self).count()
+
     number_of_photos.short_description = _('number of photos')
 
 
@@ -122,7 +124,9 @@ class Theme(BaseModel):
     title = models.CharField(_('Title'), max_length=100)
 
     #: contest that theme belongs to
-    contest = models.ForeignKey(Contest, related_name='themes', on_delete=models.CASCADE)
+    contest = models.ForeignKey(
+        Contest, related_name='themes', on_delete=models.CASCADE
+    )
 
     #: number of photos that can be submited to theme
     n_photos = models.IntegerField(_('Number of photos'))
@@ -187,9 +191,12 @@ class File(BaseModel):
             image.thumbnail((100, 100), Image.ANTIALIAS)
 
             thumb = io.BytesIO()
-            image.save(thumb, format="jpeg", quality=100, optimize=True, progressive=True)
-            self.thumbnail = InMemoryUploadedFile(thumb, None, self.file.name, 'image/jpeg',
-                                                  thumb.tell(), None)
+            image.save(
+                thumb, format="jpeg", quality=100, optimize=True, progressive=True
+            )
+            self.thumbnail = InMemoryUploadedFile(
+                thumb, None, self.file.name, 'image/jpeg', thumb.tell(), None
+            )
 
         super(File, self).save(*args, **kwargs)
 
@@ -210,7 +217,8 @@ class File(BaseModel):
         photo_title = photo.title if photo else '?'
         photo_id = photo.pk if photo else '?'
         return "id: {}, filename: {}, photo id: {}, photo title: {}".format(
-            self.pk, self.file.name, photo_id, photo_title)
+            self.pk, self.file.name, photo_id, photo_title
+        )
 
 
 class Author(BaseModel):

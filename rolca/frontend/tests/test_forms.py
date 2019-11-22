@@ -24,7 +24,8 @@ class PhotoFormTest(TestCase):
     def test_pass(self):
         today = date.today()
         contest = Contest.objects.create(
-            user=self.user, title='Test contest', start_date=today, end_date=today)
+            user=self.user, title='Test contest', start_date=today, end_date=today
+        )
         theme = Theme.objects.create(title='Test theme', contest=contest, n_photos=2)
         author = Author.objects.create(user=self.user)
 

@@ -6,7 +6,9 @@ from django.urls import reverse
 
 from rolca.core.models import Author, Contest, File, Photo, Theme
 
-PHOTO_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'files', 'photo.jpg')
+PHOTO_PATH = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), 'files', 'photo.jpg'
+)
 
 
 class UploadViewTest(TestCase):
@@ -25,16 +27,10 @@ class UploadViewTest(TestCase):
             end_date='2016-01-31',
         )
         cls.theme_1 = Theme.objects.create(
-            user=cls.user,
-            title='First theme',
-            contest=cls.contest,
-            n_photos=2,
+            user=cls.user, title='First theme', contest=cls.contest, n_photos=2,
         )
         cls.theme_2 = Theme.objects.create(
-            user=cls.user,
-            title='Second theme',
-            contest=cls.contest,
-            n_photos=1,
+            user=cls.user, title='Second theme', contest=cls.contest, n_photos=1,
         )
 
     def setUp(self):
@@ -53,7 +49,9 @@ class UploadViewTest(TestCase):
             self.theme_2_id + '-MAX_NUM_FORMS': self.theme_2.n_photos,
         }
 
-        self.upload_url = reverse('rolca-frontend:upload', kwargs={'contest_id': self.contest.pk})
+        self.upload_url = reverse(
+            'rolca-frontend:upload', kwargs={'contest_id': self.contest.pk}
+        )
 
     def tearDown(self):
         for file_ in File.objects.all():
@@ -66,7 +64,9 @@ class UploadViewTest(TestCase):
 
         self.assertEqual(resp.context['author_form']['first_name'].value(), 'Janez')
         self.assertEqual(resp.context['author_form']['last_name'].value(), 'Novak')
-        self.assertEqual(resp.context['author_form']['email'].value(), 'janez.novak@rolca.si')
+        self.assertEqual(
+            resp.context['author_form']['email'].value(), 'janez.novak@rolca.si'
+        )
 
     def test_author_not_loggedin(self):
         resp = self.client.get(self.upload_url)
@@ -211,8 +211,11 @@ class UploadViewTest(TestCase):
         self.assertEqual(Photo.objects.count(), 0)
 
         self.assertEqual(
-            resp.context['theme_formsets'][0]['formset'].forms[0].errors['photo'].as_text(),
-            '* This field is required.'
+            resp.context['theme_formsets'][0]['formset']
+            .forms[0]
+            .errors['photo']
+            .as_text(),
+            '* This field is required.',
         )
 
     def test_missing_title(self):
@@ -260,8 +263,11 @@ class UploadViewTest(TestCase):
         self.assertEqual(Photo.objects.count(), 0)
 
         self.assertEqual(
-            resp.context['theme_formsets'][0]['formset'].forms[0].errors['photo'].as_text(),
-            '* Long edge of the image cannot excede 2px.'
+            resp.context['theme_formsets'][0]['formset']
+            .forms[0]
+            .errors['photo']
+            .as_text(),
+            '* Long edge of the image cannot excede 2px.',
         )
 
     @override_settings(ROLCA_MAX_SIZE=100)
@@ -282,8 +288,11 @@ class UploadViewTest(TestCase):
         self.assertEqual(Photo.objects.count(), 0)
 
         self.assertEqual(
-            resp.context['theme_formsets'][0]['formset'].forms[0].errors['photo'].as_text(),
-            '* Uploaded file must be smaller than 100 B.'
+            resp.context['theme_formsets'][0]['formset']
+            .forms[0]
+            .errors['photo']
+            .as_text(),
+            '* Uploaded file must be smaller than 100 B.',
         )
 
     @override_settings(ROLCA_ACCEPTED_FORMATS=['PNG'])
@@ -304,6 +313,9 @@ class UploadViewTest(TestCase):
         self.assertEqual(Photo.objects.count(), 0)
 
         self.assertEqual(
-            resp.context['theme_formsets'][0]['formset'].forms[0].errors['photo'].as_text(),
-            '* Only following image types are supported: PNG'
+            resp.context['theme_formsets'][0]['formset']
+            .forms[0]
+            .errors['photo']
+            .as_text(),
+            '* Only following image types are supported: PNG',
         )

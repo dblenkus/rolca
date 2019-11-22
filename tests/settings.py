@@ -28,7 +28,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
-
     'rolca.core',
     'rolca.frontend',
 )
@@ -62,9 +61,7 @@ LANGUAGES = (
 
 LANGUAGE_CODE = 'en'
 
-LOCALE_PATHS = (
-    os.path.join(PROJECT_ROOT, 'locale'),
-)
+LOCALE_PATHS = (os.path.join(PROJECT_ROOT, 'locale'),)
 
 DATABASES = {
     'default': {

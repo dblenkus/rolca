@@ -36,7 +36,7 @@ class PhotoForm(forms.Form):
 
     photo = forms.ImageField(
         label=_('Photo'),
-        validators=[validate_format, validate_size, validate_long_edge]
+        validators=[validate_format, validate_size, validate_long_edge],
     )
     title = forms.CharField(label=_('Title'), required=False)
 
@@ -44,7 +44,9 @@ class PhotoForm(forms.Form):
         """Save photo and create coresponding File object."""
         try:
             with transaction.atomic():
-                photo_file = File.objects.create(user=user, file=self.cleaned_data['photo'])
+                photo_file = File.objects.create(
+                    user=user, file=self.cleaned_data['photo']
+                )
 
                 image_path = photo_file.file.path
                 thumbnail_path = photo_file.thumbnail.path

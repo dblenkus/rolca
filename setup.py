@@ -16,25 +16,17 @@ with open(path.join(base_dir, 'rolca', '__about__.py')) as f:
 
 setup(
     name=about['__title__'],
-
     version=about['__version__'],
-
     description=about['__summary__'],
     long_description=long_description,
-
     url=about['__url__'],
-
     author=about['__author__'],
     author_email=about['__email__'],
-
     license=about['__license__'],
-
     # exclude tests from built/installed package
     packages=find_packages(exclude=['tests', 'tests.*', '*.tests', '*.tests.*']),
     package_data={
-        'rolca.core': [
-            'locale/sl/LC_MESSAGES/django.*',
-        ],
+        'rolca.core': ['locale/sl/LC_MESSAGES/django.*',],
         'rolca.frontend': [
             'locale/*/LC_MESSAGES/django.*',
             'static/frontend/css/*.css',
@@ -47,7 +39,6 @@ setup(
             'templates/frontend/fields/includes/*.html',
         ],
     },
-
     install_requires=[
         'Django~=3.0rc1',
         'djangorestframework>=3.10.0',
@@ -55,14 +46,8 @@ setup(
         'psycopg2-binary~=2.8.0',
     ],
     extras_require={
-        'docs': [
-            'sphinx>=1.3.2',
-            'sphinx_rtd_theme',
-        ],
-        'package': [
-            'twine',
-            'wheel',
-        ],
+        'docs': ['sphinx>=1.3.2', 'sphinx_rtd_theme',],
+        'package': ['twine', 'wheel',],
         'test': [
             'black',
             'check-manifest',
@@ -72,11 +57,9 @@ setup(
             'mock>=1.3.0',
             'pydocstyle~=4.0.0',
             'pytest-cov>=2.5.0',
-            'pytest-django>=3.1.0'
-            'readme_renderer'
+            'pytest-django>=3.1.0' 'readme_renderer',
         ],
     },
-
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Environment :: Web Environment',
@@ -93,5 +76,4 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: WSGI',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-
 )

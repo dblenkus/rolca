@@ -11,5 +11,9 @@ from . import views
 
 app_name = 'rolca-core-api'
 urlpatterns = [
-    path('contest/<int:contest_id>/download', views.download_contest, name="download-contest")
+    path(
+        'contest/<int:contest_id>/download',
+        views.download_contest,
+        name="download-contest",
+    )
 ]

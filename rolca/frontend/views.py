@@ -36,17 +36,25 @@ def upload_view(request, *args, **kwargs):
         initial_author['last_name'] = request.user.last_name
         initial_author['email'] = request.user.email
 
-    author_form = AuthorForm(request.POST or None, prefix='author', initial=initial_author)
+    author_form = AuthorForm(
+        request.POST or None, prefix='author', initial=initial_author
+    )
     if not request.user.is_authenticated():
         author_form.fields['email'].required = True
 
     theme_formsets = []
     for theme in Theme.objects.filter(contest=contest).order_by('pk'):
-        form_set = formset_factory(PhotoForm, extra=theme.n_photos, max_num=theme.n_photos)
-        theme_formsets.append({
-            'theme': theme,
-            'formset': form_set(request.POST or None, request.FILES or None, prefix=theme.pk),
-        })
+        form_set = formset_factory(
+            PhotoForm, extra=theme.n_photos, max_num=theme.n_photos
+        )
+        theme_formsets.append(
+            {
+                'theme': theme,
+                'formset': form_set(
+                    request.POST or None, request.FILES or None, prefix=theme.pk
+                ),
+            }
+        )
 
     if request.method == 'POST':
         try:
@@ -87,14 +95,12 @@ def upload_view(request, *args, **kwargs):
         'author_form': author_form,
         'theme_formsets': theme_formsets,
         'show_titles': len(theme_formsets) > 1,
-
     }
 
     return render(request, 'frontend/upload.html', context)
 
 
-confirm_view = TemplateView.as_view(
-    template_name='frontend/upload_confirm.html')
+confirm_view = TemplateView.as_view(template_name='frontend/upload_confirm.html')
 
 
 class SelectContestView(ListView):

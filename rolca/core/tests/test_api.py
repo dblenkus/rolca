@@ -17,16 +17,17 @@ class ContestApiTest(APITestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
 
-        self.contest_list_view = ContestViewSet.as_view({
-            'get': 'list',
-            'post': 'create',
-        })
-        self.contest_detail_view = ContestViewSet.as_view({
-            'get': 'retrieve',
-            'put': 'update',
-            'patch': 'partial_update',
-            'delete': 'destroy',
-        })
+        self.contest_list_view = ContestViewSet.as_view(
+            {'get': 'list', 'post': 'create',}
+        )
+        self.contest_detail_view = ContestViewSet.as_view(
+            {
+                'get': 'retrieve',
+                'put': 'update',
+                'patch': 'partial_update',
+                'delete': 'destroy',
+            }
+        )
 
         self.user = MagicMock(spec=get_user_model(), is_superuser=False)
         self.super_user = MagicMock(spec=get_user_model(), is_superuser=True)
@@ -159,9 +160,12 @@ class PhotoViewSetTest(APITestCase):
         today = date.today()
         tomorrow = today + timedelta(days=1)
         self.contest = Contest.objects.create(
-            user=self.creator, title='Test contest', start_date=today, end_date=tomorrow)
+            user=self.creator, title='Test contest', start_date=today, end_date=tomorrow
+        )
 
-        theme = Theme.objects.create(title='Test theme', contest=self.contest, n_photos=2)
+        theme = Theme.objects.create(
+            title='Test theme', contest=self.contest, n_photos=2
+        )
 
         author1 = Author.objects.create(user=self.user1)
         author2 = Author.objects.create(user=self.user2)
@@ -174,11 +178,26 @@ class PhotoViewSetTest(APITestCase):
         self.file3 = File.objects.create(pk=3, user=self.user2, file=file_mock)
 
         Photo.objects.create(
-            title="Photo 1", user=self.user1, author=author1, theme=theme, photo=self.file1)
+            title="Photo 1",
+            user=self.user1,
+            author=author1,
+            theme=theme,
+            photo=self.file1,
+        )
         Photo.objects.create(
-            title="Photo 2", user=self.user2, author=author2, theme=theme, photo=self.file2)
+            title="Photo 2",
+            user=self.user2,
+            author=author2,
+            theme=theme,
+            photo=self.file2,
+        )
         Photo.objects.create(
-            title="Photo 3", user=self.user2, author=author2, theme=theme, photo=self.file3)
+            title="Photo 3",
+            user=self.user2,
+            author=author2,
+            theme=theme,
+            photo=self.file3,
+        )
 
     def tearDown(self):
         self.file1.file.delete()

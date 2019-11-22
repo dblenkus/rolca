@@ -5,7 +5,10 @@ from django.test import override_settings
 
 from rolca.frontend.tests.utils import get_image_field
 from rolca.frontend.validators import (
-    _humanize_size, validate_format, validate_long_edge, validate_size,
+    _humanize_size,
+    validate_format,
+    validate_long_edge,
+    validate_size,
 )
 
 
@@ -14,7 +17,7 @@ class ValidatorsTest(unittest.TestCase):
         self.image_field = get_image_field()
 
     def test_humanize_size(self):
-        self.assertEqual(_humanize_size(1024**5), '1024 GB')
+        self.assertEqual(_humanize_size(1024 ** 5), '1024 GB')
         self.assertEqual(_humanize_size(1024 * 1024), '1 MB')
         self.assertEqual(_humanize_size(500 * 1024), '500 KB')
         self.assertEqual(_humanize_size(1000000), '976.56 KB')
