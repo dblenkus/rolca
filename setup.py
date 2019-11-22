@@ -49,10 +49,10 @@ setup(
     },
 
     install_requires=[
-        'Django>=1.10,<1.11a1',
-        'djangorestframework>=3.4.0',
-        'Pillow>=3.0.0',
-        'psycopg2>=2.5.0',
+        'Django~=3.0rc1',
+        'djangorestframework>=3.10.0',
+        'Pillow>=6.1.0',
+        'psycopg2-binary~=2.8.0',
     ],
     extras_require={
         'docs': [
