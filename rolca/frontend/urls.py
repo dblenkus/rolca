@@ -5,19 +5,19 @@ Frontend URLs
 =============
 
 """
-from django.conf.urls import url
+from django.urls import path
 from django.views.generic.base import RedirectView
 
 from rolca.frontend import views
 
+app_name = 'rolca-frontend'
 urlpatterns = [  # pylint: disable=invalid-name
-    url(r'^upload/$', views.select_contest_view, name="select_contest"),
-    url(r'^upload/(?P<contest_id>\d+)$', views.upload_view, name="upload"),
-    url(r'^confirm$', views.confirm_view, name="upload_confirm"),
-    url(r'', RedirectView.as_view(pattern_name='rolca-frontend:select_contest')),
+    path('upload/', views.select_contest_view, name="select_contest"),
+    path('upload/<int:contest_id>', views.upload_view, name="upload"),
+    path('confirm', views.confirm_view, name="upload_confirm"),
+    path('', RedirectView.as_view(pattern_name='rolca-frontend:select_contest')),
 
-    # url(r'^seznam$', 'uploader.views.list_select', name="list_select"),
-    # url(r'^seznam/(?P<contest_id>\d+)$', 'uploader.views.list_details',
-    #     name="list_datails"),
+    # path('seznam', 'uploader.views.list_select', name="list_select"),
+    # path('seznam/<int:contest_id>', 'uploader.views.list_details', name="list_datails"),
 
 ]

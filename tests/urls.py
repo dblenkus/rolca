@@ -1,14 +1,14 @@
 """Test project's urls."""
-from django.conf.urls import include, url
+from django.urls import include, path
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [  # pylint: disable=invalid-name
-    url(r'^admin/', include(admin.site.urls)),
+    path('admin/', admin.site.urls),
 
-    url(r'^accounts/login/$', auth_views.login, name='login'),
-    url(r'^accounts/logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
 
-    url(r'^', include('rolca.urls')),
+    path('', include('rolca.urls')),
 ]

@@ -1,5 +1,5 @@
 """Main project's urls."""
-from django.conf.urls import include, url
+from django.urls import include, path
 
 from rest_framework import routers
 
@@ -16,7 +16,7 @@ for route_list in route_lists:
 
 
 urlpatterns = [  # pylint: disable=invalid-name
-    url(r'^api/', include(router.urls, namespace='rolca-core-api')),
-    url(r'^core/', include('rolca.core.urls', namespace='rolca-core')),
-    url(r'^', include('rolca.frontend.urls', namespace='rolca-frontend')),
+    path('api/', include((router.urls, 'rolca-core-api'), namespace='rolca-core-api')),
+    path('core/', include('rolca.core.urls', namespace='rolca-core')),
+    path('', include('rolca.frontend.urls', namespace='rolca-frontend')),
 ]
