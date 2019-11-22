@@ -42,7 +42,9 @@ class BaseModel(models.Model):
         abstract = True
 
     #: user who created the object
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE
+    )
 
     #: date when the object was created
     created = models.DateTimeField(auto_now_add=True)
@@ -64,9 +66,6 @@ class Contest(BaseModel):
 
         verbose_name = _('contest')
         verbose_name_plural = _('contests')
-
-    #: user who created the ``Contest``
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     #: title of the contest
     title = models.CharField(_('Title'), max_length=100)
@@ -119,14 +118,11 @@ class Theme(BaseModel):
         verbose_name = _('theme')
         verbose_name_plural = _('themes')
 
-    #: user who created the ``Theme``
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-
     #: title of the theme
     title = models.CharField(_('Title'), max_length=100)
 
     #: contest that theme belongs to
-    contest = models.ForeignKey(Contest, related_name='themes')
+    contest = models.ForeignKey(Contest, related_name='themes', on_delete=models.CASCADE)
 
     #: number of photos that can be submited to theme
     n_photos = models.IntegerField(_('Number of photos'))
@@ -254,11 +250,11 @@ class Photo(BaseModel):
 
     title = models.CharField(_('Title'), max_length=100, null=True, blank=True)
 
-    author = models.ForeignKey('Author')
+    author = models.ForeignKey('Author', on_delete=models.CASCADE)
 
-    theme = models.ForeignKey(Theme)
+    theme = models.ForeignKey(Theme, on_delete=models.PROTECT)
 
-    photo = models.OneToOneField(File)
+    photo = models.OneToOneField(File, on_delete=models.CASCADE)
 
     def __str__(self):
         """Return string representation of Photo object."""
