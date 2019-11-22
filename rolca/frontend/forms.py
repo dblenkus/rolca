@@ -18,7 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from rolca.core.models import Author, File, Photo
 from rolca.frontend.validators import validate_format, validate_long_edge, validate_size
 
-logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+logger = logging.getLogger(__name__)
 
 
 class AuthorForm(forms.ModelForm):

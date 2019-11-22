@@ -5,7 +5,6 @@ include README.rst
 # include documentation and files needed by documentation
 recursive-include docs *.py *.rst
 # include tests and files needed by tests
-include .pylintrc
 include tox.ini
 include tests/.env
 recursive-include tests *.py *.yml *.html

@@ -18,7 +18,7 @@ from rolca.core.models import Contest
 def check_contest_login_required(function):
     """Use ``login_required`` decorator if contest has set ``login_required``."""
     @wraps(function)
-    def decorator(*args, **kwargs):  # pylint: disable=missing-docstring
+    def decorator(*args, **kwargs):
         contest_id = kwargs.get('contest_id')
         contest = get_object_or_404(Contest, pk=contest_id)
 

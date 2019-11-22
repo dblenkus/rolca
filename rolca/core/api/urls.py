@@ -29,7 +29,7 @@ needs.
 """
 from rolca.core.api.viewsets import ContestViewSet, PhotoViewSet
 
-routeList = (  # pylint: disable=invalid-name
+routeList = (
     (r'photo', PhotoViewSet),
     (r'contest', ContestViewSet),
 )

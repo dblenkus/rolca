@@ -13,4 +13,4 @@ Rolca frontend
 
 """
 
-default_app_config = 'rolca.frontend.apps.RolcaFrontendConfig'  # pylint: disable=invalid-name
+default_app_config = 'rolca.frontend.apps.RolcaFrontendConfig'

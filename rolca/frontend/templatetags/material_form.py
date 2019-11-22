@@ -15,7 +15,7 @@ from django.utils.safestring import mark_safe
 
 from rolca.frontend import settings as rolca_settings
 
-register = template.Library()  # pylint: disable=invalid-name
+register = template.Library()
 
 
 @register.filter

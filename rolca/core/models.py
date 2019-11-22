@@ -85,7 +85,7 @@ class Contest(BaseModel):
     #: indicate if user must be logged-in to participate in contest
     login_required = models.BooleanField(_('Login required'), default=False)
 
-    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def save(self, *args, **kwargs):
         """Save Contest instance."""
         if not self.publish_date:
             self.publish_date = self.end_date
@@ -127,10 +127,10 @@ class Theme(BaseModel):
     #: number of photos that can be submited to theme
     n_photos = models.IntegerField(_('Number of photos'))
 
-    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def save(self, *args, **kwargs):
         """Save Theme instance."""
         if getattr(self, 'user', None) is None:
-            self.user = self.contest.user  # pylint: disable=no-member
+            self.user = self.contest.user
 
         super(Theme, self).save(*args, **kwargs)
 
@@ -180,7 +180,7 @@ class File(BaseModel):
     #: thumbnail of uploaded file
     thumbnail = models.ImageField(upload_to=generate_thumb_filename)
 
-    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def save(self, *args, **kwargs):
         """Add photo thumbnail and save object."""
         if not self.pk:  # on create
             image = Image.open(self.file)
@@ -193,20 +193,20 @@ class File(BaseModel):
 
         super(File, self).save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):  # pylint: disable=arguments-differ
+    def delete(self, *args, **kwargs):
         """Delete attached images and actual object."""
-        self.file.delete(save=False)  # pylint: disable=no-member
-        self.thumbnail.delete(save=False)  # pylint: disable=no-member
+        self.file.delete(save=False)
+        self.thumbnail.delete(save=False)
 
         super(File, self).delete(*args, **kwargs)
 
     def get_long_edge(self):
         """Return longer edge of the image."""
-        return max(self.file.width, self.file.height)  # pylint: disable=no-member
+        return max(self.file.width, self.file.height)
 
     def __str__(self):
         """Return string representation of File object."""
-        photo = self.photo_set.first()  # pylint: disable=no-member
+        photo = self.photo_set.first()
         photo_title = photo.title if photo else '?'
         photo_id = photo.pk if photo else '?'
         return "id: {}, filename: {}, photo id: {}, photo title: {}".format(

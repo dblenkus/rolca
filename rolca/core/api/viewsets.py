@@ -22,7 +22,7 @@ from rolca.core.api.permissions import AdminOrReadOnly
 from rolca.core.api.serializers import ContestSerializer, PhotoSerializer
 from rolca.core.models import Contest, Photo
 
-logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+logger = logging.getLogger(__name__)
 
 
 class PhotoViewSet(viewsets.ModelViewSet):
@@ -37,6 +37,7 @@ class PhotoViewSet(viewsets.ModelViewSet):
         Return:
         * all photos for already finished contests
         * user's photos
+
         """
         return Photo.objects.filter(
             Q(author__user=self.request.user) |

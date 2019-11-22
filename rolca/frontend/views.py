@@ -93,7 +93,7 @@ def upload_view(request, *args, **kwargs):
     return render(request, 'frontend/upload.html', context)
 
 
-confirm_view = TemplateView.as_view(  # pylint: disable=invalid-name
+confirm_view = TemplateView.as_view(
     template_name='frontend/upload_confirm.html')
 
 
@@ -117,7 +117,7 @@ class SelectContestView(ListView):
         return super(SelectContestView, self).get(request, *args, **kwargs)
 
 
-select_contest_view = SelectContestView.as_view()  # pylint: disable=invalid-name
+select_contest_view = SelectContestView.as_view()
 
 
 # def list_details(request, contest_id):
@@ -125,7 +125,7 @@ select_contest_view = SelectContestView.as_view()  # pylint: disable=invalid-nam
 #     themes = Theme.objects.filter(contest=contest)
 
 #     response = {'users': []}
-#     for user in Profile.objects.all():  # pylint: disable=no-member
+#     for user in Profile.objects.all():
 #         count = Photo.objects.filter(theme__in=themes, user=user).count()
 #         if count > 0:
 #             response['users'].append({

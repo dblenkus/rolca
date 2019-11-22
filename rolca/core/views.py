@@ -24,7 +24,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from rolca.core.models import Contest, File, Photo, Theme
 
-logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -100,7 +100,7 @@ def upload(request):
     result.append({"name": os.path.basename(file_.file.name),
                    "size": file_.file.size,
                    "url": file_.file.url,
-                   "thumbnail": file_.thumbnail.url,  # pylint: disable=no-member
+                   "thumbnail": file_.thumbnail.url,
                    "delete_url": '',
                    "delete_type": "POST"})
     response_data = json.dumps(result)

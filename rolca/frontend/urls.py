@@ -11,7 +11,7 @@ from django.views.generic.base import RedirectView
 from rolca.frontend import views
 
 app_name = 'rolca-frontend'
-urlpatterns = [  # pylint: disable=invalid-name
+urlpatterns = [
     path('upload/', views.select_contest_view, name="select_contest"),
     path('upload/<int:contest_id>', views.upload_view, name="upload"),
     path('confirm', views.confirm_view, name="upload_confirm"),

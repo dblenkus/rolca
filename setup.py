@@ -64,13 +64,13 @@ setup(
             'wheel',
         ],
         'test': [
+            'black',
             'check-manifest',
             'docutils',
-            'isort',
+            'flake8~=3.7.0',
+            'isort~=4.3.12',
             'mock>=1.3.0',
-            'pycodestyle>=2.1.0',
-            'pydocstyle>=1.0.0',
-            'pylint>=1.6.4',
+            'pydocstyle~=4.0.0',
             'pytest-cov>=2.5.0',
             'pytest-django>=3.1.0'
             'readme_renderer'

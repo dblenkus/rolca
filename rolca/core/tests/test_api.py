@@ -1,4 +1,3 @@
-# pylint: disable=missing-docstring
 from datetime import date, timedelta
 
 from mock import MagicMock, Mock, patch
