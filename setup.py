@@ -59,6 +59,7 @@ setuptools.setup(
             'pydocstyle~=4.0.0',
             'pytest-cov>=2.5.0',
             'pytest-django>=3.1.0' 'readme_renderer',
+            'twine',
         ],
     },
     classifiers=[
