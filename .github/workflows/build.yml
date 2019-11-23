@@ -50,9 +50,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Tox
-        run: pip install tox
+        run: python -m pip install --user tox
       - name: Run Tox
-        run: tox -e ${{ matrix.tox-env }}
+        run: python -m tox -e ${{ matrix.tox-env }} --skip-missing-interpreters false
         env:
           # Get randomly assigned published port.
           ROLCA_POSTGRESQL_PORT: ${{ job.services.postgres.ports[5432] }}
