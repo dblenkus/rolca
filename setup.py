@@ -13,7 +13,7 @@ with open(path.join(base_dir, 'src', 'rolca', '__about__.py')) as fh:
 
 setuptools.setup(
     name=about['__title__'],
-    version=about['__version__'],
+    use_scm_version=True,
     description=about['__summary__'],
     long_description=long_description,
     long_description_content_type='text/x-rst',
@@ -60,6 +60,7 @@ setuptools.setup(
             'pydocstyle~=4.0.0',
             'pytest-cov>=2.5.0',
             'pytest-django>=3.1.0' 'readme_renderer',
+            'setuptools_scm',
             'twine',
         ],
     },
