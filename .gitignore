@@ -8,6 +8,8 @@
 *.sublime-project
 *.sublime-workspace
 sftp-config.json
+.idea
+.vscode
 
 # Ignore binaries.
 *.py[cod]
@@ -19,6 +21,10 @@ _build
 
 # Tox files
 .tox/
+
+# ignore Coverage.py files
+.coverage
+htmlcov/
 
 # Ignore files created by setup.py.
 build/
@@ -33,5 +39,3 @@ docs/_build/
 
 /tests/static/
 /tests/media/
-
-.*
