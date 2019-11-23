@@ -31,7 +31,7 @@ def upload_view(request, *args, **kwargs):
     contest = get_object_or_404(Contest, pk=kwargs.pop('contest_id'))
 
     initial_author = {}
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         initial_author['first_name'] = request.user.first_name
         initial_author['last_name'] = request.user.last_name
         initial_author['email'] = request.user.email
@@ -39,7 +39,7 @@ def upload_view(request, *args, **kwargs):
     author_form = AuthorForm(
         request.POST or None, prefix='author', initial=initial_author
     )
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         author_form.fields['email'].required = True
 
     theme_formsets = []
@@ -59,7 +59,7 @@ def upload_view(request, *args, **kwargs):
     if request.method == 'POST':
         try:
             with transaction.atomic():
-                user = request.user if request.user.is_authenticated() else None
+                user = request.user if request.user.is_authenticated else None
 
                 if not author_form.is_valid():
                     raise ValidationError('Author form is not valid')

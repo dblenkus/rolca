@@ -79,7 +79,7 @@ def upload(request):
         logger.warning("Upload request other than POST.")
         return HttpResponseNotAllowed(['POST'], 'Only POST accepted')
 
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         logger.warning('Anonymous user tried to upload file.')
         return HttpResponseForbidden('Please login!')
 
