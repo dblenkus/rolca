@@ -8,7 +8,7 @@ with open('README.rst') as fh:
 # Get package metadata from 'rolca.__about__.py' file.
 base_dir = path.abspath(path.dirname(__file__))
 about = {}
-with open(path.join(base_dir, 'rolca', '__about__.py')) as fh:
+with open(path.join(base_dir, 'src', 'rolca', '__about__.py')) as fh:
     exec(fh.read(), about)
 
 setuptools.setup(
@@ -23,7 +23,7 @@ setuptools.setup(
     license=about['__license__'],
     # Exclude tests from built/installed package.
     packages=setuptools.find_packages(
-        exclude=['tests', 'tests.*', '*.tests', '*.tests.*']
+        'src', exclude=['tests', 'tests.*', '*.tests', '*.tests.*']
     ),
     package_data={
         'rolca.core': ['locale/sl/LC_MESSAGES/django.*',],
@@ -39,6 +39,7 @@ setuptools.setup(
             'templates/frontend/fields/includes/*.html',
         ],
     },
+    package_dir={'': 'src'},
     python_requires='>=3.6, <3.9',
     install_requires=[
         'Django~=3.0rc1',
