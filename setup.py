@@ -1,30 +1,30 @@
-#!/usr/bin/env python
-
 from os import path
-from setuptools import find_packages, setup
+import setuptools
 
+# Get long description from README.
+with open('README.rst') as fh:
+    long_description = fh.read()
+
+# Get package metadata from 'rolca.__about__.py' file.
 base_dir = path.abspath(path.dirname(__file__))
-
-# Get the long description from the README file
-with open(path.join(base_dir, 'README.rst')) as f:
-    long_description = f.read()
-
-# Get package metadata from 'rolca.__about__.py' file
 about = {}
-with open(path.join(base_dir, 'rolca', '__about__.py')) as f:
-    exec(f.read(), about)
+with open(path.join(base_dir, 'rolca', '__about__.py')) as fh:
+    exec(fh.read(), about)
 
-setup(
+setuptools.setup(
     name=about['__title__'],
     version=about['__version__'],
     description=about['__summary__'],
     long_description=long_description,
-    url=about['__url__'],
+    long_description_content_type='text/x-rst',
     author=about['__author__'],
     author_email=about['__email__'],
+    url=about['__url__'],
     license=about['__license__'],
-    # exclude tests from built/installed package
-    packages=find_packages(exclude=['tests', 'tests.*', '*.tests', '*.tests.*']),
+    # Exclude tests from built/installed package.
+    packages=setuptools.find_packages(
+        exclude=['tests', 'tests.*', '*.tests', '*.tests.*']
+    ),
     package_data={
         'rolca.core': ['locale/sl/LC_MESSAGES/django.*',],
         'rolca.frontend': [
@@ -39,6 +39,7 @@ setup(
             'templates/frontend/fields/includes/*.html',
         ],
     },
+    python_requires='>=3.6, <3.9',
     install_requires=[
         'Django~=3.0rc1',
         'djangorestframework>=3.10.0',
