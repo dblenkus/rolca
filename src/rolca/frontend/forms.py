@@ -13,7 +13,7 @@ import os
 
 from django import forms
 from django.db import IntegrityError, transaction
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from rolca.core.models import Author, File, Photo
 from rolca.frontend.validators import validate_format, validate_long_edge, validate_size
