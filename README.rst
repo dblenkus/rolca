@@ -4,8 +4,8 @@ Rolca
 
 |build| |coverage| |docs|
 
-.. |build| image:: https://travis-ci.org/dblenkus/rolca.svg
-    :target: https://travis-ci.org/dblenkus/rolca
+.. |build| image:: https://github.com/dblenkus/rolca/workflows/build/badge.svg?branch=master
+    :target: https://github.com/dblenkus/rolca/actions?query=workflow%3Abuild
     :alt: Build Status
 
 .. |coverage| image:: https://codecov.io/gh/dblenkus/rolca/branch/master/graph/badge.svg
