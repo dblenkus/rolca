@@ -29,6 +29,10 @@ class ThemeInline(admin.TabularInline):
 class ContestAdmin(admin.ModelAdmin):
     """Contest configuration."""
 
+    fieldsets_new = [
+        (None, {'fields': ('title', 'description')}),
+        ('Dates', {'fields': ('start_date', 'end_date', 'publish_date')}),
+    ]
     fieldsets = [
         (None, {'fields': ('title', 'description')}),
         ('Dates', {'fields': ('start_date', 'end_date', 'publish_date')}),
@@ -54,6 +58,13 @@ class ContestAdmin(admin.ModelAdmin):
         if getattr(obj, 'user', None) is None:
             obj.user = request.user
         obj.save()
+
+    def get_fieldsets(self, request, obj=None):
+        """Return different fieldset for new and existing objects."""
+        if obj:
+            return self.fieldsets
+
+        return self.fieldsets_new
 
     def download_action(self, obj):
         """Generate 'Download' button."""
