@@ -54,7 +54,7 @@ class ThemeSerializer(serializers.ModelSerializer):
         """Serializer configuration."""
 
         model = Theme
-        fields = ('id', 'title', 'n_photos')
+        fields = ('id', 'title', 'is_series', 'n_photos')
 
 
 class ContestSerializer(serializers.ModelSerializer):

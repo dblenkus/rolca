@@ -128,6 +128,9 @@ class Theme(BaseModel):
         Contest, related_name='themes', on_delete=models.CASCADE
     )
 
+    #: indicates whether the theme is a series or not
+    is_series = models.BooleanField(default=False)
+
     #: number of photos that can be submited to theme
     n_photos = models.IntegerField(_('Number of photos'))
 
