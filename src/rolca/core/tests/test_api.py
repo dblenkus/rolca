@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
 
-from rolca.core.api.viewsets import ContestViewSet, SubmissionViewSet
+from rolca.core.api.views import ContestViewSet, SubmissionViewSet
 from rolca.core.models import Author, Contest, File, Submission, Theme
 
 
@@ -32,7 +32,7 @@ class ContestApiTest(APITestCase):
         self.user = MagicMock(spec=get_user_model(), is_superuser=False)
         self.super_user = MagicMock(spec=get_user_model(), is_superuser=True)
 
-    @patch('rolca.core.api.viewsets.ContestViewSet.create')
+    @patch('rolca.core.api.views.ContestViewSet.create')
     def test_create_permissions(self, contest_create_mock):
         contest_create_mock.return_value = Response()
         request = self.factory.post('', {}, format='json')
@@ -53,7 +53,7 @@ class ContestApiTest(APITestCase):
         resp = self.contest_list_view(request)
         self.assertEqual(contest_create_mock.call_count, 1)
 
-    @patch('rolca.core.api.viewsets.ContestViewSet.list')
+    @patch('rolca.core.api.views.ContestViewSet.list')
     def test_get_list_permissions(self, contest_list_mock):
         contest_list_mock.return_value = Response()
         request = self.factory.get('', format='json')
@@ -70,7 +70,7 @@ class ContestApiTest(APITestCase):
         self.contest_list_view(request)
         self.assertEqual(contest_list_mock.call_count, 1)
 
-    @patch('rolca.core.api.viewsets.ContestViewSet.retrieve')
+    @patch('rolca.core.api.views.ContestViewSet.retrieve')
     def test_get_detail_permissions(self, contest_retrieve_mock):
         contest_retrieve_mock.return_value = Response()
         request = self.factory.get('', format='json')
@@ -86,7 +86,7 @@ class ContestApiTest(APITestCase):
         self.contest_detail_view(request, pk=1)
         self.assertEqual(contest_retrieve_mock.call_count, 1)
 
-    @patch('rolca.core.api.viewsets.ContestViewSet.update')
+    @patch('rolca.core.api.views.ContestViewSet.update')
     def test_put_permissions(self, contest_update_mock):
         contest_update_mock.return_value = Response()
         request = self.factory.put('', {}, format='json')
@@ -107,7 +107,7 @@ class ContestApiTest(APITestCase):
         resp = self.contest_detail_view(request, pk=1)
         self.assertEqual(contest_update_mock.call_count, 1)
 
-    @patch('rolca.core.api.viewsets.ContestViewSet.partial_update')
+    @patch('rolca.core.api.views.ContestViewSet.partial_update')
     def test_patch_permissions(self, contest_update_mock):
         contest_update_mock.return_value = Response()
         request = self.factory.patch('', {}, format='json')
@@ -128,7 +128,7 @@ class ContestApiTest(APITestCase):
         resp = self.contest_detail_view(request, pk=1)
         self.assertEqual(contest_update_mock.call_count, 1)
 
-    @patch('rolca.core.api.viewsets.ContestViewSet.destroy')
+    @patch('rolca.core.api.views.ContestViewSet.destroy')
     def test_delete_permissions(self, contest_destroy_mock):
         contest_destroy_mock.return_value = Response()
         request = self.factory.delete('', {}, format='json')

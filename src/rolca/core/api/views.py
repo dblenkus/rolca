@@ -1,13 +1,13 @@
 """.. Ignore pydocstyle D400.
 
-=================
-Core API viewsets
-=================
+==============
+Core API views
+==============
 
-.. autoclass:: rolca.core.api.viewsets.PhotoViewSet
+.. autoclass:: rolca.core.api.views.PhotoViewSet
     :members:
 
-.. autoclass:: rolca.core.api.viewsets.ContestViewSet
+.. autoclass:: rolca.core.api.views.ContestViewSet
     :members:
 
 """

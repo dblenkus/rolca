@@ -56,7 +56,7 @@ class BaseModel(models.Model):
 class Contest(BaseModel):
     """Model for storing contests.
 
-    Contest object is the main object of single contest. It  can contain
+    Contest object is the main object of single contest. It can contain
     multiple themes and all important dates for contest (start, end and
     results date).
     """
@@ -90,7 +90,7 @@ class Contest(BaseModel):
         if not self.publish_date:
             self.publish_date = self.end_date
 
-        super(Contest, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         """Return Contest's title."""
