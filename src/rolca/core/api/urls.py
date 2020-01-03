@@ -27,9 +27,9 @@ For advanced configuration code can be accordingly changed to meet the
 needs.
 
 """
-from rolca.core.api.viewsets import ContestViewSet, PhotoViewSet
+from rolca.core.api.viewsets import ContestViewSet, SubmissionViewSet
 
 routeList = (
-    (r'photo', PhotoViewSet),
+    (r'photo', SubmissionViewSet),
     (r'contest', ContestViewSet),
 )

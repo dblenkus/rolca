@@ -9,8 +9,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
 
-from rolca.core.api.viewsets import ContestViewSet, PhotoViewSet
-from rolca.core.models import Author, Contest, File, Photo, Theme
+from rolca.core.api.viewsets import ContestViewSet, SubmissionViewSet
+from rolca.core.models import Author, Contest, File, Submission, Theme
 
 
 class ContestApiTest(APITestCase):
@@ -150,7 +150,7 @@ class ContestApiTest(APITestCase):
         self.assertEqual(contest_destroy_mock.call_count, 1)
 
 
-class PhotoViewSetTest(APITestCase):
+class SubmissionViewSetTest(APITestCase):
     def setUp(self):
         user_model = get_user_model()
         self.creator = user_model.objects.create_user(username='creator')
@@ -177,22 +177,22 @@ class PhotoViewSetTest(APITestCase):
         self.file2 = File.objects.create(pk=2, user=self.user2, file=file_mock)
         self.file3 = File.objects.create(pk=3, user=self.user2, file=file_mock)
 
-        Photo.objects.create(
-            title="Photo 1",
+        Submission.objects.create(
+            title="Submission 1",
             user=self.user1,
             author=author1,
             theme=theme,
             photo=self.file1,
         )
-        Photo.objects.create(
-            title="Photo 2",
+        Submission.objects.create(
+            title="Submission 2",
             user=self.user2,
             author=author2,
             theme=theme,
             photo=self.file2,
         )
-        Photo.objects.create(
-            title="Photo 3",
+        Submission.objects.create(
+            title="Submission 3",
             user=self.user2,
             author=author2,
             theme=theme,
@@ -204,14 +204,14 @@ class PhotoViewSetTest(APITestCase):
         self.file2.file.delete()
         self.file3.file.delete()
 
-    def test_photo_queryset(self):
-        viewset_mock = Mock(spec=PhotoViewSet)
+    def test_submission_queryset(self):
+        viewset_mock = Mock(spec=SubmissionViewSet)
 
         viewset_mock.request = Mock(user=self.user2)
-        self.assertEqual(len(PhotoViewSet.get_queryset(viewset_mock)), 2)
+        self.assertEqual(len(SubmissionViewSet.get_queryset(viewset_mock)), 2)
 
         self.contest.publish_date = date.today() - timedelta(days=1)
         self.contest.save()
 
         viewset_mock.request = Mock(user=self.user2)
-        self.assertEqual(len(PhotoViewSet.get_queryset(viewset_mock)), 3)
+        self.assertEqual(len(SubmissionViewSet.get_queryset(viewset_mock)), 3)

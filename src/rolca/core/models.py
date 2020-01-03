@@ -13,7 +13,7 @@ Core models
 .. autoclass:: rolca.core.models.Author
     :members:
 
-.. autoclass:: rolca.core.models.Photo
+.. autoclass:: rolca.core.models.Submission
     :members:
 
 .. autoclass:: rolca.core.models.File
@@ -106,9 +106,9 @@ class Contest(BaseModel):
 
     def number_of_photos(self):
         """Return number of photos submitted to the current contest."""
-        return Photo.objects.filter(theme__contest=self).count()
+        return Submission.objects.filter(theme__contest=self).count()
 
-    number_of_photos.short_description = _('number of photos')
+    number_of_photos.short_description = _('number of submissons')
 
 
 class Theme(BaseModel):
@@ -162,12 +162,34 @@ def generate_thumb_filename(instance, filename):
     return _generate_filename(instance, filename, 'thumbs')
 
 
+class Submission(BaseModel):
+    """Model for storing uploaded submissions."""
+
+    class Meta:
+        """Submission Meta options."""
+
+        verbose_name = _('submission')
+        verbose_name_plural = _('submissions')
+
+    title = models.CharField(_('Title'), max_length=100, null=True, blank=True)
+
+    author = models.ForeignKey('Author', on_delete=models.CASCADE)
+
+    theme = models.ForeignKey(Theme, on_delete=models.PROTECT)
+
+    photo = models.OneToOneField('File', on_delete=models.CASCADE)
+
+    def __str__(self):
+        """Return string representation of Submission object."""
+        return self.title
+
+
 class File(BaseModel):
     """Model for storing uploaded images.
 
-    Uploaded images can be stored prior to creating Photo instance. This
-    way you can upload images while user is typing other data.
-    Images are checked if meet size and format requirements before
+    Uploaded images can be stored prior to creating Submission
+    instance. This way you can upload images while user is typing other
+    data.Images are checked if meet size and format requirements before
     saving.
 
     """
@@ -213,11 +235,11 @@ class File(BaseModel):
 
     def __str__(self):
         """Return string representation of File object."""
-        photo = self.photo_set.first()
-        photo_title = photo.title if photo else '?'
-        photo_id = photo.pk if photo else '?'
-        return "id: {}, filename: {}, photo id: {}, photo title: {}".format(
-            self.pk, self.file.name, photo_id, photo_title
+        submission = self.submission_set.first()
+        submission_title = submission.title if submission else '?'
+        submission_id = submission.pk if submission else '?'
+        return "id: {}, filename: {}, submission id: {}, submission title: {}".format(
+            self.pk, self.file.name, submission_id, submission_title
         )
 
 
@@ -245,25 +267,3 @@ class Author(BaseModel):
     def __str__(self):
         """Return string representation of Author object."""
         return "{} {}".format(self.first_name, self.last_name)
-
-
-class Photo(BaseModel):
-    """Model for storing uploaded photos."""
-
-    class Meta:
-        """Photo Meta options."""
-
-        verbose_name = _('photo')
-        verbose_name_plural = _('photos')
-
-    title = models.CharField(_('Title'), max_length=100, null=True, blank=True)
-
-    author = models.ForeignKey('Author', on_delete=models.CASCADE)
-
-    theme = models.ForeignKey(Theme, on_delete=models.PROTECT)
-
-    photo = models.OneToOneField(File, on_delete=models.CASCADE)
-
-    def __str__(self):
-        """Return string representation of Photo object."""
-        return self.title

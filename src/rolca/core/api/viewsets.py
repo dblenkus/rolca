@@ -19,27 +19,27 @@ from django.db.models import Q
 from rest_framework import viewsets
 
 from rolca.core.api.permissions import AdminOrReadOnly
-from rolca.core.api.serializers import ContestSerializer, PhotoSerializer
-from rolca.core.models import Contest, Photo
+from rolca.core.api.serializers import ContestSerializer, SubmissionSerializer
+from rolca.core.models import Contest, Submission
 
 logger = logging.getLogger(__name__)
 
 
-class PhotoViewSet(viewsets.ModelViewSet):
-    """API view Photo objects."""
+class SubmissionViewSet(viewsets.ModelViewSet):
+    """API view Submission objects."""
 
-    serializer_class = PhotoSerializer
-    queryset = Photo.objects.all()
+    serializer_class = SubmissionSerializer
+    queryset = Submission.objects.all()
 
     def get_queryset(self):
-        """Return queryset for photos that can be shown to user.
+        """Return queryset for submissions that can be shown to user.
 
         Return:
-        * all photos for already finished contests
-        * user's photos
+        * all submissions for already finished contests
+        * user's submissions
 
         """
-        return Photo.objects.filter(
+        return Submission.objects.filter(
             Q(author__user=self.request.user)
             | Q(theme__contest__publish_date__lte=date.today())
         )

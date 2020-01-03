@@ -25,14 +25,14 @@ from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 from django.views.decorators.csrf import csrf_exempt
 
-from rolca.core.models import Contest, File, Photo, Theme
+from rolca.core.models import Contest, File, Submission, Theme
 
 logger = logging.getLogger(__name__)
 
 
 @login_required
 def download_contest(request, contest_id):
-    """Download all photos of the contest as zip file."""
+    """Download all submissions of the contest as zip file."""
     contest = get_object_or_404(Contest, pk=contest_id)
 
     buffer = io.BytesIO()
@@ -46,16 +46,20 @@ def download_contest(request, contest_id):
         zip_archive.writestr(zip_info, '')
 
         no_title_count = 0
-        for photo in Photo.objects.filter(theme=theme):
-            if not photo.title:
+        for submission in Submission.objects.filter(theme=theme):
+            if not submission.title:
                 no_title_count += 1
             zip_file_name = '{}.jpg'.format(
-                slugify('{}-{}'.format(photo.author, photo.title or no_title_count))
+                slugify(
+                    '{}-{}'.format(
+                        submission.author, submission.title or no_title_count
+                    )
+                )
             )
             zip_path = os.path.join(
                 slugify(contest.title), slugify(theme.title), zip_file_name
             )
-            zip_archive.write(photo.photo.file.path, zip_path)
+            zip_archive.write(submission.photo.file.path, zip_path)
 
     zip_archive.close()
 

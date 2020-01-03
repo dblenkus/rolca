@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime, timedelta
 
-from rolca.core.models import Author, Contest, Photo, Theme
+from rolca.core.models import Author, Contest, Submission, Theme
 
 
 class DatabaseTestCase(unittest.TestCase):
@@ -41,6 +41,6 @@ class DatabaseTestCase(unittest.TestCase):
         participent = Author(first_name="Janez", last_name="Novak")
         self.assertEqual(str(participent), "Janez Novak")
 
-    def test_photo_str(self):
-        photo = Photo(title="Test photo")
-        self.assertEqual(str(photo), "Test photo")
+    def test_submission_str(self):
+        submission = Submission(title="Test submission")
+        self.assertEqual(str(submission), "Test submission")

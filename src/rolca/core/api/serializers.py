@@ -19,7 +19,7 @@ Core API serializers
 """
 from rest_framework import serializers
 
-from rolca.core.models import Contest, File, Photo, Theme
+from rolca.core.models import Contest, File, Submission, Theme
 
 
 class FileSerializer(serializers.ModelSerializer):
@@ -35,15 +35,15 @@ class FileSerializer(serializers.ModelSerializer):
         )
 
 
-class PhotoSerializer(serializers.ModelSerializer):
-    """Serializer for Photo objects."""
+class SubmissionSerializer(serializers.ModelSerializer):
+    """Serializer for Submission objects."""
 
     photo = FileSerializer()
 
     class Meta:
         """Serializer configuration."""
 
-        model = Photo
+        model = Submission
         fields = ('id', 'photo', 'title')
 
 

@@ -15,7 +15,7 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 
-from rolca.core.models import Contest, File, Photo, Theme
+from rolca.core.models import Contest, File, Submission, Theme
 
 
 class ThemeInline(admin.TabularInline):
@@ -78,5 +78,5 @@ class ContestAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Contest, ContestAdmin)
-admin.site.register(Photo)
+admin.site.register(Submission)
 admin.site.register(File)
