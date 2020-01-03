@@ -3,6 +3,9 @@
 *~
 .DS_Store
 
+# Virtual environment
+.venv/
+
 # Ignore project files
 *.pyproj
 *.sublime-project
