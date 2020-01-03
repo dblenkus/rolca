@@ -29,7 +29,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'rolca.core',
-    'rolca.frontend',
 )
 
 ROOT_URLCONF = 'tests.urls'
@@ -48,7 +47,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'rolca.frontend.context_processors.ui_configuration',
             ],
         },
     },

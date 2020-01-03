@@ -25,20 +25,7 @@ setuptools.setup(
     packages=setuptools.find_packages(
         'src', exclude=['tests', 'tests.*', '*.tests', '*.tests.*']
     ),
-    package_data={
-        'rolca.core': ['locale/sl/LC_MESSAGES/django.*',],
-        'rolca.frontend': [
-            'locale/*/LC_MESSAGES/django.*',
-            'static/frontend/css/*.css',
-            'static/materialize/css/*.css',
-            'static/materialize/fonts/roboto/*',
-            'static/materialize/js/*.js',
-            'templates/*.html',
-            'templates/frontend/*.html',
-            'templates/frontend/fields/*.html',
-            'templates/frontend/fields/includes/*.html',
-        ],
-    },
+    package_data={'rolca.core': ['locale/sl/LC_MESSAGES/django.*',],},
     package_dir={'': 'src'},
     python_requires='>=3.6, <3.9',
     install_requires=[

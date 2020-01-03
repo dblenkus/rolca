@@ -16,7 +16,6 @@ settings.configure(
         'django.contrib.sessions',
         'django.contrib.staticfiles',
         'rolca.core',
-        'rolca.frontend',
     ),
 )
 django.setup()

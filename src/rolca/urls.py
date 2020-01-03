@@ -16,5 +16,4 @@ for route_list in route_lists:
 urlpatterns = [
     path('api/', include((router.urls, 'rolca-core-api'), namespace='rolca-core-api')),
     path('core/', include('rolca.core.urls', namespace='rolca-core')),
-    path('', include('rolca.frontend.urls', namespace='rolca-frontend')),
 ]
