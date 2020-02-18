@@ -180,8 +180,6 @@ class Submission(BaseModel):
 
     theme = models.ForeignKey(Theme, on_delete=models.PROTECT)
 
-    photo = models.OneToOneField('File', on_delete=models.CASCADE)
-
     def __str__(self):
         """Return string representation of Submission object."""
         return self.title
@@ -202,6 +200,8 @@ class File(BaseModel):
 
         verbose_name = _('file')
         verbose_name_plural = _('files')
+
+    submission = models.OneToOneField(Submission, on_delete=models.CASCADE)
 
     #: uploaded file
     file = models.ImageField(upload_to=generate_file_filename)

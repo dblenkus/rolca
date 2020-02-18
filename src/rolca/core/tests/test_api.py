@@ -172,31 +172,25 @@ class SubmissionViewSetTest(APITestCase):
 
         file_mock = SimpleUploadedFile('photo.jpg', b'fake photo')
 
-        # pk must be set to skip on-create procedure
-        self.file1 = File.objects.create(pk=1, user=self.user1, file=file_mock)
-        self.file2 = File.objects.create(pk=2, user=self.user2, file=file_mock)
-        self.file3 = File.objects.create(pk=3, user=self.user2, file=file_mock)
+        submission1 = Submission.objects.create(
+            title="Submission 1", user=self.user1, author=author1, theme=theme,
+        )
+        submission2 = Submission.objects.create(
+            title="Submission 2", user=self.user2, author=author2, theme=theme,
+        )
+        submission3 = Submission.objects.create(
+            title="Submission 3", user=self.user2, author=author2, theme=theme,
+        )
 
-        Submission.objects.create(
-            title="Submission 1",
-            user=self.user1,
-            author=author1,
-            theme=theme,
-            photo=self.file1,
+        # pk must be set to skip on-create procedure
+        self.file1 = File.objects.create(
+            pk=1, user=self.user1, submission=submission1, file=file_mock
         )
-        Submission.objects.create(
-            title="Submission 2",
-            user=self.user2,
-            author=author2,
-            theme=theme,
-            photo=self.file2,
+        self.file2 = File.objects.create(
+            pk=2, user=self.user2, submission=submission2, file=file_mock
         )
-        Submission.objects.create(
-            title="Submission 3",
-            user=self.user2,
-            author=author2,
-            theme=theme,
-            photo=self.file3,
+        self.file3 = File.objects.create(
+            pk=3, user=self.user2, submission=submission3, file=file_mock
         )
 
     def tearDown(self):
