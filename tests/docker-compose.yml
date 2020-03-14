@@ -1,6 +1,7 @@
 postgresql:
   image: postgres:11
   environment:
+    POSTGRES_HOST_AUTH_METHOD: trust
     POSTGRES_USER: rolca
     POSTGRES_DB: rolca
   ports:

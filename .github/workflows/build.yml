@@ -36,6 +36,7 @@ jobs:
       postgres:
         image: postgres:11
         env:
+          POSTGRES_HOST_AUTH_METHOD: trust
           POSTGRES_USER: rolca
           POSTGRES_DB: rolca
         ports:
