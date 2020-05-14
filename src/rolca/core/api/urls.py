@@ -30,6 +30,6 @@ needs.
 from rolca.core.api.views import ContestViewSet, SubmissionViewSet
 
 routeList = (
-    (r'photo', SubmissionViewSet),
+    (r'submission', SubmissionViewSet),
     (r'contest', ContestViewSet),
 )
