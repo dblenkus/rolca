@@ -12,12 +12,12 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameModel(
-            old_name='Photo',
-            new_name='Submission',
-        ),
+        migrations.RenameModel(old_name='Photo', new_name='Submission',),
         migrations.AlterModelOptions(
             name='submission',
-            options={'verbose_name': 'submission', 'verbose_name_plural': 'submissions'},
+            options={
+                'verbose_name': 'submission',
+                'verbose_name_plural': 'submissions',
+            },
         ),
     ]
