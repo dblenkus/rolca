@@ -33,6 +33,7 @@ class FileSerializer(serializers.ModelSerializer):
             'id',
             'file',
         )
+        read_only_fields = ['id']
 
 
 class SubmissionSerializer(serializers.ModelSerializer):

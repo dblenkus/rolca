@@ -27,6 +27,7 @@ import os
 from PIL import Image
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.utils import timezone
@@ -185,6 +186,16 @@ class Submission(BaseModel):
         return self.title
 
 
+def validate_image(file):
+    max_size = settings.ROLCA_MAX_UPLOAD_SIZE
+    if file.size > max_size:
+        raise ValidationError("Max size of file is {}B.".format(max_size))
+
+    max_res = settings.ROLCA_MAX_UPLOAD_RESOLUTION
+    if max(file.image.size) > max_res:
+        raise ValidationError("Max photo resolution is {}px.".format(max_res))
+
+
 class File(BaseModel):
     """Model for storing uploaded images.
 
@@ -204,7 +215,9 @@ class File(BaseModel):
     submission = models.OneToOneField(Submission, null=True, on_delete=models.CASCADE)
 
     #: uploaded file
-    file = models.ImageField(upload_to=generate_file_filename)
+    file = models.ImageField(
+        upload_to=generate_file_filename, validators=[validate_image]
+    )
 
     #: thumbnail of uploaded file
     thumbnail = models.ImageField(upload_to=generate_thumb_filename)

@@ -16,13 +16,27 @@ from datetime import date
 
 from django.db.models import Q
 
-from rest_framework import viewsets
+from rest_framework import mixins, permissions, viewsets
 
+from rolca.core.api.parsers import ImageUploadParser
 from rolca.core.api.permissions import AdminOrReadOnly
-from rolca.core.api.serializers import ContestSerializer, SubmissionSerializer
-from rolca.core.models import Contest, Submission
+from rolca.core.api.serializers import (
+    ContestSerializer,
+    FileSerializer,
+    SubmissionSerializer,
+)
+from rolca.core.models import Contest, File, Submission
 
 logger = logging.getLogger(__name__)
+
+
+class FileViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    """API viewset for File objects."""
+
+    parser_classes = [ImageUploadParser]
+    serializer_class = FileSerializer
+    queryset = File.objects.none()
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class SubmissionViewSet(viewsets.ModelViewSet):

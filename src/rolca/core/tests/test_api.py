@@ -1,16 +1,27 @@
+import io
 from datetime import date, timedelta
 
 from mock import MagicMock, Mock, patch
+from PIL import Image
 
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test.utils import override_settings
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
 
-from rolca.core.api.views import ContestViewSet, SubmissionViewSet
+from rolca.core.api.views import ContestViewSet, FileViewSet, SubmissionViewSet
 from rolca.core.models import Author, Contest, File, Submission, Theme
+
+
+def generate_photo():
+    file = io.BytesIO()
+    image = Image.new('RGB', (100, 100))
+    image.save(file, 'jpeg')
+    file.seek(0)
+    return file
 
 
 class ContestApiTest(APITestCase):
@@ -209,3 +220,63 @@ class SubmissionViewSetTest(APITestCase):
 
         viewset_mock.request = Mock(user=self.user2)
         self.assertEqual(len(SubmissionViewSet.get_queryset(viewset_mock)), 3)
+
+
+@override_settings(ROLCA_MAX_UPLOAD_SIZE=1024 ** 2)
+@override_settings(ROLCA_MAX_UPLOAD_RESOLUTION=480)
+class FileViewSetTest(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        user_model = get_user_model()
+        cls.user = user_model.objects.create_user(username='user')
+
+    def setUp(self):
+        self.factory = APIRequestFactory()
+        self.file_view = FileViewSet.as_view({'post': 'create',})
+
+    def get_upload_request(self):
+        photo = generate_photo().read()
+        headers = {"HTTP_CONTENT_DISPOSITION": "attachment; filename=test.jpg;"}
+        return self.factory.post('', photo, content_type='image/jpeg', **headers)
+
+    @patch('rolca.core.api.views.FileViewSet.create')
+    def test_create_permissions(self, file_create_mock):
+        file_create_mock.return_value = Response()
+        request = self.factory.post('', format='json')
+
+        # Public user.
+        resp = self.file_view(request)
+        self.assertEqual(resp.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(file_create_mock.call_count, 0)
+
+        # Admin user.
+        force_authenticate(request, self.user)
+        resp = self.file_view(request)
+        self.assertEqual(file_create_mock.call_count, 1)
+
+    def test_create(self):
+        request = self.get_upload_request()
+        force_authenticate(request, self.user)
+
+        resp = self.file_view(request)
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(File.objects.count(), 1)
+        self.assertEqual(File.objects.first().file.read(), generate_photo().read())
+
+    @override_settings(ROLCA_MAX_UPLOAD_SIZE=10)
+    def test_create_exceed_size(self):
+        request = self.get_upload_request()
+        force_authenticate(request, self.user)
+
+        resp = self.file_view(request)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data['file'][0], "Max size of file is 10B.")
+
+    @override_settings(ROLCA_MAX_UPLOAD_RESOLUTION=10)
+    def test_create_exceed_res(self):
+        request = self.get_upload_request()
+        force_authenticate(request, self.user)
+
+        resp = self.file_view(request)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.data['file'][0], "Max photo resolution is 10px.")
