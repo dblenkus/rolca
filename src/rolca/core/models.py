@@ -201,7 +201,7 @@ class File(BaseModel):
         verbose_name = _('file')
         verbose_name_plural = _('files')
 
-    submission = models.OneToOneField(Submission, on_delete=models.CASCADE)
+    submission = models.OneToOneField(Submission, null=True, on_delete=models.CASCADE)
 
     #: uploaded file
     file = models.ImageField(upload_to=generate_file_filename)
