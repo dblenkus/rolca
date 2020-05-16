@@ -238,9 +238,8 @@ class File(BaseModel):
 
     def __str__(self):
         """Return string representation of File object."""
-        submission = self.submission_set.first()
-        submission_title = submission.title if submission else '?'
-        submission_id = submission.pk if submission else '?'
+        submission_title = self.submission.title if self.submission else '?'
+        submission_id = self.submission.pk if self.submission else '?'
         return "id: {}, filename: {}, submission id: {}, submission title: {}".format(
             self.pk, self.file.name, submission_id, submission_title
         )
