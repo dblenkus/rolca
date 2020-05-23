@@ -22,49 +22,62 @@ from rest_framework import serializers
 from rolca.core.models import Contest, File, Submission, Theme
 
 
-class FileSerializer(serializers.ModelSerializer):
-    """Serializer for File objects."""
+class BaseSerializer(serializers.ModelSerializer):
+    """Base serializer for Rolca models."""
+
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         """Serializer configuration."""
 
-        model = File
-        fields = (
-            'id',
-            'file',
-        )
+        fields = ['id', 'user']
         read_only_fields = ['id']
 
 
-class SubmissionSerializer(serializers.ModelSerializer):
+class FileSerializer(BaseSerializer):
+    """Serializer for File objects."""
+
+    class Meta(BaseSerializer.Meta):
+        """Serializer configuration."""
+
+        model = File
+        fields = BaseSerializer.Meta.fields + ['file']
+
+
+class SubmissionSerializer(BaseSerializer):
     """Serializer for Submission objects."""
 
-    photo = FileSerializer()
+    theme = serializers.PrimaryKeyRelatedField(queryset=Theme.objects.all(),)
 
-    class Meta:
+    class Meta(BaseSerializer.Meta):
         """Serializer configuration."""
 
         model = Submission
-        fields = ('id', 'photo', 'title')
+        fields = BaseSerializer.Meta.fields + ['author', 'theme', 'title', 'files']
 
 
-class ThemeSerializer(serializers.ModelSerializer):
+class ThemeSerializer(BaseSerializer):
     """Serializer for Theme objects."""
 
-    class Meta:
+    class Meta(BaseSerializer.Meta):
         """Serializer configuration."""
 
         model = Theme
-        fields = ('id', 'title', 'is_series', 'n_photos')
+        fields = BaseSerializer.Meta.fields + ['title', 'is_series', 'n_photos']
 
 
-class ContestSerializer(serializers.ModelSerializer):
+class ContestSerializer(BaseSerializer):
     """Serializer for Contest objects."""
 
     themes = ThemeSerializer(many=True, read_only=True)
 
-    class Meta:
+    class Meta(BaseSerializer.Meta):
         """Serializer configuration."""
 
         model = Contest
-        fields = ('id', 'title', 'start_date', 'end_date', 'themes')
+        fields = BaseSerializer.Meta.fields + [
+            'title',
+            'start_date',
+            'end_date',
+            'themes',
+        ]
