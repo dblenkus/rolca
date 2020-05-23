@@ -212,7 +212,9 @@ class File(BaseModel):
         verbose_name = _('file')
         verbose_name_plural = _('files')
 
-    submission = models.OneToOneField(Submission, null=True, on_delete=models.CASCADE)
+    submission = models.ForeignKey(
+        Submission, related_name='files', null=True, on_delete=models.CASCADE
+    )
 
     #: uploaded file
     file = models.ImageField(
