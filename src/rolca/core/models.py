@@ -86,6 +86,12 @@ class Contest(BaseModel):
     #: indicate if user must be logged-in to participate in contest
     login_required = models.BooleanField(_('Login required'), default=False)
 
+    #: header image of the contest
+    header_image = models.ImageField(null=True, blank=True)
+
+    #: notice in HTML form
+    notice_html = models.TextField(default='')
+
     def save(self, *args, **kwargs):
         """Save Contest instance."""
         if not self.publish_date:

@@ -122,4 +122,6 @@ class ContestSerializer(BaseSerializer):
             'start_date',
             'end_date',
             'themes',
+            'header_image',
+            'notice_html',
         ]
