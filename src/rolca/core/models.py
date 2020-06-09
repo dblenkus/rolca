@@ -65,6 +65,7 @@ class Contest(BaseModel):
     class Meta:
         """Contest Meta options."""
 
+        ordering = ['id']
         verbose_name = _('contest')
         verbose_name_plural = _('contests')
 
@@ -124,6 +125,7 @@ class Theme(BaseModel):
     class Meta:
         """Theme Meta options."""
 
+        ordering = ['id']
         verbose_name = _('theme')
         verbose_name_plural = _('themes')
 
@@ -178,6 +180,7 @@ class Submission(BaseModel):
     class Meta:
         """Submission Meta options."""
 
+        ordering = ['id']
         verbose_name = _('submission')
         verbose_name_plural = _('submissions')
 
@@ -215,6 +218,7 @@ class File(BaseModel):
     class Meta:
         """File Meta options."""
 
+        ordering = ['id']
         verbose_name = _('file')
         verbose_name_plural = _('files')
 
@@ -272,6 +276,7 @@ class Author(BaseModel):
     class Meta:
         """Author Meta options."""
 
+        ordering = ['id']
         verbose_name = _('author')
         verbose_name_plural = _('authors')
 
