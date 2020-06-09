@@ -22,7 +22,7 @@ class ThemeInline(admin.TabularInline):
     """Inline Theme tabular used in `ContestAdmin`."""
 
     model = Theme
-    fields = ('title', 'n_photos')
+    fields = ('title', 'n_photos', 'is_series')
     extra = 1
 
 
