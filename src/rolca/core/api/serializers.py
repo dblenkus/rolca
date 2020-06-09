@@ -119,6 +119,7 @@ class ContestSerializer(BaseSerializer):
         model = Contest
         fields = BaseSerializer.Meta.fields + [
             'title',
+            'description',
             'start_date',
             'end_date',
             'themes',
