@@ -28,6 +28,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'django_filters',
     'rolca.core',
 )
 
@@ -69,6 +70,12 @@ DATABASES = {
         'HOST': os.environ.get('ROLCA_POSTGRESQL_HOST', 'localhost'),
         'PORT': int(os.environ.get('ROLCA_POSTGRESQL_PORT', 5432)),
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.backends.DjangoFilterBackend',
+    ),
 }
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')

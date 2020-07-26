@@ -31,6 +31,7 @@ setuptools.setup(
     install_requires=[
         'Django~=3.0rc1',
         'djangorestframework>=3.10.0',
+        'django-filter~=2.3.0',
         'Pillow>=6.1.0',
         'psycopg2-binary~=2.8.0',
     ],

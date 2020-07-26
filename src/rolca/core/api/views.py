@@ -19,6 +19,7 @@ from django.db.models import Q
 from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.response import Response
 
+from rolca.core.api.filters import SubmissionFilter
 from rolca.core.api.parsers import ImageUploadParser
 from rolca.core.api.permissions import AdminOrReadOnly
 from rolca.core.api.serializers import (
@@ -61,6 +62,7 @@ class SubmissionViewSet(viewsets.ModelViewSet):
 
     serializer_class = SubmissionSerializer
     queryset = Submission.objects.all()
+    filter_class = SubmissionFilter
 
     def get_queryset(self):
         """Return queryset for submissions that can be shown to user.
@@ -71,7 +73,7 @@ class SubmissionViewSet(viewsets.ModelViewSet):
 
         """
         return Submission.objects.filter(
-            Q(author__user=self.request.user)
+            Q(user__id=self.request.user.id)
             | Q(theme__contest__publish_date__lte=date.today())
         )
 
