@@ -32,12 +32,12 @@ class ContestAdmin(admin.ModelAdmin):
     fieldsets_new = [
         (None, {'fields': ('title', 'description')}),
         ('Dates', {'fields': ('start_date', 'end_date', 'publish_date')}),
-        ('Details', {'fields': ('header_image', 'notice_html')}),
+        ('Details', {'fields': ('header_image', 'notice_html', 'confirmation_email')}),
     ]
     fieldsets = [
         (None, {'fields': ('title', 'description')}),
         ('Dates', {'fields': ('start_date', 'end_date', 'publish_date')}),
-        ('Details', {'fields': ('header_image', 'notice_html')}),
+        ('Details', {'fields': ('header_image', 'notice_html', 'confirmation_email')}),
         ('Download', {'fields': ('download_action',)}),
     ]
     readonly_fields = ('download_action',)

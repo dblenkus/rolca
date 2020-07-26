@@ -86,6 +86,12 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
+
+        theme_ids = [submission['theme'] for submission in serializer.data]
+        contest = Contest.objects.filter(themes__id__in=theme_ids).first()
+        if contest.confirmation_email and request.user.email:
+            contest.confirmation_email.send(request.user.email)
+
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )

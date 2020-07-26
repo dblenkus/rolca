@@ -33,6 +33,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from drf_user.models import Email
+
 
 class BaseModel(models.Model):
     """Base model for all other models."""
@@ -92,6 +94,10 @@ class Contest(BaseModel):
 
     #: notice in HTML form
     notice_html = models.TextField(default='')
+
+    confirmation_email = models.ForeignKey(
+        Email, null=True, blank=True, on_delete=models.SET_NULL
+    )
 
     def save(self, *args, **kwargs):
         """Save Contest instance."""
