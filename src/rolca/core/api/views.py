@@ -16,7 +16,7 @@ import logging
 from django.db.models import Q
 from django.utils import timezone
 
-from rest_framework import mixins, permissions, status, viewsets
+from rest_framework import exceptions, mixins, permissions, status, viewsets
 from rest_framework.response import Response
 
 from rolca.core.api.filters import SubmissionFilter
@@ -95,6 +95,21 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        if request.user != instance.user:
+            raise exceptions.PermissionDenied(
+                "You can only delete your own submissions."
+            )
+        if instance.theme.contest.publish_date < timezone.now():
+            raise exceptions.PermissionDenied(
+                "You cannot delete already published submissions."
+            )
+
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ContestViewSet(viewsets.ModelViewSet):
