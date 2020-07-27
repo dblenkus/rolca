@@ -12,9 +12,9 @@ Core API views
 
 """
 import logging
-from datetime import date
 
 from django.db.models import Q
+from django.utils import timezone
 
 from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.response import Response
@@ -74,7 +74,7 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         """
         return Submission.objects.filter(
             Q(user__id=self.request.user.id)
-            | Q(theme__contest__publish_date__lte=date.today())
+            | Q(theme__contest__publish_date__lte=timezone.now())
         )
 
     def create(self, request):
