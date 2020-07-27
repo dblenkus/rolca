@@ -23,6 +23,8 @@ Core models
 import hashlib
 import io
 import os
+import struct
+import time
 
 from PIL import Image
 
@@ -164,6 +166,7 @@ class Theme(BaseModel):
 def _generate_filename(instance, filename, prefix):
     """Generate unique filename with given prefix."""
     md5 = hashlib.md5()
+    md5.update(struct.pack('f', time.time()))
     for chunk in instance.file.chunks():
         md5.update(chunk)
     extension = os.path.splitext(filename)[1]
