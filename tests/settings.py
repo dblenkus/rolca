@@ -22,6 +22,7 @@ MIDDLEWARE = [
 
 
 INSTALLED_APPS = (
+    "channels",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -29,6 +30,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'django_filters',
+    'rolca.backup',
     'rolca.core',
 )
 
@@ -77,6 +79,10 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.backends.DjangoFilterBackend',
     ),
 }
+
+CHANNEL_LAYERS = {'default': {'BACKEND': 'channels.layers.InMemoryChannelLayer'}}
+
+ASGI_APPLICATION = 'rolca.tests.routing.application'
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 MEDIA_URL = '/media/'

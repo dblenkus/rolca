@@ -29,6 +29,9 @@ setuptools.setup(
     package_dir={'': 'src'},
     python_requires='>=3.6, <3.9',
     install_requires=[
+        'boto3~=1.14.0',
+        'channels~=2.4.0',
+        'channels_redis~=3.0.1',
         'Django~=3.0rc1',
         'djangorestframework>=3.10.0',
         'django-filter~=2.3.0',
