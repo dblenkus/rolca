@@ -118,3 +118,4 @@ class ContestViewSet(viewsets.ModelViewSet):
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
     permission_classes = (AdminOrReadOnly,)
+    filter_class = ContestFilter
