@@ -30,7 +30,7 @@ class BaseSerializer(serializers.ModelSerializer):
     class Meta:
         """Serializer configuration."""
 
-        fields = ['id', 'user']
+        fields = ['id', 'user', 'created', 'modified']
         read_only_fields = ['id']
 
 
