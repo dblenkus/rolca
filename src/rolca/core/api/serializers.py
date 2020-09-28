@@ -19,7 +19,7 @@ Core API serializers
 """
 from rest_framework import serializers
 
-from rolca.core.models import Author, Contest, File, Submission, Theme
+from rolca.core.models import Author, Contest, File, Submission, SubmissionSet, Theme
 
 
 class BaseSerializer(serializers.ModelSerializer):
@@ -63,7 +63,7 @@ class AuthorSerializer(BaseSerializer):
 class SubmissionSerializer(BaseSerializer):
     """Serializer for Submission objects."""
 
-    theme = serializers.PrimaryKeyRelatedField(queryset=Theme.objects.all(),)
+    theme = serializers.PrimaryKeyRelatedField(queryset=Theme.objects.all())
 
     class Meta(BaseSerializer.Meta):
         """Serializer configuration."""
@@ -96,6 +96,18 @@ class SubmissionSerializer(BaseSerializer):
         submission = Submission.objects.create(**validated_data)
         submission.files.add(*files)
         return submission
+
+
+class SubmissionSetSerializer(BaseSerializer):
+    """Serializer for SubmissionSet objects."""
+
+    submissions = SubmissionSerializer(many=True)
+
+    class Meta(BaseSerializer.Meta):
+        """Serializer configuration."""
+
+        model = SubmissionSet
+        fields = BaseSerializer.Meta.fields + ['submissions']
 
 
 class ThemeSerializer(BaseSerializer):

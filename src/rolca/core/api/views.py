@@ -19,7 +19,7 @@ from django.utils import timezone
 from rest_framework import exceptions, mixins, permissions, status, viewsets
 from rest_framework.response import Response
 
-from rolca.core.api.filters import SubmissionFilter
+from rolca.core.api.filters import ContestFilter, SubmissionFilter
 from rolca.core.api.parsers import ImageUploadParser
 from rolca.core.api.permissions import AdminOrReadOnly
 from rolca.core.api.serializers import (
@@ -27,8 +27,9 @@ from rolca.core.api.serializers import (
     ContestSerializer,
     FileSerializer,
     SubmissionSerializer,
+    SubmissionSetSerializer,
 )
-from rolca.core.models import Author, Contest, File, Submission
+from rolca.core.models import Author, Contest, File, Submission, SubmissionSet
 
 logger = logging.getLogger(__name__)
 
@@ -85,13 +86,19 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data, **serializer_kwargs)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
+
+        instance = serializer.instance
+        submission_set = SubmissionSet.objects.create()
+        submission_set.submissions.add(
+            *instance if isinstance(instance, list) else instance
+        )
 
         theme_ids = [submission['theme'] for submission in serializer.data]
         contest = Contest.objects.filter(themes__id__in=theme_ids).first()
         if contest.confirmation_email and request.user.email:
             contest.confirmation_email.send(request.user.email)
 
+        headers = self.get_success_headers(serializer.data)
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
@@ -108,6 +115,37 @@ class SubmissionViewSet(viewsets.ModelViewSet):
                 "You cannot delete already published submissions."
             )
 
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SubmissionSetViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = SubmissionSet.objects.all()
+    serializer_class = SubmissionSetSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        """Return queryset for submissions that can be shown to user.
+
+        Return:
+        * all submissions for already finished contests
+        * user's submissions
+
+        """
+        if self.request.user.is_superuser:
+            return self.queryset
+
+        return self.queryset.filter(user=self.request.user)
+
+    def destroy(self, request, *args, **kwargs):
+        """Destroy the instance and all related submissions."""
+        instance = self.get_object()
+        instance.submissions.all().delete()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 

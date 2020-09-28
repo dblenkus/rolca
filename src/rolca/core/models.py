@@ -83,7 +83,7 @@ class Contest(BaseModel):
     start_date = models.DateTimeField(_('Start date'))
 
     #: date when contest ends
-    end_date = models.DateTimeField(_('End date'),)
+    end_date = models.DateTimeField(_('End date'))
 
     #: date when results will be published
     publish_date = models.DateTimeField(_('Publish date'), blank=True)
@@ -181,6 +181,26 @@ def generate_file_filename(instance, filename):
 def generate_thumb_filename(instance, filename):
     """Generate filename for thumbnails of uploaded photos."""
     return _generate_filename(instance, filename, 'thumbs')
+
+
+class SubmissionSet(BaseModel):
+    """Model for organizing submissions."""
+
+    class Meta:
+        """SubmissionSet Meta options."""
+
+        ordering = ['id']
+        verbose_name = _('submission set')
+        verbose_name_plural = _('submission sets')
+
+    submissions = models.ManyToManyField('Submission')
+
+    def __str__(self):
+        """Return string representation of SubmissionSet object."""
+
+        first_submission = self.submission.first()
+        author = first_submission.author if first_submission else '/'
+        return "{} submissions by {}".format(self.submissions.count(), author)
 
 
 class Submission(BaseModel):
