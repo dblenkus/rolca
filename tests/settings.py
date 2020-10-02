@@ -32,6 +32,7 @@ INSTALLED_APPS = (
     'django_filters',
     'rolca.backup',
     'rolca.core',
+    'rolca.payment',
 )
 
 ROOT_URLCONF = 'tests.urls'
