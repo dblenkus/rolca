@@ -198,7 +198,7 @@ class SubmissionSet(BaseModel):
     def __str__(self):
         """Return string representation of SubmissionSet object."""
 
-        first_submission = self.submission.first()
+        first_submission = self.submissions.first()
         author = first_submission.author if first_submission else '/'
         return "{} submissions by {}".format(self.submissions.count(), author)
 
