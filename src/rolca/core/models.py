@@ -97,6 +97,9 @@ class Contest(BaseModel):
     #: notice in HTML form
     notice_html = models.TextField(default='')
 
+    #: confirmation in HTML form
+    confirmation_html = models.TextField(default='')
+
     confirmation_email = models.ForeignKey(
         Email, null=True, blank=True, on_delete=models.SET_NULL
     )

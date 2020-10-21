@@ -137,4 +137,5 @@ class ContestSerializer(BaseSerializer):
             'themes',
             'header_image',
             'notice_html',
+            'confirmation_html',
         ]
