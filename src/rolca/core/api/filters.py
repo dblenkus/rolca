@@ -9,7 +9,7 @@ from django_filters import rest_framework as filters
 
 from django.utils import timezone
 
-from rolca.core.models import Contest, Submission
+from rolca.core.models import Submission, SubmissionSet
 
 
 class SubmissionFilter(filters.FilterSet):
@@ -20,6 +20,14 @@ class SubmissionFilter(filters.FilterSet):
     class Meta:
         model = Submission
         fields = ["theme"]
+
+
+class SubmissionSetFilter(filters.FilterSet):
+    """Filter for SubmissionSet API endpoint."""
+
+    class Meta:
+        model = SubmissionSet
+        fields = ["contest"]
 
 
 class ContestFilter(filters.FilterSet):

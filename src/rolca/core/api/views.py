@@ -19,7 +19,7 @@ from django.utils import timezone
 from rest_framework import exceptions, mixins, permissions, status, viewsets
 from rest_framework.response import Response
 
-from rolca.core.api.filters import ContestFilter, SubmissionFilter
+from rolca.core.api.filters import ContestFilter, SubmissionFilter, SubmissionSetFilter
 from rolca.core.api.parsers import ImageUploadParser
 from rolca.core.api.permissions import AdminOrReadOnly
 from rolca.core.api.serializers import (
@@ -132,6 +132,7 @@ class SubmissionSetViewSet(
     queryset = SubmissionSet.objects.all()
     serializer_class = SubmissionSetSerializer
     permission_classes = (permissions.IsAuthenticated,)
+    filter_class = SubmissionSetFilter
 
     def get_queryset(self):
         """Return queryset for submissions that can be shown to user.
