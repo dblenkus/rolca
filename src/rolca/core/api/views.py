@@ -88,13 +88,17 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
 
         instance = serializer.instance
-        submission_set = SubmissionSet.objects.create()
+        first_instance = instance[0] if isinstance(instance, list) else instance
+        theme_ids = [submission['theme'] for submission in serializer.data]
+        contest = Contest.objects.filter(themes__id__in=theme_ids).first()
+
+        submission_set = SubmissionSet.objects.create(
+            author=first_instance.author, contest=contest
+        )
         submission_set.submissions.add(
             *instance if isinstance(instance, list) else instance
         )
 
-        theme_ids = [submission['theme'] for submission in serializer.data]
-        contest = Contest.objects.filter(themes__id__in=theme_ids).first()
         if contest.confirmation_email and request.user.email:
             contest.confirmation_email.send(request.user.email)
 

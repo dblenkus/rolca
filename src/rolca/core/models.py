@@ -198,6 +198,12 @@ class SubmissionSet(BaseModel):
 
     submissions = models.ManyToManyField('Submission')
 
+    contest = models.ForeignKey(
+        Contest, on_delete=models.CASCADE, related_name='submission_sets'
+    )
+
+    author = models.ForeignKey('Author', on_delete=models.CASCADE)
+
     def __str__(self):
         """Return string representation of SubmissionSet object."""
 
