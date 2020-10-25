@@ -150,6 +150,12 @@ class SubmissionSetViewSet(
     def destroy(self, request, *args, **kwargs):
         """Destroy the instance and all related submissions."""
         instance = self.get_object()
+
+        if instance.contest.publish_date < timezone.now():
+            raise exceptions.PermissionDenied(
+                "You cannot delete already published submission sets."
+            )
+
         instance.submissions.all().delete()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
