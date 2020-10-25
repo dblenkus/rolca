@@ -93,7 +93,7 @@ class SubmissionViewSet(viewsets.ModelViewSet):
         contest = Contest.objects.filter(themes__id__in=theme_ids).first()
 
         submission_set = SubmissionSet.objects.create(
-            author=first_instance.author, contest=contest
+            author=first_instance.author, user=first_instance.user, contest=contest
         )
         submission_set.submissions.add(
             *instance if isinstance(instance, list) else instance
