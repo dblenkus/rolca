@@ -53,11 +53,20 @@ class FileSerializer(BaseSerializer):
 class AuthorSerializer(BaseSerializer):
     """Serializer for Author objects."""
 
+    email = serializers.SerializerMethodField('get_email')
+
     class Meta(BaseSerializer.Meta):
         """Serializer configuration."""
 
         model = Author
         fields = BaseSerializer.Meta.fields + ['first_name', 'last_name', 'email']
+
+    def get_email(self, author):
+        """Return author's email for superusers, ``None`` field otherwise."""
+        if not self.context['request'].user.is_superuser:
+            return None
+
+        return author.user.email
 
 
 class SubmissionSerializer(BaseSerializer):
