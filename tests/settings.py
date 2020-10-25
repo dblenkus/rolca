@@ -33,6 +33,7 @@ INSTALLED_APPS = (
     'rolca.backup',
     'rolca.core',
     'rolca.payment',
+    'rolca.rating',
 )
 
 ROOT_URLCONF = 'tests.urls'
