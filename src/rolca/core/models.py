@@ -276,11 +276,11 @@ class File(BaseModel):
         """Add photo thumbnail and save object."""
         if not self.pk:  # on create
             image = Image.open(self.file)
-            image.thumbnail((100, 100), Image.ANTIALIAS)
+            image.thumbnail((400, 400), Image.ANTIALIAS)
 
             thumb = io.BytesIO()
             image.save(
-                thumb, format="jpeg", quality=100, optimize=True, progressive=True
+                thumb, format="jpeg", quality=80, optimize=True, progressive=True
             )
             self.thumbnail = InMemoryUploadedFile(
                 thumb, None, self.file.name, 'image/jpeg', thumb.tell(), None
