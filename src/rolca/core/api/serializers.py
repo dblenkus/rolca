@@ -47,7 +47,7 @@ class FileSerializer(BaseSerializer):
         """Serializer configuration."""
 
         model = File
-        fields = BaseSerializer.Meta.fields + ['file']
+        fields = BaseSerializer.Meta.fields + ['file', 'thumbnail']
 
 
 class AuthorSerializer(BaseSerializer):
