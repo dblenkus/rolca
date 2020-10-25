@@ -116,7 +116,18 @@ class SubmissionSetSerializer(BaseSerializer):
         """Serializer configuration."""
 
         model = SubmissionSet
-        fields = BaseSerializer.Meta.fields + ['submissions']
+        fields = BaseSerializer.Meta.fields + ['submissions', 'author', 'contest']
+
+    def get_fields(self):
+        """Dynamically adapt fields based on the current request."""
+        fields = super().get_fields()
+
+        if self.context['request'].method == "GET":
+            fields['author'] = AuthorSerializer()
+        else:
+            fields['author'] = IdRelatedSerializer()
+
+        return fields
 
 
 class ThemeSerializer(BaseSerializer):
