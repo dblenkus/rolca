@@ -133,11 +133,21 @@ class SubmissionSetSerializer(BaseSerializer):
 class ThemeSerializer(BaseSerializer):
     """Serializer for Theme objects."""
 
+    submissions_number = serializers.SerializerMethodField('get_submissions_number')
+
     class Meta(BaseSerializer.Meta):
         """Serializer configuration."""
 
         model = Theme
-        fields = BaseSerializer.Meta.fields + ['title', 'is_series', 'n_photos']
+        fields = BaseSerializer.Meta.fields + [
+            'title',
+            'is_series',
+            'n_photos',
+            'submissions_number',
+        ]
+
+    def get_submissions_number(self, theme):
+        return theme.submission_set.count()
 
 
 class ContestSerializer(BaseSerializer):
