@@ -48,6 +48,9 @@ class FileSerializer(BaseSerializer):
 
         model = File
         fields = BaseSerializer.Meta.fields + ['file', 'thumbnail']
+        extra_kwargs = {
+            'thumbnail': {'required': False},
+        }
 
 
 class AuthorSerializer(BaseSerializer):
