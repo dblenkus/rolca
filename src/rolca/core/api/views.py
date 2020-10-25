@@ -63,6 +63,7 @@ class SubmissionViewSet(viewsets.ModelViewSet):
 
     serializer_class = SubmissionSerializer
     queryset = Submission.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
     filter_class = SubmissionFilter
 
     def get_queryset(self):
