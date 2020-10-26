@@ -81,7 +81,13 @@ class SubmissionSerializer(BaseSerializer):
         """Serializer configuration."""
 
         model = Submission
-        fields = BaseSerializer.Meta.fields + ['author', 'theme', 'title', 'files']
+        fields = BaseSerializer.Meta.fields + [
+            'author',
+            'theme',
+            'title',
+            'description',
+            'files',
+        ]
 
     def get_fields(self):
         """Dynamically adapt fields based on the current request."""

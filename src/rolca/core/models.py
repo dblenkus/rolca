@@ -224,6 +224,8 @@ class Submission(BaseModel):
 
     title = models.CharField(_('Title'), max_length=100, null=True, blank=True)
 
+    description = models.TextField(null=True, blank=True)
+
     author = models.ForeignKey('Author', on_delete=models.CASCADE)
 
     theme = models.ForeignKey(Theme, on_delete=models.PROTECT)
