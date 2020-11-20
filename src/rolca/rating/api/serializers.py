@@ -48,6 +48,7 @@ class ThemeSerializer(CoreThemeSerializer):
     """Serializer for Theme objects."""
 
     ratings_number = serializers.SerializerMethodField('get_ratings_number')
+    submissions_number = serializers.SerializerMethodField('get_submissions_number')
 
     class Meta(CoreThemeSerializer.Meta):
         """Serializer configuration."""
@@ -60,6 +61,9 @@ class ThemeSerializer(CoreThemeSerializer):
         return Rating.objects.filter(
             user=self.context['request'].user, submission__theme=theme
         ).count()
+
+    def get_submissions_number(self, theme):
+        return theme.submission_set.filter(submissionset__payment__paid=True).count()
 
 
 class ContestSerializer(CoreContestSerializer):

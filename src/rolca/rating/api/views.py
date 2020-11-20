@@ -38,7 +38,10 @@ class SubmissionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             contest__in=judge_qs.values('contest'),
             contest__publish_date__gte=timezone.now(),
         )
-        return Submission.objects.filter(theme__in=theme_qs)
+        return Submission.objects.filter(
+            theme__in=theme_qs,
+            submissionset__payment__paid=True,
+        )
 
 
 class ContestViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
@@ -52,5 +55,6 @@ class ContestViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         """Return queryset for contests that can be shown to judge."""
         judge_qs = Judge.objects.filter(judge=self.request.user)
         return Contest.objects.filter(
-            pk__in=judge_qs.values('contest'), publish_date__gte=timezone.now(),
+            pk__in=judge_qs.values('contest'),
+            publish_date__gte=timezone.now(),
         )
