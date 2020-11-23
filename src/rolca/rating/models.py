@@ -14,7 +14,7 @@ Rating models
 from django.conf import settings
 from django.db import models
 
-from rolca.core.models import BaseModel, Contest, Submission
+from rolca.core.models import BaseModel, Contest, Submission, Theme
 
 
 class Judge(BaseModel):
@@ -37,3 +37,34 @@ class Rating(BaseModel):
     submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
 
     rating = models.IntegerField()
+
+
+class ThemeResults(BaseModel):
+    """Model for theme results."""
+
+    theme = models.OneToOneField(
+        Theme, on_delete=models.CASCADE, related_name='results'
+    )
+
+    accepted_threshold = models.SmallIntegerField()
+
+
+class SubmissionReward(BaseModel):
+    """Model for submission rewards."""
+
+    GOLD = 1
+    SILVER = 2
+    BRONZE = 3
+    HONORABLE_MENTION = 4
+    KIND_CHOICES = [
+        (GOLD, 'Gold'),
+        (SILVER, 'Silver'),
+        (BRONZE, 'Bronze'),
+        (HONORABLE_MENTION, 'Honorable Mention'),
+    ]
+
+    submission = models.OneToOneField(
+        Submission, on_delete=models.CASCADE, related_name='reward'
+    )
+
+    kind = models.SmallIntegerField(choices=KIND_CHOICES)

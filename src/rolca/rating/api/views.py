@@ -1,6 +1,6 @@
 """.. Ignore pydocstyle D400."""
+from django.db.models import F, Prefetch, Sum
 from django.utils import timezone
-
 from rest_framework import mixins, permissions, viewsets
 
 from rolca.core.api.serializers import SubmissionSerializer
@@ -8,7 +8,12 @@ from rolca.core.api.filters import ContestFilter, SubmissionFilter
 from rolca.core.models import Contest, Submission, Theme
 from rolca.rating.api.filters import RatingFilter
 from rolca.rating.api.permissions import IsActiveJudge
-from rolca.rating.api.serializers import ContestSerializer, RatingSerializer
+from rolca.rating.api.serializers import (
+    ContestSerializer,
+    RatingSerializer,
+    SubmissionResultsSerializer,
+    ThemeResultsSerializer,
+)
 from rolca.rating.models import Judge, Rating
 
 
@@ -58,3 +63,38 @@ class ContestViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             pk__in=judge_qs.values('contest'),
             publish_date__gte=timezone.now(),
         )
+
+
+class ThemeResultsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    submission_qs = (
+        Submission.objects.annotate(rating_sum=Sum('rating__rating'))
+        .select_related('author')
+        .prefetch_related('files', 'reward')
+    )
+
+    queryset = Theme.objects.prefetch_related(
+        Prefetch('submission_set', queryset=submission_qs)
+    )
+    serializer_class = ThemeResultsSerializer
+
+    def get_queryset(self):
+        """Return queryset of published themes."""
+        return self.queryset.filter(contest__publish_date__lte=timezone.now())
+
+
+class SubmissionResultsViewSet(
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+):
+    queryset = (
+        Submission.objects.annotate(rating_sum=Sum('rating__rating'))
+        .filter(rating_sum__gte=F('theme__results__accepted_threshold'))
+        .select_related('author', 'theme__results')
+        .prefetch_related('files', 'reward')
+    )
+    serializer_class = SubmissionResultsSerializer
+    filter_class = SubmissionFilter
+    ordering_fields = ['rating_sum']
+
+    def get_queryset(self):
+        """Return queryset of published themes."""
+        return self.queryset.filter(theme__contest__publish_date__lte=timezone.now())
