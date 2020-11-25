@@ -79,12 +79,14 @@ class AuthorResultsSerializer(CoreAuthorSerializer):
     """Serializer for Theme objects."""
 
     reward = serializers.CharField(source='reward.label')
+    reward_theme = serializers.CharField(source='reward.theme')
 
     class Meta(CoreAuthorSerializer.Meta):
         """Serializer configuration."""
 
         fields = CoreAuthorSerializer.Meta.fields + [
             'reward',
+            'reward_theme',
         ]
 
 

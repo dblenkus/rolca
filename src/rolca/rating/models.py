@@ -75,8 +75,12 @@ class SubmissionReward(BaseModel):
 class AuthorReward(BaseModel):
     """Model for submission rewards."""
 
-    submission = models.OneToOneField(
+    author = models.OneToOneField(
         Author, on_delete=models.CASCADE, related_name='reward'
+    )
+
+    theme = models.ForeignKey(
+        Theme, on_delete=models.CASCADE, related_name='author_reward'
     )
 
     label = models.CharField(max_length=100)
