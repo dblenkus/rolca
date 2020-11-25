@@ -90,7 +90,7 @@ class AuthorResultsSerializer(CoreAuthorSerializer):
 
 class SubmissionResultsSerializer(CoreSubmissionSerializer):
     accepted = serializers.SerializerMethodField('get_accepted')
-    reward = serializers.SerializerMethodField('get_reward')
+    reward_kind = serializers.SerializerMethodField('get_reward_kind')
     rating = serializers.IntegerField(source='rating_sum')
 
     class Meta(CoreSubmissionSerializer.Meta):
@@ -99,7 +99,7 @@ class SubmissionResultsSerializer(CoreSubmissionSerializer):
         fields = CoreSubmissionSerializer.Meta.fields + [
             'accepted',
             'rating',
-            'reward',
+            'reward_kind',
         ]
 
     def get_fields(self):
@@ -134,7 +134,7 @@ class SubmissionResultsSerializer(CoreSubmissionSerializer):
             },
         ).data
 
-    def get_reward(self, submission):
+    def get_reward_kind(self, submission):
         mapping = dict(SubmissionReward.KIND_CHOICES)
         if hasattr(submission, 'reward'):
             return mapping[submission.reward.kind]
