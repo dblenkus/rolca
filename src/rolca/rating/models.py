@@ -69,6 +69,8 @@ class SubmissionReward(BaseModel):
 
     kind = models.SmallIntegerField(choices=KIND_CHOICES)
 
+    label = models.CharField(max_length=100)
+
 
 class AuthorReward(BaseModel):
     """Model for submission rewards."""

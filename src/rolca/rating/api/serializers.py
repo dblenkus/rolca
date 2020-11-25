@@ -91,6 +91,7 @@ class AuthorResultsSerializer(CoreAuthorSerializer):
 class SubmissionResultsSerializer(CoreSubmissionSerializer):
     accepted = serializers.SerializerMethodField('get_accepted')
     reward_kind = serializers.SerializerMethodField('get_reward_kind')
+    reward_label = serializers.CharField(source='reward.label')
     rating = serializers.IntegerField(source='rating_sum')
 
     class Meta(CoreSubmissionSerializer.Meta):
@@ -100,6 +101,7 @@ class SubmissionResultsSerializer(CoreSubmissionSerializer):
             'accepted',
             'rating',
             'reward_kind',
+            'reward_label',
         ]
 
     def get_fields(self):
