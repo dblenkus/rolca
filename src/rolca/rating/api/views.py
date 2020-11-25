@@ -68,7 +68,7 @@ class ContestViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 class ThemeResultsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     submission_qs = (
         Submission.objects.annotate(rating_sum=Sum('rating__rating'))
-        .select_related('author')
+        .select_related('author', 'author__reward')
         .prefetch_related('files', 'reward')
     )
 
@@ -88,7 +88,7 @@ class SubmissionResultsViewSet(
     queryset = (
         Submission.objects.annotate(rating_sum=Sum('rating__rating'))
         .filter(rating_sum__gte=F('theme__results__accepted_threshold'))
-        .select_related('author', 'theme__results')
+        .select_related('author', 'author__reward', 'theme__results')
         .prefetch_related('files', 'reward')
     )
     serializer_class = SubmissionResultsSerializer

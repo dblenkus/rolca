@@ -11,6 +11,7 @@ Rating API serializers
 from rest_framework import exceptions, serializers
 
 from rolca.core.api.serializers import (
+    AuthorSerializer as CoreAuthorSerializer,
     BaseSerializer,
     ContestSerializer as CoreContestSerializer,
     FileSerializer,
@@ -74,6 +75,19 @@ class ContestSerializer(CoreContestSerializer):
     themes = ThemeSerializer(many=True, read_only=True)
 
 
+class AuthorResultsSerializer(CoreAuthorSerializer):
+    """Serializer for Theme objects."""
+
+    reward = serializers.CharField(source='reward.label')
+
+    class Meta(CoreAuthorSerializer.Meta):
+        """Serializer configuration."""
+
+        fields = CoreAuthorSerializer.Meta.fields + [
+            'reward',
+        ]
+
+
 class SubmissionResultsSerializer(CoreSubmissionSerializer):
     accepted = serializers.SerializerMethodField('get_accepted')
     reward = serializers.SerializerMethodField('get_reward')
@@ -92,6 +106,8 @@ class SubmissionResultsSerializer(CoreSubmissionSerializer):
         fields = super().get_fields()
         # The field from parent method needs to be overwriten here to tahe the effect.
         fields['files'] = serializers.SerializerMethodField('get_files')
+        fields['author'] = AuthorResultsSerializer()
+
         return fields
 
     def _is_accepted(self, submission):

@@ -14,7 +14,7 @@ Rating models
 from django.conf import settings
 from django.db import models
 
-from rolca.core.models import BaseModel, Contest, Submission, Theme
+from rolca.core.models import Author, BaseModel, Contest, Submission, Theme
 
 
 class Judge(BaseModel):
@@ -68,3 +68,13 @@ class SubmissionReward(BaseModel):
     )
 
     kind = models.SmallIntegerField(choices=KIND_CHOICES)
+
+
+class AuthorReward(BaseModel):
+    """Model for submission rewards."""
+
+    submission = models.OneToOneField(
+        Author, on_delete=models.CASCADE, related_name='reward'
+    )
+
+    label = models.CharField(max_length=100)
