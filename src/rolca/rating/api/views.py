@@ -5,7 +5,7 @@ from rest_framework import mixins, permissions, viewsets
 
 from rolca.core.api.serializers import SubmissionSerializer
 from rolca.core.api.filters import ContestFilter, SubmissionFilter
-from rolca.core.models import Contest, Submission, Theme
+from rolca.core.models import Author, Contest, Submission, Theme
 from rolca.rating.api.filters import RatingFilter
 from rolca.rating.api.permissions import IsActiveJudge
 from rolca.rating.api.serializers import (
@@ -68,7 +68,12 @@ class ContestViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 class ThemeResultsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     submission_qs = (
         Submission.objects.annotate(rating_sum=Sum('rating__rating'))
-        .select_related('author', 'author__reward')
+        .select_related(
+            'author',
+            'author__user',
+            'author__user__location',
+            'author__reward',
+        )
         .prefetch_related('files', 'reward')
     )
 
@@ -85,10 +90,18 @@ class ThemeResultsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 class SubmissionResultsViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
 ):
+    author_qs = Author.objects.select_related('user', 'user__location', 'reward')
+
     queryset = (
         Submission.objects.annotate(rating_sum=Sum('rating__rating'))
         .filter(rating_sum__gte=F('theme__results__accepted_threshold'))
-        .select_related('author', 'author__reward', 'theme__results')
+        .select_related(
+            'theme__results',
+            'author',
+            'author__user',
+            'author__user__location',
+            'author__reward',
+        )
         .prefetch_related('files', 'reward')
     )
     serializer_class = SubmissionResultsSerializer

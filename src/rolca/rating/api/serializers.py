@@ -80,6 +80,7 @@ class AuthorResultsSerializer(CoreAuthorSerializer):
 
     reward = serializers.CharField(source='reward.label')
     reward_theme = serializers.CharField(source='reward.theme_id')
+    country = serializers.SerializerMethodField('get_country')
 
     class Meta(CoreAuthorSerializer.Meta):
         """Serializer configuration."""
@@ -87,7 +88,14 @@ class AuthorResultsSerializer(CoreAuthorSerializer):
         fields = CoreAuthorSerializer.Meta.fields + [
             'reward',
             'reward_theme',
+            'country',
         ]
+
+    def get_country(self, author):
+        if not author.user.location:
+            return None
+
+        return author.user.location.country
 
 
 class SubmissionResultsSerializer(CoreSubmissionSerializer):
