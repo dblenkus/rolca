@@ -19,17 +19,30 @@ from django.utils import timezone
 from rest_framework import exceptions, mixins, permissions, status, viewsets
 from rest_framework.response import Response
 
-from rolca.core.api.filters import ContestFilter, SubmissionFilter, SubmissionSetFilter
+from rolca.core.api.filters import (
+    ContestFilter,
+    InstitutionFilter,
+    SubmissionFilter,
+    SubmissionSetFilter,
+)
 from rolca.core.api.parsers import ImageUploadParser
 from rolca.core.api.permissions import AdminOrReadOnly
 from rolca.core.api.serializers import (
     AuthorSerializer,
     ContestSerializer,
     FileSerializer,
+    InstitutionSerializer,
     SubmissionSerializer,
     SubmissionSetSerializer,
 )
-from rolca.core.models import Author, Contest, File, Submission, SubmissionSet
+from rolca.core.models import (
+    Author,
+    Contest,
+    File,
+    Institution,
+    Submission,
+    SubmissionSet,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +54,12 @@ class FileViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = FileSerializer
     queryset = File.objects.none()
     permission_classes = (permissions.IsAuthenticated,)
+
+
+class InstitutionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Institution.objects.all()
+    serializer_class = InstitutionSerializer
+    filter_class = InstitutionFilter
 
 
 class AuthorViewSet(viewsets.ModelViewSet):

@@ -38,6 +38,10 @@ class ContestAdmin(admin.ModelAdmin):
         (None, {'fields': ('title', 'description')}),
         ('Dates', {'fields': ('start_date', 'end_date', 'publish_date')}),
         (
+            'Author informations',
+            {'fields': ('dob_required', 'club_required', 'school_required')},
+        ),
+        (
             'Details',
             {
                 'fields': (

@@ -104,6 +104,12 @@ class Contest(BaseModel):
         Email, null=True, blank=True, on_delete=models.SET_NULL
     )
 
+    dob_required = models.BooleanField(default=False)
+
+    club_required = models.BooleanField(default=False)
+
+    school_required = models.BooleanField(default=False)
+
     def save(self, *args, **kwargs):
         """Save Contest instance."""
         if not self.publish_date:
@@ -310,6 +316,23 @@ class File(BaseModel):
         )
 
 
+class Institution(BaseModel):
+
+    SCHOOL = 1
+    KIND_CHOICES = [
+        (SCHOOL, 'School'),
+    ]
+
+    kind = models.SmallIntegerField(choices=KIND_CHOICES)
+
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['kind', 'name'], name='unique_name_kind'),
+        ]
+
+
 class Author(BaseModel):
     """Model for storing participents."""
 
@@ -331,6 +354,16 @@ class Author(BaseModel):
 
     #: mentor
     mentor = models.CharField(_('Mentor'), max_length=60, null=True, blank=True)
+
+    dob = models.DateField(null=True, blank=True)
+
+    school = models.CharField(max_length=100, null=True, blank=True)
+
+    mentor = models.CharField(max_length=100, null=True, blank=True)
+
+    club = models.CharField(max_length=100, null=True, blank=True)
+
+    distinction = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         """Return string representation of Author object."""

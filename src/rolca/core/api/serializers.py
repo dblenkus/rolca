@@ -19,7 +19,15 @@ Core API serializers
 """
 from rest_framework import serializers
 
-from rolca.core.models import Author, Contest, File, Submission, SubmissionSet, Theme
+from rolca.core.models import (
+    Author,
+    Contest,
+    File,
+    Institution,
+    Submission,
+    SubmissionSet,
+    Theme,
+)
 
 
 class BaseSerializer(serializers.ModelSerializer):
@@ -53,6 +61,16 @@ class FileSerializer(BaseSerializer):
         }
 
 
+class InstitutionSerializer(BaseSerializer):
+    """Serializer for Author objects."""
+
+    class Meta(BaseSerializer.Meta):
+        """Serializer configuration."""
+
+        model = Institution
+        fields = BaseSerializer.Meta.fields + ['name', 'kind']
+
+
 class AuthorSerializer(BaseSerializer):
     """Serializer for Author objects."""
 
@@ -62,7 +80,16 @@ class AuthorSerializer(BaseSerializer):
         """Serializer configuration."""
 
         model = Author
-        fields = BaseSerializer.Meta.fields + ['first_name', 'last_name', 'email']
+        fields = BaseSerializer.Meta.fields + [
+            'first_name',
+            'last_name',
+            'email',
+            'dob',
+            'school',
+            'mentor',
+            'club',
+            'distinction',
+        ]
 
     def get_email(self, author):
         """Return author's email for superusers, ``None`` field otherwise."""
@@ -177,4 +204,7 @@ class ContestSerializer(BaseSerializer):
             'header_image',
             'notice_html',
             'confirmation_html',
+            'dob_required',
+            'club_required',
+            'school_required',
         ]

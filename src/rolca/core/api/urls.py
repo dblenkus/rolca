@@ -31,6 +31,7 @@ from rolca.core.api.views import (
     AuthorViewSet,
     ContestViewSet,
     FileViewSet,
+    InstitutionViewSet,
     SubmissionSetViewSet,
     SubmissionViewSet,
 )
@@ -41,4 +42,5 @@ routeList = (
     (r'submission', SubmissionViewSet),
     (r'submissionset', SubmissionSetViewSet),
     (r'contest', ContestViewSet),
+    (r'institution', InstitutionViewSet),
 )

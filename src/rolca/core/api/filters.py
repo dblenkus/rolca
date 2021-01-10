@@ -9,7 +9,27 @@ from django_filters import rest_framework as filters
 
 from django.utils import timezone
 
-from rolca.core.models import Submission, SubmissionSet
+from rolca.core.models import Institution, Submission, SubmissionSet
+
+TEXT_LOOKUPS = [
+    "exact",
+    "iexact",
+    "contains",
+    "icontains",
+    "startswith",
+    "istartswith",
+]
+
+
+class InstitutionFilter(filters.FilterSet):
+    """Filter for Institutuion API endpoint."""
+
+    class Meta:
+        model = Institution
+        fields = {
+            "name": TEXT_LOOKUPS[:],
+            "kind": ['exact'],
+        }
 
 
 class SubmissionFilter(filters.FilterSet):
