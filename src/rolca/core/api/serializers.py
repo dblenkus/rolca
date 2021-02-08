@@ -205,6 +205,8 @@ class ContestSerializer(BaseSerializer):
             'notice_html',
             'confirmation_html',
             'dob_required',
+            'club_show',
             'club_required',
+            'school_show',
             'school_required',
         ]

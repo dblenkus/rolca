@@ -106,7 +106,11 @@ class Contest(BaseModel):
 
     dob_required = models.BooleanField(default=False)
 
+    club_show = models.BooleanField(default=False)
+
     club_required = models.BooleanField(default=False)
+
+    school_show = models.BooleanField(default=False)
 
     school_required = models.BooleanField(default=False)
 
