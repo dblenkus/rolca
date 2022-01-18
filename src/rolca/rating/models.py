@@ -75,7 +75,7 @@ class SubmissionReward(BaseModel):
 class AuthorReward(BaseModel):
     """Model for submission rewards."""
 
-    author = models.OneToOneField(
+    author = models.ForeignKey(
         Author, on_delete=models.CASCADE, related_name='reward'
     )
 
