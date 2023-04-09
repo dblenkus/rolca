@@ -1,5 +1,6 @@
 """.. Ignore pydocstyle D400."""
-from django.db.models import F, Prefetch, Sum
+from django.db.models import F, Prefetch, Sum, Value
+from django.db.models.functions import SHA1, Concat
 from django.utils import timezone
 from rest_framework import mixins, permissions, viewsets
 
@@ -46,7 +47,9 @@ class SubmissionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         return Submission.objects.filter(
             theme__in=theme_qs,
             submissionset__payment__paid=True,
-        )
+        ).annotate(
+            random=SHA1(Concat("pk", Value(str(self.request.user.pk))))
+        ).order_by("random")
 
 
 class ContestViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
