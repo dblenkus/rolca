@@ -321,7 +321,6 @@ class File(BaseModel):
 
 
 class Institution(BaseModel):
-
     SCHOOL = 1
     KIND_CHOICES = [
         (SCHOOL, 'School'),

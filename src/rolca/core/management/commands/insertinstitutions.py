@@ -22,7 +22,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-
         for file_name in options['file_names']:
             if not os.path.isfile(file_name):
                 raise CommandError('{} does not exists.'.format(file_name))

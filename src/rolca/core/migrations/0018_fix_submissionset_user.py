@@ -17,7 +17,6 @@ def update_submission_sets(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('core', '0017_enlarge_thumbnails'),
     ]

@@ -7,7 +7,6 @@ import rolca.core.models
 
 
 class Migration(migrations.Migration):
-
     replaces = [
         ('core', '0001_initial'),
         ('core', '0002_add_contest_description'),

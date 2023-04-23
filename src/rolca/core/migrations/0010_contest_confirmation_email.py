@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('drf_user', '0004_email'),
         ('core', '0009_auto_20200609_1940'),
@@ -15,6 +14,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contest',
             name='confirmation_email',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='drf_user.Email'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to='drf_user.Email',
+            ),
         ),
     ]

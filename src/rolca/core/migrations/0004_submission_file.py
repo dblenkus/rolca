@@ -14,7 +14,6 @@ def move_submission_file(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('core', '0003_theme_is_series'),
     ]
@@ -39,7 +38,10 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.RunPython(move_submission_file),
-        migrations.RemoveField(model_name='submission', name='photo',),
+        migrations.RemoveField(
+            model_name='submission',
+            name='photo',
+        ),
         migrations.AlterField(
             model_name='file',
             name='submission',

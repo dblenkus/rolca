@@ -29,7 +29,10 @@ class ContestApiTest(APITestCase):
         self.factory = APIRequestFactory()
 
         self.contest_list_view = ContestViewSet.as_view(
-            {'get': 'list', 'post': 'create',}
+            {
+                'get': 'list',
+                'post': 'create',
+            }
         )
         self.contest_detail_view = ContestViewSet.as_view(
             {
@@ -184,13 +187,22 @@ class SubmissionViewSetTest(APITestCase):
         file_mock = SimpleUploadedFile('photo.jpg', b'fake photo')
 
         submission1 = Submission.objects.create(
-            title="Submission 1", user=self.user1, author=author1, theme=theme,
+            title="Submission 1",
+            user=self.user1,
+            author=author1,
+            theme=theme,
         )
         submission2 = Submission.objects.create(
-            title="Submission 2", user=self.user2, author=author2, theme=theme,
+            title="Submission 2",
+            user=self.user2,
+            author=author2,
+            theme=theme,
         )
         submission3 = Submission.objects.create(
-            title="Submission 3", user=self.user2, author=author2, theme=theme,
+            title="Submission 3",
+            user=self.user2,
+            author=author2,
+            theme=theme,
         )
 
         # pk must be set to skip on-create procedure
@@ -222,7 +234,7 @@ class SubmissionViewSetTest(APITestCase):
         self.assertEqual(len(SubmissionViewSet.get_queryset(viewset_mock)), 3)
 
 
-@override_settings(ROLCA_MAX_UPLOAD_SIZE=1024 ** 2)
+@override_settings(ROLCA_MAX_UPLOAD_SIZE=1024**2)
 @override_settings(ROLCA_MAX_UPLOAD_RESOLUTION=480)
 class FileViewSetTest(APITestCase):
     @classmethod
@@ -232,7 +244,11 @@ class FileViewSetTest(APITestCase):
 
     def setUp(self):
         self.factory = APIRequestFactory()
-        self.file_view = FileViewSet.as_view({'post': 'create',})
+        self.file_view = FileViewSet.as_view(
+            {
+                'post': 'create',
+            }
+        )
 
     def get_upload_request(self):
         photo = generate_photo().read()

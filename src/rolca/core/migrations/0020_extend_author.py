@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('core', '0019_submission_description'),
@@ -56,16 +55,34 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Institution',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('kind', models.SmallIntegerField(choices=[(1, 'School')])),
                 ('name', models.CharField(max_length=100)),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    'user',
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.AddConstraint(
             model_name='institution',
-            constraint=models.UniqueConstraint(fields=('kind', 'name'), name='unique_name_kind'),
+            constraint=models.UniqueConstraint(
+                fields=('kind', 'name'), name='unique_name_kind'
+            ),
         ),
     ]

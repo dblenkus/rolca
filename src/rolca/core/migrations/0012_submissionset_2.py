@@ -7,8 +7,8 @@ import django.db.models.deletion
 
 def create_submission_sets(apps, schema_editor):
     """Move relation between Submission and File models to later one."""
-    Author =  apps.get_model("core", "Author")
-    SubmissionSet =  apps.get_model("core", "SubmissionSet")
+    Author = apps.get_model("core", "Author")
+    SubmissionSet = apps.get_model("core", "SubmissionSet")
 
     for author in Author.objects.all():
         submission_set = SubmissionSet.objects.create()
@@ -16,7 +16,6 @@ def create_submission_sets(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('core', '0011_submissionset_1'),
     ]

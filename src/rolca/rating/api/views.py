@@ -31,7 +31,6 @@ class RatingViewSet(viewsets.ModelViewSet):
 
 
 class SubmissionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
-
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
     filter_class = SubmissionFilter
@@ -44,16 +43,17 @@ class SubmissionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             contest__in=judge_qs.values('contest'),
             contest__publish_date__gte=timezone.now(),
         )
-        return Submission.objects.filter(
-            theme__in=theme_qs,
-            submissionset__payment__paid=True,
-        ).annotate(
-            random=SHA1(Concat("pk", Value(str(self.request.user.pk))))
-        ).order_by("random")
+        return (
+            Submission.objects.filter(
+                theme__in=theme_qs,
+                submissionset__payment__paid=True,
+            )
+            .annotate(random=SHA1(Concat("pk", Value(str(self.request.user.pk)))))
+            .order_by("random")
+        )
 
 
 class ContestViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
-
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
     filter_class = ContestFilter

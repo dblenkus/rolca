@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -16,9 +15,22 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='FileBackup',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('done', models.DateTimeField(blank=True, null=True)),
-                ('source', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.File')),
+                (
+                    'source',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to='core.File'
+                    ),
+                ),
             ],
         ),
     ]

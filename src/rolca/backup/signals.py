@@ -26,7 +26,8 @@ def commit_signal(file_backup_pk):
     channel_layer = get_channel_layer()
     try:
         async_to_sync(channel_layer.send)(
-            CHANNEL_BACKUP, {"type": TYPE_FILE, "file_backup_pk": file_backup_pk},
+            CHANNEL_BACKUP,
+            {"type": TYPE_FILE, "file_backup_pk": file_backup_pk},
         )
     except ChannelFull:
         logger.warning("Cannot trigger backup because channel is full.")

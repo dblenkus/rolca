@@ -13,7 +13,6 @@ def create_payments(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('payment', '0001_initial'),
         ('core', '0012_submissionset_2'),

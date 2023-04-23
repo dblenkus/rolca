@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('core', '0015_submissionset_update_2'),
     ]
@@ -14,11 +13,17 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='submissionset',
             name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.Author'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='core.Author'
+            ),
         ),
         migrations.AlterField(
             model_name='submissionset',
             name='contest',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='submission_sets', to='core.Contest'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='submission_sets',
+                to='core.Contest',
+            ),
         ),
     ]

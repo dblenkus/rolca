@@ -25,7 +25,11 @@ setuptools.setup(
     packages=setuptools.find_packages(
         'src', exclude=['tests', 'tests.*', '*.tests', '*.tests.*']
     ),
-    package_data={'rolca.core': ['locale/sl/LC_MESSAGES/django.*',],},
+    package_data={
+        'rolca.core': [
+            'locale/sl/LC_MESSAGES/django.*',
+        ],
+    },
     package_dir={'': 'src'},
     python_requires='>=3.7, <3.11',
     install_requires=[
@@ -39,8 +43,14 @@ setuptools.setup(
         'psycopg2-binary~=2.8.0',
     ],
     extras_require={
-        'docs': ['sphinx>=1.3.2', 'sphinx_rtd_theme',],
-        'package': ['twine', 'wheel',],
+        'docs': [
+            'sphinx>=1.3.2',
+            'sphinx_rtd_theme',
+        ],
+        'package': [
+            'twine',
+            'wheel',
+        ],
         'test': [
             'black',
             'check-manifest',

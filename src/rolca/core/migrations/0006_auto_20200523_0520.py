@@ -5,7 +5,6 @@ import rolca.core.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('core', '0005_auto_20200515_1923'),
     ]
@@ -14,6 +13,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='file',
             name='file',
-            field=models.ImageField(upload_to=rolca.core.models.generate_file_filename, validators=[rolca.core.models.validate_image]),
+            field=models.ImageField(
+                upload_to=rolca.core.models.generate_file_filename,
+                validators=[rolca.core.models.validate_image],
+            ),
         ),
     ]
