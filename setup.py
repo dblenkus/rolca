@@ -31,7 +31,7 @@ setuptools.setup(
         ],
     },
     package_dir={'': 'src'},
-    python_requires='>=3.7, <3.11',
+    python_requires='>=3.7, <3.12',
     install_requires=[
         'boto3~=1.26.0',
         'channels~=4.0.0',
@@ -79,6 +79,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Internet :: WWW/HTTP :: WSGI',
