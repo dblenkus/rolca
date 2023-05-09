@@ -36,7 +36,7 @@ setuptools.setup(
         'boto3~=1.26.0',
         'channels~=4.0.0',
         'channels_redis~=4.1.0',
-        'Django==4.2',
+        'Django==4.2.1',
         'djangorestframework~=3.14.0',
         'django-filter~=23.1',
         'Pillow~=9.5.0',
