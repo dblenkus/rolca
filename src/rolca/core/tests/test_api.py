@@ -164,9 +164,9 @@ class ContestApiTest(APITestCase):
 class SubmissionViewSetTest(APITestCase):
     def setUp(self):
         user_model = get_user_model()
-        self.creator = user_model.objects.create_user(username='creator')
-        self.user1 = user_model.objects.create_user(username='user1')
-        self.user2 = user_model.objects.create_user(username='user2')
+        self.creator = user_model.objects.create_user(email='creator@example.com')
+        self.user1 = user_model.objects.create_user(email='user1@example.com')
+        self.user2 = user_model.objects.create_user(email='user2@example.com')
 
         today = date.today()
         tomorrow = today + timedelta(days=1)
@@ -228,7 +228,7 @@ class FileViewSetTest(APITestCase):
     @classmethod
     def setUpTestData(cls):
         user_model = get_user_model()
-        cls.user = user_model.objects.create_user(username='user')
+        cls.user = user_model.objects.create_user(email='user@example.com')
 
     def setUp(self):
         self.factory = APIRequestFactory()

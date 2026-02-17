@@ -1,5 +1,7 @@
 import unittest
-from datetime import datetime, timedelta
+from datetime import timedelta
+
+from django.utils import timezone
 
 from rolca.core.models import Author, Contest, Submission, Theme
 
@@ -11,7 +13,7 @@ class DatabaseTestCase(unittest.TestCase):
 
     def test_contest_active(self):
         contest = Contest()
-        now = datetime.now()
+        now = timezone.now()
         day = timedelta(days=1)
 
         # active contest
