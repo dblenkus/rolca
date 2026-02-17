@@ -3,6 +3,7 @@ Django settings for running tests for rolca-core package.
 
 """
 import os
+import importlib.util
 
 from django.utils.translation import gettext_lazy as _
 
@@ -36,6 +37,10 @@ INSTALLED_APPS = (
     'rolca.rating',
 )
 
+if importlib.util.find_spec('drf_user') is not None:
+    INSTALLED_APPS += ('drf_user.apps.UserConfig',)
+    AUTH_USER_MODEL = 'drf_user.User'
+
 ROOT_URLCONF = 'tests.urls'
 
 LOGIN_REDIRECT_URL = '/'
@@ -68,8 +73,11 @@ LOCALE_PATHS = (os.path.join(PROJECT_ROOT, 'locale'),)
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('ROLCA_POSTGRESQL_NAME', 'rolca'),
+        'ENGINE': os.environ.get('ROLCA_DB_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.environ.get(
+            'ROLCA_POSTGRESQL_NAME',
+            os.path.join(PROJECT_ROOT, 'test.sqlite3'),
+        ),
         'USER': os.environ.get('ROLCA_POSTGRESQL_USER', 'rolca'),
         'HOST': os.environ.get('ROLCA_POSTGRESQL_HOST', 'localhost'),
         'PORT': int(os.environ.get('ROLCA_POSTGRESQL_PORT', 5432)),

@@ -288,7 +288,12 @@ class File(BaseModel):
         """Add photo thumbnail and save object."""
         if not self.pk:  # on create
             image = Image.open(self.file)
-            image.thumbnail((400, 400), Image.ANTIALIAS)
+            resample = (
+                Image.Resampling.LANCZOS
+                if hasattr(Image, 'Resampling')
+                else Image.ANTIALIAS
+            )
+            image.thumbnail((400, 400), resample)
 
             thumb = io.BytesIO()
             image.save(
