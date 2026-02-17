@@ -27,7 +27,7 @@ setuptools.setup(
     ),
     package_data={'rolca.core': ['locale/sl/LC_MESSAGES/django.*',],},
     package_dir={'': 'src'},
-    python_requires='>=3.10, <3.14',
+    python_requires='>=3.10, <3.15',
     install_requires=[
         'boto3~=1.42.50',
         'channels~=4.3.2',
@@ -68,6 +68,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
         'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Internet :: WWW/HTTP :: WSGI',
