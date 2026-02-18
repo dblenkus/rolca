@@ -10,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 SECRET_KEY = 'secret'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DEBUG = True
 
