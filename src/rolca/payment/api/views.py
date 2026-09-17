@@ -1,4 +1,5 @@
 """.. Ignore pydocstyle D400."""
+
 from rest_framework import viewsets
 
 from rolca.core.api.permissions import IsSuperUser
@@ -13,4 +14,4 @@ class PaymentViewSet(viewsets.ModelViewSet):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
     permission_classes = (IsSuperUser,)
-    filter_class = PaymentFilter
+    filterset_class = PaymentFilter

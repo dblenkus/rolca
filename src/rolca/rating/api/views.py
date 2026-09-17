@@ -1,14 +1,16 @@
 """.. Ignore pydocstyle D400."""
-from django.db.models import F, Prefetch, Sum, Value
-from django.db.models.functions import SHA1, Concat
+
+from django.db.models import CharField, F, Prefetch, Sum, Value
+from django.db.models.functions import SHA1, Cast, Concat
 from django.utils import timezone
+
 from rest_framework import mixins, permissions, viewsets
 
-from rolca.core.api.serializers import SubmissionSerializer
 from rolca.core.api.filters import ContestFilter, SubmissionFilter
+from rolca.core.api.serializers import SubmissionSerializer
 from rolca.core.models import Author, Contest, Submission, Theme
 from rolca.rating.api.filters import RatingFilter
-from rolca.rating.api.permissions import IsActiveJudge
+from rolca.rating.api.permissions import CanModifyRating, IsActiveJudge
 from rolca.rating.api.serializers import (
     ContestSerializer,
     RatingSerializer,
@@ -23,17 +25,20 @@ class RatingViewSet(viewsets.ModelViewSet):
 
     queryset = Rating.objects.none()
     serializer_class = RatingSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-    filter_class = RatingFilter
+    permission_classes = (permissions.IsAuthenticated, CanModifyRating)
+    filterset_class = RatingFilter
 
     def get_queryset(self):
+        """Restrict ratings to the requesting user."""
         return Rating.objects.filter(user=self.request.user)
 
 
 class SubmissionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """List paid submissions assigned to an active judge."""
+
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
-    filter_class = SubmissionFilter
+    filterset_class = SubmissionFilter
     permission_classes = (IsActiveJudge,)
 
     def get_queryset(self):
@@ -48,15 +53,21 @@ class SubmissionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
                 theme__in=theme_qs,
                 submissionset__payment__paid=True,
             )
-            .annotate(random=SHA1(Concat("pk", Value(str(self.request.user.pk)))))
+            .annotate(
+                random=SHA1(
+                    Concat(Cast("pk", CharField()), Value(str(self.request.user.pk)))
+                )
+            )
             .order_by("random")
         )
 
 
 class ContestViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """List contests assigned to the requesting judge."""
+
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
-    filter_class = ContestFilter
+    filterset_class = ContestFilter
     permission_classes = (IsActiveJudge,)
 
     def get_queryset(self):
@@ -69,6 +80,8 @@ class ContestViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
 
 class ThemeResultsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    """Retrieve published results for a theme."""
+
     submission_qs = (
         Submission.objects.annotate(rating_sum=Sum('rating__rating'))
         .select_related(
@@ -93,6 +106,8 @@ class ThemeResultsViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 class SubmissionResultsViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
 ):
+    """List and retrieve accepted submissions after publication."""
+
     author_qs = Author.objects.select_related('user', 'user__location', 'reward')
 
     queryset = (
@@ -108,7 +123,7 @@ class SubmissionResultsViewSet(
         .prefetch_related('files', 'reward')
     )
     serializer_class = SubmissionResultsSerializer
-    filter_class = SubmissionFilter
+    filterset_class = SubmissionFilter
     ordering_fields = ['rating_sum']
 
     def get_queryset(self):
